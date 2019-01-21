@@ -8,6 +8,7 @@ import {
 } from 'react-navigation';
 import HomePage from '../views/HomePage';
 import WorkoutPreview from '../views/WorkoutPreview';
+import CompanionScreen from '../views/CompanionScreen';
 
 export default (Stack = createStackNavigator({
   Home: {
@@ -15,5 +16,8 @@ export default (Stack = createStackNavigator({
   },
   WorkoutPreview: {
     screen: WorkoutPreview,
+  },
+  CompanionScreen: {
+    screen: CompanionScreen,
   },
 }));
