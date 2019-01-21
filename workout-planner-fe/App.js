@@ -1,26 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Header from './components/Header';
-import Model from './components/Model';
-import ExerciseList from './components/ExerciseList';
+// import { StyleSheet, Text, View, Button } from 'react-native';
+import { createStackNavigator, createAppContainer } from 'react-navigation';
+import Stack from './navigation/Navigators';
+
+const AppContainer = createAppContainer(Stack);
 
 export default class App extends React.Component {
-	render() {
-		return (
-			<View style={{ flex: 1 }}>
-				<Header />
-				<Model />
-				<ExerciseList />
-			</View>
-		);
-	}
+  render() {
+    return <AppContainer />;
+  }
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
