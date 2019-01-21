@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import {
+ StyleSheet, Text, View, Button 
+} from 'react-native';
 
-class Header extends Component {
-	render() {
-		return <Text style={{ flex: 2, backgroundColor: 'lightgrey' }}>Title</Text>;
-	}
+export default class Header extends React.Component {
+  render() {
+    const { navigate } = this.props.navigation;
+    return (
+      <View style={{ flex: 2, backgroundColor: 'lightgrey' }}>
+        <Button title="Profile" onPress={() => navigate('UserProfile')} />
+      </View>
+    );
+  }
 }
-
-export default Header;

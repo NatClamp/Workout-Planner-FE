@@ -8,7 +8,7 @@ export default class WorkoutPreview extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Header />
+        <Header navigation={this.props.navigation} />
         <Model />
         <WorkoutPreviewList />
         <Button
