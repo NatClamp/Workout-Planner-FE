@@ -25,27 +25,26 @@ const DrawerIcon = ({ navigation }) => {
 const Stack = {
 	Home: {
 		screen: HomePage,
-		navigationOptions: ({ navigation }) => ({
-			title: 'Home',
-			headerLeft: <DrawerIcon navigation={navigation} />
-		})
+		navigationOptions: {
+			header: null
+		}
 	},
 	WorkoutPreview: {
 		screen: WorkoutPreview,
 		navigationOptions: {
-			title: 'Preview Workout'
+			header: null
 		}
 	},
 	CompanionScreen: {
 		screen: CompanionScreen,
 		navigationOptions: {
-			title: 'Your Workout'
+			header: null
 		}
 	},
 	UserProfile: {
 		screen: UserProfile,
 		navigationOptions: {
-			title: 'Profile'
+			header: null
 		}
 	}
 };
@@ -65,11 +64,18 @@ export default (RootNavigator = createStackNavigator(
 	{
 		Drawer: {
 			name: 'Drawer',
-			screen: createDrawerNavigator(DrawerRoutes)
+			screen: createDrawerNavigator(DrawerRoutes),
+			navigationOptions: ({ navigation }) => ({
+				title: 'Butt-Buster',
+				headerRight: <DrawerIcon navigation={navigation} />
+			})
 		},
 		...Stack
 	},
 	{
-		headerMode: 'none'
+		headerMode: 'float',
+		navigationOptions: {
+			headerVisible: false
+		}
 	}
 ));
