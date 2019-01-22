@@ -1,12 +1,12 @@
 import React from 'react';
 // import { StyleSheet, Text, View, Button } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import Stack from './navigation/Navigators';
+import RootNavigator from './navigation/Navigators';
 
-const AppContainer = createAppContainer(Stack);
+const AppContainer = createAppContainer(RootNavigator);
 
 export default class App extends React.Component {
-  render() {
-    return <AppContainer />;
-  }
+	render() {
+		return <AppContainer />;
+	}
 }
