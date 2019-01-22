@@ -5,7 +5,10 @@ import HomePage from '../views/HomePage';
 import WorkoutPreview from '../views/WorkoutPreview';
 import CompanionScreen from '../views/CompanionScreen';
 import UserProfile from '../views/UserProfile';
+import Login from '../views/Login';
+import Register from '../views/Register';
 import { Icon } from 'native-base';
+import { Button } from 'react-native-elements';
 
 const DrawerIcon = ({ navigation }) => {
 	return (
@@ -23,6 +26,12 @@ const DrawerIcon = ({ navigation }) => {
 };
 
 const Stack = {
+	Login: {
+		screen: Login,
+		navigationOptions: {
+			header: null
+		}
+	},
 	Home: {
 		screen: HomePage,
 		navigationOptions: {
@@ -46,6 +55,12 @@ const Stack = {
 		navigationOptions: {
 			header: null
 		}
+	},
+	Register: {
+		screen: Register,
+		navigationOptions: {
+			header: null
+		}
 	}
 };
 
@@ -57,25 +72,21 @@ const DrawerRoutes = {
 	Profile: {
 		name: 'Profile',
 		screen: createStackNavigator(Stack, { initialRouteName: 'UserProfile' })
+	},
+	Logout: {
+		name: 'logout',
+		screen: createStackNavigator(Stack, { initialRouteName: 'Login' })
 	}
 };
 
-export default (RootNavigator = createStackNavigator(
-	{
-		Drawer: {
-			name: 'Drawer',
-			screen: createDrawerNavigator(DrawerRoutes),
-			navigationOptions: ({ navigation }) => ({
-				title: 'Butt-Buster',
-				headerRight: <DrawerIcon navigation={navigation} />
-			})
-		},
-		...Stack
+export default (RootNavigator = createStackNavigator({
+	Drawer: {
+		name: 'Drawer',
+		screen: createDrawerNavigator(DrawerRoutes),
+		navigationOptions: ({ navigation }) => ({
+			title: 'Butt-Buster',
+			headerLeft: <DrawerIcon navigation={navigation} />
+		})
 	},
-	{
-		headerMode: 'float',
-		navigationOptions: {
-			headerVisible: false
-		}
-	}
-));
+	...Stack
+}));
