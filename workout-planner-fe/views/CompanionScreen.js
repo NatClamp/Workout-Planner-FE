@@ -12,14 +12,16 @@ export default class CompanionScreen extends React.Component {
 	render() {
 		return (
 			<View style={{ flex: 1 }}>
-				<Model />
+				<View style={{ height: 350, marginTop: 10 }}>
+					<Model />
+				</View>
 				<Container>
 					<Content padder>
 						<Accordion dataArray={dataArray} expanded={0} />
 					</Content>
 				</Container>
 				<TouchableOpacity style={styles.completeWorkout} title='Complete Workout'>
-					<Text>Complet Workout</Text>
+					<Text>Complete Workout</Text>
 				</TouchableOpacity>
 			</View>
 		);

@@ -7,7 +7,9 @@ export default class WorkoutPreview extends React.Component {
 	render() {
 		return (
 			<View style={{ flex: 1 }}>
-				<Model />
+				<View style={{ height: 350, marginTop: 10 }}>
+					<Model />
+				</View>
 				<WorkoutPreviewList />
 				<Button title='Start Workout' onPress={() => this.props.navigation.navigate('CompanionScreen')} />
 			</View>
