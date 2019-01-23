@@ -6,6 +6,7 @@ import WorkoutPreview from '../views/WorkoutPreview';
 import CompanionScreen from '../views/CompanionScreen';
 import UserProfile from '../views/UserProfile';
 import Login from '../views/Login';
+import MuscleList from '../components/MuscleList';
 import { Icon } from 'native-base';
 import { Button } from 'react-native-elements';
 
@@ -58,6 +59,12 @@ const Stack = {
 			title: 'Profile',
 			headerLeft: <DrawerIcon navigation={navigation} />
 		})
+	},
+	MuscleList: {
+		screen: MuscleList,
+		navigationOptions: {
+			header: null
+		}
 	}
 };
 

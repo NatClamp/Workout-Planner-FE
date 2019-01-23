@@ -14,6 +14,7 @@ export default class HomeScreen extends React.Component {
 					<Model />
 				</View>
 				<ScrollView style={{ flex: 1 }}>
+					<Button title='Add Exercise' onPress={() => this.props.navigation.navigate('MuscleList')} />
 					<ExerciseList muscles={this.state.muscles} />
 					<Button
 						style={{ flex: 1, marginTop: 10, backgroundColor: 'blue' }}
@@ -28,7 +29,6 @@ export default class HomeScreen extends React.Component {
 		return fetch('http://192.168.230.34:9000/api/muscles')
 			.then((response) => response.json())
 			.then((responseJson) => {
-				console.log(responseJson);
 				this.setState(
 					{
 						muscles: responseJson.muscles

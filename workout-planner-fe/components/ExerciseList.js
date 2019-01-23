@@ -25,7 +25,6 @@ class ExerciseList extends Component {
 		return fetch('http://192.168.230.34:9000/api/exercises')
 			.then((response) => response.json())
 			.then((responseJson) => {
-				console.log(responseJson);
 				this.setState(
 					{
 						exercises: responseJson.exercises

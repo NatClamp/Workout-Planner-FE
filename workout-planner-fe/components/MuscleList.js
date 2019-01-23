@@ -13,6 +13,7 @@ const swipeoutBtns = [
 class MuscleList extends Component {
 	state = {
 		modalVisible: false,
+		modalVisible2: false,
 		muscleExercises: []
 	};
 
@@ -45,7 +46,20 @@ class MuscleList extends Component {
 
 							<View>
 								<Swipeout right={swipeoutBtns}>
-									<Accordion data={this.state.muscleExercises} />
+									<Fragment>
+										{this.props.muscles.map((item, key) => (
+											<Text
+												key={key}
+												style={styles.TextStyle}
+												onPress={() => {
+													this.setModalVisible(true);
+													this.getExerciseByMuscle(item.muscle_name);
+												}}
+											>
+												{item.muscle_name}
+											</Text>
+										))}
+									</Fragment>
 								</Swipeout>
 							</View>
 						</ScrollView>
@@ -53,32 +67,26 @@ class MuscleList extends Component {
 
 					<TouchableHighlight>
 						<ScrollView>
-							<Fragment>
-								{this.props.muscles.map((item, key) => (
-									<Text
-										key={key}
-										style={styles.TextStyle}
-										onPress={() => {
-											this.setModalVisible(true);
-										}}
-									>
-										{item.muscle_name}
-									</Text>
-								))}
-							</Fragment>
+							<Text
+								onPress={() => {
+									this.setModalVisible(true);
+								}}
+							>
+								Add Exercise
+							</Text>
 						</ScrollView>
 					</TouchableHighlight>
 				</View>
 			</Fragment>
 		);
 	}
-	componentDidMount() {
-		return fetch(`http://192.168.230.34:9000/api/exercises/${this.props.exercises.major_muscle}`)
+	getExerciseByMuscle = (muscle_name) => {
+		return fetch(`http://192.168.230.34:9000/api/exercises/muscle/${muscle_name}`)
 			.then((response) => response.json())
 			.then((responseJson) => {
 				this.setState(
 					{
-						muscleExercises: responseJson.muscleExercises
+						muscleExercises: responseJson.exercises
 					},
 					function() {}
 				);
@@ -86,7 +94,11 @@ class MuscleList extends Component {
 			.catch((error) => {
 				console.error(error);
 			});
-	}
+	};
+
+	handleClick = () => {
+		getExerciseByMuscle();
+	};
 }
 
 export default MuscleList;
