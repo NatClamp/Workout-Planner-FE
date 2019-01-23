@@ -1,9 +1,8 @@
 import React from 'react';
 import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
-import RootNavigator from './navigation/Navigators';
+// import RootNavigator from './navigation/Navigators';
 import Loading from './views/Loading';
 import HomePage from './views/HomePage';
-import RootNavigator from './navigation/Navigators';
 
 // const AppContainer = createAppContainer(RootNavigator);
 
