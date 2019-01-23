@@ -1,19 +1,30 @@
 import React from 'react';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
+import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import RootNavigator from './navigation/Navigators';
-import Login from './views/Login';
+import Loading from './views/Loading';
+import HomePage from './views/HomePage';
+import RootNavigator from './navigation/Navigators';
 
-const AppContainer = createAppContainer(RootNavigator);
+// const AppContainer = createAppContainer(RootNavigator);
 
-export default class App extends React.Component {
-	state = {
-		isLoggedIn: false
-	};
-	render() {
-		return this.state.isLoggedIn ? (
-			<AppContainer onUserLogout={() => this.setState({ isLoggedIn: false })} />
-		) : (
-			<Login onUserLogin={() => this.setState({ isLoggedIn: true })} />
-		);
-	}
-}
+// export default class App extends React.Component {
+// 	render() {
+// 		return (
+// 			<AppContainer onUserLogout={() => this.setState({ isLoggedIn: false })} />
+//     )
+// 	}
+// }
+
+const AppContainer = createAppContainer(
+  createSwitchNavigator(
+    {
+      Loading,
+      HomePage,
+    },
+    {
+      initialRouteName: 'Loading',
+    },
+  ),
+);
+
+export default AppContainer;
