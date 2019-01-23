@@ -1,31 +1,84 @@
-import React, { Component } from 'react';
-import { View, Text, FlatList } from 'react-native';
-import { Accordion } from 'native-base';
+import React, { Component, Fragment } from 'react';
+import { View, Text, FlatList, StyleSheet, ScrollView, Button, Modal, TouchableHighlight, Alert } from 'react-native';
+import { Accordion, Icon, Header } from 'native-base';
+import ExerciseModal from './ExerciseModal';
+import Swipeout from 'react-native-swipeout';
 
-export default class MuscleList extends Component {
+const swipeoutBtns = [
+	{
+		text: 'Button'
+	}
+];
+
+class MuscleList extends Component {
 	state = {
-		dataSource: []
+		modalVisible: false,
+		muscleExercises: []
 	};
+
+	setModalVisible(visible) {
+		this.setState({ modalVisible: visible });
+	}
 	render() {
 		return (
-			<View style={{ flex: 1 }}>
-				<Text style={{ backgroundColor: 'lightgreen' }}>ExerciseList</Text>
-				<FlatList
-					data={this.state.dataSource}
-					renderItem={({ item }) => <Text>{item.muscle_name}</Text>}
-					keyExtractor={({ muscle_name }) => muscle_name}
-				/>
-			</View>
+			<Fragment>
+				<View>
+					<Modal
+						animationType='fade'
+						transparent={false}
+						visible={this.state.modalVisible}
+						presentationStyle='overFullScreen'
+						onRequestClose={() => {
+							Alert.alert('Modal has been closed.');
+						}}
+					>
+						<ScrollView style={{ marginTop: 22 }}>
+							<Header>
+								<Icon
+									name='md-arrow-back'
+									onPress={() => {
+										this.setModalVisible(!this.state.modalVisible);
+									}}
+								/>
+								<Text>Select Exercise</Text>
+							</Header>
+
+							<View>
+								<Swipeout right={swipeoutBtns}>
+									<Accordion data={this.state.muscleExercises} />
+								</Swipeout>
+							</View>
+						</ScrollView>
+					</Modal>
+
+					<TouchableHighlight>
+						<ScrollView>
+							<Fragment>
+								{this.props.muscles.map((item, key) => (
+									<Text
+										key={key}
+										style={styles.TextStyle}
+										onPress={() => {
+											this.setModalVisible(true);
+										}}
+									>
+										{item.muscle_name}
+									</Text>
+								))}
+							</Fragment>
+						</ScrollView>
+					</TouchableHighlight>
+				</View>
+			</Fragment>
 		);
 	}
 	componentDidMount() {
-		return fetch('http://192.168.230.34:9000/api/muscles')
+		return fetch(`http://192.168.230.34:9000/api/exercises/${this.props.exercises.major_muscle}`)
 			.then((response) => response.json())
 			.then((responseJson) => {
-				console.log(responseJson);
 				this.setState(
 					{
-						dataSource: responseJson.muscles
+						muscleExercises: responseJson.muscleExercises
 					},
 					function() {}
 				);
@@ -35,3 +88,16 @@ export default class MuscleList extends Component {
 			});
 	}
 }
+
+export default MuscleList;
+
+const styles = StyleSheet.create({
+	TextStyle: {
+		fontSize: 15,
+		textAlign: 'left',
+		backgroundColor: 'green',
+		padding: 10,
+		borderColor: 'black',
+		borderWidth: 4
+	}
+});

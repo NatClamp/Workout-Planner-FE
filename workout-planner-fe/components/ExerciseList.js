@@ -5,14 +5,18 @@ import MuscleList from './MuscleList';
 
 class ExerciseList extends Component {
 	state = {
-		dataSource: []
+		exercises: []
 	};
 	render() {
 		return (
 			<Fragment>
 				<View style={{ flex: 1 }}>
-					<MuscleList style={{ flex: 1, backgroundColor: 'pink' }} />
-					<ExerciseModal dataSource={this.state.dataSource} />
+					<MuscleList
+						exercises={this.state.exercises}
+						muscles={this.props.muscles}
+						style={{ flex: 1, backgroundColor: 'pink' }}
+					/>
+					<ExerciseModal exercises={this.state.exercises} />
 				</View>
 			</Fragment>
 		);
@@ -24,7 +28,7 @@ class ExerciseList extends Component {
 				console.log(responseJson);
 				this.setState(
 					{
-						dataSource: responseJson.exercises
+						exercises: responseJson.exercises
 					},
 					function() {}
 				);

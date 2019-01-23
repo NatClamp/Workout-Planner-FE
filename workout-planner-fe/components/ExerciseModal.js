@@ -44,7 +44,7 @@ class ExerciseModal extends Component {
 
 							<View>
 								<Swipeout right={swipeoutBtns}>
-									<Accordion data={this.props.dataSource} />
+									<Accordion data={this.props.exercises} />
 								</Swipeout>
 							</View>
 						</ScrollView>
