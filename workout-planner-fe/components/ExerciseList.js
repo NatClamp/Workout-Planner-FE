@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import ExerciseModal from './ExerciseModal';
+import MuscleList from './MuscleList';
 
 class ExerciseList extends Component {
 	state = {
@@ -9,19 +10,21 @@ class ExerciseList extends Component {
 	render() {
 		return (
 			<Fragment>
-				<Text style={{ flex: 2, backgroundColor: 'lightgreen' }}>ExerciseList</Text>
-				<ExerciseModal dataSource={this.state.dataSource} />
-				<Text style={{ flex: 1, backgroundColor: 'lightgrey' }}>Buttons</Text>
+				<View style={{ flex: 1 }}>
+					<MuscleList style={{ flex: 1, backgroundColor: 'pink' }} />
+					<ExerciseModal dataSource={this.state.dataSource} />
+				</View>
 			</Fragment>
 		);
 	}
 	componentDidMount() {
-		return fetch('https://jhnc-news.herokuapp.com/api/articles')
+		return fetch('http://192.168.230.34:9000/api/exercises')
 			.then((response) => response.json())
 			.then((responseJson) => {
+				console.log(responseJson);
 				this.setState(
 					{
-						dataSource: responseJson.articles
+						dataSource: responseJson.exercises
 					},
 					function() {}
 				);

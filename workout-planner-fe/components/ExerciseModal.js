@@ -2,6 +2,13 @@ import React, { Component, Fragment } from 'react';
 import { StyleSheet, Text, View, Button, Modal, TouchableHighlight, Alert, FlatList, ScrollView } from 'react-native';
 import { Container, Header, Content, Accordion } from 'native-base';
 import { Icon } from 'native-base';
+import Swipeout from 'react-native-swipeout';
+
+const swipeoutBtns = [
+	{
+		text: 'Button'
+	}
+];
 
 class ExerciseModal extends Component {
 	state = {
@@ -35,7 +42,11 @@ class ExerciseModal extends Component {
 								<Text>Select Exercise</Text>
 							</Header>
 
-							<Accordion data={this.props.dataSource} />
+							<View>
+								<Swipeout right={swipeoutBtns}>
+									<Accordion data={this.props.dataSource} />
+								</Swipeout>
+							</View>
 						</ScrollView>
 					</Modal>
 

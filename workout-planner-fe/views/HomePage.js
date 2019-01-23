@@ -12,7 +12,11 @@ export default class HomeScreen extends React.Component {
 				</View>
 				<View style={{ flex: 1 }}>
 					<ExerciseList />
-					<Button title='go' onPress={() => this.props.navigation.navigate('WorkoutPreview')} />
+					<Button
+						style={{ flex: 1, marginTop: 10, backgroundColor: 'blue' }}
+						title='go'
+						onPress={() => this.props.navigation.navigate('WorkoutPreview')}
+					/>
 				</View>
 			</View>
 		);
