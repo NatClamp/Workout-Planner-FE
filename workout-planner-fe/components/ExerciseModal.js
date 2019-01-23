@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { StyleSheet, Text, View, Button, Modal, TouchableHighlight, Alert, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button, Modal, TouchableHighlight, Alert, FlatList, ScrollView } from 'react-native';
+import { Container, Header, Content, Accordion } from 'native-base';
 
 class ExerciseModal extends Component {
 	state = {
@@ -22,23 +23,19 @@ class ExerciseModal extends Component {
 							Alert.alert('Modal has been closed.');
 						}}
 					>
-						<View style={{ marginTop: 22 }}>
-							<View>
-								<FlatList
-									data={this.props.dataSource}
-									renderItem={({ item }) => <Text>{item.title}</Text>}
-									keyExtractor={({ title }) => title}
-								/>
+						<ScrollView style={{ marginTop: 22 }}>
+							<Header>
+								<Text>Select Exercise</Text>
+							</Header>
 
-								<TouchableHighlight
-									onPress={() => {
-										this.setModalVisible(!this.state.modalVisible);
-									}}
-								>
-									<Text>Hide Modal</Text>
-								</TouchableHighlight>
-							</View>
-						</View>
+							<Accordion data={this.props.dataSource} />
+							<Button
+								title='Close'
+								onPress={() => {
+									this.setModalVisible(!this.state.modalVisible);
+								}}
+							/>
+						</ScrollView>
 					</Modal>
 
 					<TouchableHighlight

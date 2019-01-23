@@ -34,27 +34,31 @@ const Stack = {
 	},
 	Home: {
 		screen: HomePage,
-		navigationOptions: {
-			header: null
-		}
+		navigationOptions: ({ navigation }) => ({
+			title: 'Home',
+			headerLeft: <DrawerIcon navigation={navigation} />
+		})
 	},
 	WorkoutPreview: {
 		screen: WorkoutPreview,
-		navigationOptions: {
-			header: null
-		}
+		navigationOptions: ({ navigation }) => ({
+			title: 'Workout Preview',
+			headerLeft: <DrawerIcon navigation={navigation} />
+		})
 	},
 	CompanionScreen: {
 		screen: CompanionScreen,
-		navigationOptions: {
-			header: null
-		}
+		navigationOptions: ({ navigation }) => ({
+			title: 'Workout Companion',
+			headerLeft: <DrawerIcon navigation={navigation} />
+		})
 	},
 	UserProfile: {
 		screen: UserProfile,
-		navigationOptions: {
-			header: null
-		}
+		navigationOptions: ({ navigation }) => ({
+			title: 'Profile',
+			headerLeft: <DrawerIcon navigation={navigation} />
+		})
 	},
 	Register: {
 		screen: Register,
@@ -83,10 +87,10 @@ export default (RootNavigator = createStackNavigator({
 	Drawer: {
 		name: 'Drawer',
 		screen: createDrawerNavigator(DrawerRoutes),
-		navigationOptions: ({ navigation }) => ({
+		navigationOptions: {
 			title: 'Butt-Buster',
-			headerLeft: <DrawerIcon navigation={navigation} />
-		})
+			header: null
+		}
 	},
 	...Stack
 }));
