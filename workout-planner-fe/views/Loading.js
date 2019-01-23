@@ -1,10 +1,21 @@
 import React from 'react';
-import { View, Text, ActivityIndicator, StyleSheet, Alert } from 'react-native';
-import HomePage from './HomePage';
-// import SignUp from './SignUp';
-import API_KEY from '../config.js';
+import { View, Text, ActivityIndicator, StyleSheet, AsyncStorage } from 'react-native';
+import SignIn from './SignIn';
 
 export default class Loading extends React.Component {
+  userTokenInStorage = async () => {
+    try {
+      const userToken = await AsyncStorage.getItem('userToken');
+      if (userToken !== null) {
+        this.props.navigation.navigate('HomePage');
+      } else {
+        this.props.navigation.navigate('SignIn');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -15,34 +26,8 @@ export default class Loading extends React.Component {
   }
 
   componentDidMount() {
-    this.logIn();
+    this.userTokenInStorage();
   }
-
-  logIn = async () => {
-    try {
-      const {
-        type,
-        token,
-        expires,
-        permissions,
-        declinedPermissions,
-      } = await Expo.Facebook.logInWithReadPermissionsAsync(`${API_KEY.facebook_api_key}`, {
-        permissions: ['public_profile'],
-      });
-      if (type === 'success') {
-        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`)
-          .then(response => response.json())
-          .then(response =>
-            this.props.navigation.navigate('HomePage', { currentUser: response.name }),
-          );
-      } else {
-        Alert.alert('HELP');
-        // go to sign up?
-      }
-    } catch ({ message }) {
-      alert(`Facebook Login Error: ${message}`);
-    }
-  };
 }
 
 const styles = StyleSheet.create({

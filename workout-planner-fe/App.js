@@ -3,6 +3,7 @@ import { createSwitchNavigator, createStackNavigator, createAppContainer } from 
 // import RootNavigator from './navigation/Navigators';
 import Loading from './views/Loading';
 import HomePage from './views/HomePage';
+import SignIn from './views/SignIn';
 
 // const AppContainer = createAppContainer(RootNavigator);
 
@@ -19,6 +20,7 @@ const AppContainer = createAppContainer(
     {
       Loading,
       HomePage,
+      SignIn,
     },
     {
       initialRouteName: 'Loading',

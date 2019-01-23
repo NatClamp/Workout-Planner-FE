@@ -5,7 +5,7 @@ import {
 import Model from '../components/Model';
 import ExerciseList from '../components/ExerciseList';
 
-export default class HomeScreen extends React.Component {
+export default class HomePage extends React.Component {
   render() {
     const { navigation } = this.props;
     const currentUser = navigation.getParam('currentUser');
