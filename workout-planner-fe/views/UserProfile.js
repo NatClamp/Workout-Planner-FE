@@ -2,7 +2,6 @@ import React, {Fragment} from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import {CalendarList} from 'react-native-calendars'
 import moment from 'moment'
-import { Item } from 'native-base';
 
 export default class HomeScreen extends React.Component {
 	constructor(props){
@@ -35,7 +34,7 @@ export default class HomeScreen extends React.Component {
 				<Text style={{fontSize: 25, textAlign: 'center', margin: 5}}>{`${user_name}'s Page`}</Text>
 				{(completedWorkouts.length > 0) &&<Text>Your last workout was {completedWorkouts[0].workout} on {completedWorkouts[0].dateString}</Text>}
 				{Object.keys(calendarPoints).length > 0 &&
-				<CalendarList style={{borderWidth: 1, borderStyle: 'solid', marginBottom: -150 }}
+				<CalendarList style={{borderWidth: 1, borderStyle: 'solid', marginBottom: 0 }}
 				horizontal={true}
 				pagingEnabled={true}
 				markedDates={calendarPoints}
