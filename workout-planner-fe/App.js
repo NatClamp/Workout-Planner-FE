@@ -1,21 +1,12 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
-import {
-  createSwitchNavigator,
-  createStackNavigator,
-  createAppContainer,
-  createBottomTabNavigator,
-} from 'react-navigation';
-// import RootNavigator from './navigation/Navigators';
+import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
 import { Icon } from 'native-base';
-import FontAwesome, { Icons } from 'react-native-fontawesome';
-// import Icon from 'react-native-vector-icons/FontAwesome';
 import WorkoutPreview from './views/WorkoutPreview';
 import CompanionScreen from './views/CompanionScreen';
 import UserProfile from './views/UserProfile';
 import MuscleScreen from './views/MuscleScreen';
 import ExerciseList from './views/ExerciseList';
-
 import Loading from './views/Loading';
 import HomePage from './views/HomePage';
 import SignIn from './views/SignIn';
@@ -44,27 +35,31 @@ const WorkoutStack = createStackNavigator(
     },
     WorkoutPreview: {
       screen: WorkoutPreview,
-      navigationOptions: {
+      navigationOptions: ({ navigation }) => ({
         title: 'Workout Preview',
-      },
+        headerRight: <ProfileIcon navigation={navigation} />,
+      }),
     },
     CompanionScreen: {
       screen: CompanionScreen,
-      navigationOptions: {
-        title: 'Workout Companion',
-      },
+      navigationOptions: ({ navigation }) => ({
+        title: 'Workout',
+        headerRight: <ProfileIcon navigation={navigation} />,
+      }),
     },
     MuscleScreen: {
       screen: MuscleScreen,
-      navigationOptions: {
-        title: 'Choose a Muscle',
-      },
+      navigationOptions: ({ navigation }) => ({
+        title: 'Choose a muscle',
+        headerRight: <ProfileIcon navigation={navigation} />,
+      }),
     },
     ExerciseList: {
       screen: ExerciseList,
-      navigationOptions: {
-        title: 'Choose an Exercise',
-      },
+      navigationOptions: ({ navigation }) => ({
+        title: 'Exercises',
+        headerRight: <ProfileIcon navigation={navigation} />,
+      }),
     },
     UserProfile: {
       screen: UserProfile,
@@ -74,16 +69,6 @@ const WorkoutStack = createStackNavigator(
     initialRouteName: 'Home',
   },
 );
-
-// const AppTabs = createBottomTabNavigator({
-//   Home: {
-//     screen: HomePage,
-//     title: 'Home',
-//   },
-//   Profile: {
-//     screen: 'UserProfile',
-//   },
-// });
 
 const AuthStack = createStackNavigator({
   HomePage: {
