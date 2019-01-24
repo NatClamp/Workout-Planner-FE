@@ -10,6 +10,7 @@
     "expo": "^32.0.0",
     "expo-graphics": "^1.0.2",
     "expo-three": "^3.0.0-alpha.6",
+    "firebase": "^5.8.0",
     "native-base": "^2.10.0",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",

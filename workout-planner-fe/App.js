@@ -1,19 +1,76 @@
 import React from 'react';
-import { createStackNavigator, createAppContainer } from 'react-navigation';
-import RootNavigator from './navigation/Navigators';
-import Login from './views/Login';
+import {
+  createSwitchNavigator,
+  createStackNavigator,
+  createAppContainer,
+  createBottomTabNavigator,
+} from 'react-navigation';
+// import RootNavigator from './navigation/Navigators';
+import WorkoutPreview from './views/WorkoutPreview';
+import CompanionScreen from './views/CompanionScreen';
+import UserProfile from './views/UserProfile';
+import Loading from './views/Loading';
+import HomePage from './views/HomePage';
+import SignIn from './views/SignIn';
 
-const AppContainer = createAppContainer(RootNavigator);
+const WorkoutStack = createStackNavigator(
+  {
+    Home: {
+      screen: HomePage,
+      navigationOptions: {
+        title: 'Home',
+      },
+    },
+    WorkoutPreview: {
+      screen: WorkoutPreview,
+      navigationOptions: {
+        title: 'Workout Preview',
+      },
+    },
+    CompanionScreen: {
+      screen: CompanionScreen,
+      navigationOptions: {
+        title: 'Workout Companion',
+      },
+    },
+  },
+  {
+    initialRouteName: 'Home',
+  },
+);
 
-export default class App extends React.Component {
-	state = {
-		isLoggedIn: false
-	};
-	render() {
-		return this.state.isLoggedIn ? (
-			<AppContainer onUserLogout={() => this.setState({ isLoggedIn: false })} />
-		) : (
-			<Login onUserLogin={() => this.setState({ isLoggedIn: true })} />
-		);
-	}
-}
+// const AppTabs = createBottomTabNavigator({
+//   Home: {
+//     screen: HomePage,
+//     title: 'Home',
+//   },
+//   Profile: {
+//     screen: 'UserProfile',
+//   },
+// });
+
+const AuthStack = createStackNavigator({
+  HomePage: {
+    screen: WorkoutStack,
+  },
+  SignIn: {
+    screen: SignIn,
+    navigationOptions: {
+      title: 'Sign In',
+    },
+  },
+});
+
+const AppContainer = createAppContainer(
+  createSwitchNavigator(
+    {
+      AuthentificationCheck: Loading,
+      Auth: AuthStack,
+    },
+    {
+      initialRouteName: 'AuthentificationCheck',
+    },
+  ),
+);
+
+export default AppContainer;
