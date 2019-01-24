@@ -1,12 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, ScrollView } from 'react-native';
 import Model from '../components/Model';
-import ExerciseList from '../components/ExerciseList';
 
 export default class HomeScreen extends React.Component {
-	state = {
-		muscles: []
-	};
 	render() {
 		return (
 			<View style={{ flex: 1 }}>
@@ -14,8 +10,13 @@ export default class HomeScreen extends React.Component {
 					<Model />
 				</View>
 				<ScrollView style={{ flex: 1 }}>
-					<Button title='Add Exercise' onPress={() => this.props.navigation.navigate('MuscleList')} />
-					<ExerciseList muscles={this.state.muscles} />
+					<Button
+						title='Add Exercise'
+						onPress={() => {
+							this.props.navigation.navigate('MuscleScreen');
+						}}
+					/>
+					<Button title='View All Exercises' onPress={() => this.props.navigation.navigate('ExerciseList')} />
 					<Button
 						style={{ flex: 1, marginTop: 10, backgroundColor: 'blue' }}
 						title='Workout Preview'
@@ -25,19 +26,19 @@ export default class HomeScreen extends React.Component {
 			</View>
 		);
 	}
-	componentDidMount() {
-		return fetch('http://192.168.230.34:9000/api/muscles')
-			.then((response) => response.json())
-			.then((responseJson) => {
-				this.setState(
-					{
-						muscles: responseJson.muscles
-					},
-					function() {}
-				);
-			})
-			.catch((error) => {
-				console.error(error);
-			});
-	}
+	// componentDidMount() {
+	// 	return fetch('http://192.168.230.34:9000/api/muscles')
+	// 		.then((response) => response.json())
+	// 		.then((responseJson) => {
+	// 			this.setState(
+	// 				{
+	// 					muscles: responseJson.muscles
+	// 				},
+	// 				function() {}
+	// 			);
+	// 		})
+	// 		.catch((error) => {
+	// 			console.error(error);
+	// 		});
+	// }
 }

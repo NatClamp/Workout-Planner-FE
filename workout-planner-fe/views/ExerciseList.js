@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import ExerciseModal from './ExerciseModal';
-import MuscleList from './MuscleList';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { Accordion } from 'native-base';
 
 class ExerciseList extends Component {
 	state = {
@@ -11,12 +10,7 @@ class ExerciseList extends Component {
 		return (
 			<Fragment>
 				<View style={{ flex: 1 }}>
-					<MuscleList
-						exercises={this.state.exercises}
-						muscles={this.props.muscles}
-						style={{ flex: 1, backgroundColor: 'pink' }}
-					/>
-					<ExerciseModal exercises={this.state.exercises} />
+					<Accordion data={this.state.exercises} />
 				</View>
 			</Fragment>
 		);
