@@ -1,18 +1,16 @@
 import React, { Component, Fragment } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import ExerciseModal from './ExerciseModal';
-import MuscleList from './MuscleList';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { Accordion } from 'native-base';
 
 class ExerciseList extends Component {
   state = {
-    dataSource: [],
+    exercises: [],
   };
   render() {
     return (
       <Fragment>
         <View style={{ flex: 1 }}>
-          <MuscleList style={{ flex: 1, backgroundColor: 'pink' }} />
-          <ExerciseModal dataSource={this.state.dataSource} />
+          <Accordion data={this.state.exercises} />
         </View>
       </Fragment>
     );
@@ -23,7 +21,7 @@ class ExerciseList extends Component {
       .then(responseJson => {
         this.setState(
           {
-            dataSource: responseJson.exercises,
+            exercises: responseJson.exercises,
           },
           function() {},
         );

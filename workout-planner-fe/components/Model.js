@@ -5,14 +5,38 @@ import {Text, Button} from 'react-native'
 import 'three';
 import 'prop-types';
 
+// TAKES PROPS IN THIS FORMAT
+// gender="female" || "male"
+// muscleVals={{abs: 0, biceps: 0, calves: 0, chest: 0, forearms: 1, glutes: 0, hamstrings: 7, lowerback: 0, midback: 0, quads: 3, shoulders: 0, sideabs: 10, triceps: 4, upperback: 0}}
+
 
 export default class Model extends React.Component {
+
   componentWillMount() {
-    THREE.suppressExpoWarnings();
-  }
+  THREE.suppressExpoWarnings();
+  if (!this.props.gender){
+    const randGend = Math.random() > 0.5 ? 'male' : 'female'
+    this.setState({gender: randGend})
+  } else this.setState({gender: this.props.gender}) 
+
+	this.colorValues = {
+		0 : new THREE.Color('#66D60A'),
+		1 : new THREE.Color('#66D60A'),
+		2 : new THREE.Color('#EDE902'),
+		3 : new THREE.Color('#EDE902'),
+		4 : new THREE.Color('#F48516'),
+		5 : new THREE.Color('#F48516'),
+		6 : new THREE.Color('#F48516'),
+		7 : new THREE.Color('#D12121'),
+		8 : new THREE.Color('#D12121'),
+		9 : new THREE.Color('#532424'),
+		10 : new THREE.Color('#532424')
+  }}
+
 
   render() {
     return (
+		
       <><GraphicsView
         onContextCreate={this.onContextCreate}
         onRender={this.onRender}
@@ -27,23 +51,37 @@ export default class Model extends React.Component {
     height,
     scale: pixelRatio,
   }) => {
-    // Change height or width below, eg ({ gl, pixelRatio, width:175, height: 300 })
     this.renderer = new ExpoTHREE.Renderer({ gl, pixelRatio, width, height });
     this.renderer.setClearColor(0xffffff)
 
     this.scene = new THREE.Scene();
 
-    this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(75, width / height, 10, 1000);
 
-    this.camera.lookAt(new THREE.Vector3(0, 95, 0))
+    this.camera.lookAt(new THREE.Vector3(0, 100, 0))
+    this.baseColor = this.colorValues[0]
 
-
-
-    this.baseColor = new THREE.Color('#98FB98')
     this.cameraRotation()
-    this.loadModel()
+	  this.loadModel(this.state.gender)
     this.establishLighting()
+    setTimeout(	this.recolourMuscles, 5000)
   };
+
+  recolourMuscles = () => {
+	if (this.props.muscleVals){
+	muscleObj = this.props.muscleVals}
+	else muscleObj = {abs: 1, biceps: 2, calves: 3, chest: 4, forearms: 5, glutes: 6, hamstrings: 7, lowerback: 8, midback: 9, quads: 10, shoulders: 1, sideabs: 2, triceps: 3, upperback: 4}
+	const muscles = Object.keys(muscleObj)
+	muscles.forEach((part)=>{
+		if (this[part]){
+			this[part].traverse((obj)=>{
+				if (obj instanceof THREE.Mesh){
+					obj.material.color = this.colorValues[muscleObj[part]]
+				}
+			})
+		}
+	})
+  }
   handleRotate = () => {
     this.angleValue += 180
     this.desiredAngle = this.angleValue * Math.PI/180
@@ -57,9 +95,8 @@ export default class Model extends React.Component {
     this.orbitSpeed = 2*Math.PI/180
     this.desiredAngle = this.angleValue * Math.PI/180
   }
-
   establishLighting = () => {
-    const backLight = new THREE.DirectionalLight(0xffffff, 0.2)
+    const backLight = new THREE.DirectionalLight(0xffffff, 0.5)
     backLight.position.set(100,0,-100).normalize()
     this.scene.add(backLight)
     const rightLight = new THREE.DirectionalLight(0xffffff, 0.7)
@@ -79,125 +116,257 @@ export default class Model extends React.Component {
       this.cameraAngle += this.orbitSpeed;
     this.camera.position.x = Math.cos(this.cameraAngle) * this.orbitRange;
     this.camera.position.z = Math.sin(this.cameraAngle) * this.orbitRange;
-    this.camera.lookAt(new THREE.Vector3(0, 90, 0))}
-    // requestAnimationFrame( animate );
+    this.camera.lookAt(new THREE.Vector3(0, 96, 0))}
     this.renderer.render(this.scene, this.camera);
   };
-  loadModel = () => {
-    this.loadBase();
-    this.loadGlutes()
-    this.loadAbs()
-    this.loadBiceps()
-    this.loadCalves()
-    this.loadChest()
-    this.loadForearms()
-    this.loadHamstrings()
-    this.loadLowerback()
-    this.loadMidback()
-    this.loadQuads()
-    this.loadShoulders()
-    this.loadSideAbs()
-    this.loadTriceps()
-    this.loadUpperback()
+  loadModel = (gender) => {
+    this.loadGlutes(gender)
+    this.loadAbs(gender)
+    this.loadBiceps(gender)
+    this.loadCalves(gender)
+    this.loadChest(gender)
+    this.loadForearms(gender)
+    this.loadHamstrings(gender)
+    this.loadLowerback(gender)
+    this.loadMidback(gender)
+    this.loadQuads(gender)
+    this.loadShoulders(gender)
+    this.loadSideAbs(gender)
+    this.loadTriceps(gender)
+	this.loadUpperback(gender)
+	this.loadBase(gender);
   };
-  loadBase = async () => {
-    const base = await loadAsync(require('./models/fe_base.obj'))
-    this.scene.add(base);
-    this.base = base;
+  loadBase = async (gender) => {
+    if (gender === 'female'){
+      const base = await loadAsync(require(`./models/fe_base.obj`))
+      this.scene.add(base);
+      this.base = base;}
+    else {
+      const base = await loadAsync(require(`./models/male_base.obj`))
+      this.scene.add(base);
+	    this.base = base;
+    }
   };
-  loadAbs = async () => {
-    const abs = await loadAsync(require('./models/fe_abs.obj'))
-    this.scene.add(abs);
-    this.abs = abs;
-    this.abs.children[0].material.color = this.baseColor
+  loadAbs = async (gender) => {
+    if (gender === 'female'){
+      const abs = await loadAsync(require(`./models/fe_abs.obj`))
+      this.scene.add(abs);
+      this.abs = abs;
+      this.abs.children[0].material.color = this.baseColor
+    }
+    else {
+      const abs = await loadAsync(require(`./models/male_abs.obj`))
+      this.scene.add(abs);
+      this.abs = abs;
+      this.abs.children[0].material.color = this.baseColor
+    }
   };
-  loadGlutes = async () => {
-    const glutes = await loadAsync(require('./models/fe_glutes.obj'))
-    this.scene.add(glutes);
-    this.glutes = glutes;
-    this.glutes.children[0].material.color = this.baseColor
+  loadGlutes = async (gender) => {
+    if (gender === 'female'){
+      const glutes = await loadAsync(require(`./models/fe_glutes.obj`))
+      this.scene.add(glutes);
+      this.glutes = glutes;
+      this.glutes.children[0].material.color = this.baseColor
+    }
+    else {
+      const glutes = await loadAsync(require(`./models/male_glutes.obj`))
+      this.scene.add(glutes);
+      this.glutes = glutes;
+      this.glutes.children[0].material.color = this.baseColor
+    }
   };
-  loadBiceps = async () => {
-    const biceps = await loadAsync(require('./models/fe_biceps.obj'))
-    this.scene.add(biceps);
-    this.biceps = biceps;
-    this.biceps.children[0].material.color = this.baseColor
-    this.biceps.children[1].material.color = this.baseColor
+  loadBiceps = async (gender) => {
+    if (gender === 'female'){
+      const biceps = await loadAsync(require(`./models/fe_biceps.obj`))
+      this.scene.add(biceps);
+      this.biceps = biceps;
+      this.biceps.children[0].material.color = this.baseColor
+      this.biceps.children[1].material.color = this.baseColor
 
+    }
+    else {
+      const biceps = await loadAsync(require(`./models/male_biceps.obj`))
+      this.scene.add(biceps);
+      this.biceps = biceps;
+      this.biceps.children[0].material.color = this.baseColor
+      this.biceps.children[1].material.color = this.baseColor
+    }
   };
-  loadCalves = async () => {
-    const calves = await loadAsync(require('./models/fe_calves.obj'))
-    this.scene.add(calves);
-    this.calves = calves;
-    this.calves.children[0].material.color = this.baseColor
-    this.calves.children[1].material.color = this.baseColor
-  };
-  loadChest = async () => {
-    const chest = await loadAsync(require('./models/fe_chest.obj'))
-    this.scene.add(chest);
-    this.chest = chest;
-    this.chest.children[0].material.color = this.baseColor
-  };
-  loadForearms = async () => {
-    const forearms = await loadAsync(require('./models/fe_forearms.obj'))
-    this.scene.add(forearms);
-    this.forearms = forearms;
-    this.forearms.children[0].material.color = this.baseColor
-    this.forearms.children[1].material.color = this.baseColor
-  };
-  loadHamstrings = async () => {
-    const hamstrings = await loadAsync(require('./models/fe_hamstrings.obj'))
-    this.scene.add(hamstrings);
-    this.hamstrings = hamstrings;
-    this.hamstrings.children[0].material.color = this.baseColor
-    this.hamstrings.children[1].material.color = this.baseColor
-  };
-  loadLowerback = async () => {
-    const lowerback = await loadAsync(require('./models/fe_lowerback.obj'))
-    this.scene.add(lowerback);
-    this.lowerback = lowerback;
-    this.lowerback.children[0].material.color = this.baseColor
-  };
-  loadMidback = async () => {
-    const midback = await loadAsync(require('./models/fe_midback.obj'))
-    this.scene.add(midback);
-    this.midback = midback;
-    this.midback.children[0].material.color = this.baseColor
-  };
-  loadQuads = async () => {
-    const quads = await loadAsync(require('./models/fe_quads.obj'))
-    this.scene.add(quads);
-    this.quads = quads;
-    this.quads.children[0].material.color = this.baseColor
-    this.quads.children[1].material.color = this.baseColor
+  loadCalves = async (gender) => {
+    if (gender === 'female'){
+      const calves = await loadAsync(require(`./models/fe_calves.obj`))
+      this.scene.add(calves);
+      this.calves = calves;
+      this.calves.children[0].material.color = this.baseColor
+      this.calves.children[1].material.color = this.baseColor
 
+    }
+    else {
+      const calves = await loadAsync(require(`./models/male_calves.obj`))
+      this.scene.add(calves);
+      this.calves = calves;
+      this.calves.children[0].material.color = this.baseColor
+      this.calves.children[1].material.color = this.baseColor
+    }
   };
-  loadShoulders = async () => {
-    const shoulders = await loadAsync(require('./models/fe_shoulders.obj'))
-    this.scene.add(shoulders);
-    this.shoulders = shoulders;
-    this.shoulders.children[0].material.color = this.baseColor
-    this.shoulders.children[1].material.color = this.baseColor
-  };
-  loadSideAbs = async () => {
-    const sideabs = await loadAsync(require('./models/fe_sideabs.obj'))
-    this.scene.add(sideabs);
-    this.sideabs = sideabs;
-    this.sideabs.children[0].material.color = this.baseColor
-    this.sideabs.children[1].material.color = this.baseColor
+  loadChest = async (gender) => {
+    if (gender === 'female'){
+      const chest = await loadAsync(require(`./models/fe_chest.obj`))
+      this.scene.add(chest);
+      this.chest = chest;
+      this.chest.children[0].material.color = this.baseColor
 
+    }
+    else {
+      const chest = await loadAsync(require(`./models/male_chest.obj`))
+      this.scene.add(chest);
+      this.chest = chest;
+      this.chest.children[0].material.color = this.baseColor
+    }
   };
-  loadTriceps = async () => {
-    const triceps = await loadAsync(require('./models/fe_triceps.obj'))
-    this.scene.add(triceps);
-    this.triceps = triceps;
-    this.triceps.children[0].material.color = this.baseColor
-    this.triceps.children[1].material.color = this.baseColor
+  loadForearms = async (gender) => {
+    if (gender === 'female'){
+      const forearms = await loadAsync(require(`./models/fe_forearms.obj`))
+      this.scene.add(forearms);
+      this.forearms = forearms;
+      this.forearms.children[0].material.color = this.baseColor
+      this.forearms.children[1].material.color = this.baseColor
+    }
+    else {
+      const forearms = await loadAsync(require(`./models/male_forearms.obj`))
+      this.scene.add(forearms);
+      this.forearms = forearms;
+      this.forearms.children[0].material.color = this.baseColor
+      this.forearms.children[1].material.color = this.baseColor
+    }
   };
-  loadUpperback = async () => {
-    const upperback = await loadAsync(require('./models/fe_upperback.obj'))
-    this.scene.add(upperback);
-    this.upperback = upperback;
-    this.upperback.children[0].material.color = this.baseColor
+
+  loadHamstrings = async (gender) => {
+    if (gender === 'female'){
+      const hamstrings = await loadAsync(require(`./models/fe_hamstrings.obj`))
+      this.scene.add(hamstrings);
+      this.hamstrings = hamstrings;
+      this.hamstrings.children[0].material.color = this.baseColor
+      this.hamstrings.children[1].material.color = this.baseColor
+    }
+    else {
+      const hamstrings = await loadAsync(require(`./models/male_hamstrings.obj`))
+      this.scene.add(hamstrings);
+      this.hamstrings = hamstrings;
+      this.hamstrings.children[0].material.color = this.baseColor
+      this.hamstrings.children[1].material.color = this.baseColor
+    }
   };
+  loadLowerback = async (gender) => {
+    if (gender === 'female'){
+      const lowerback = await loadAsync(require(`./models/fe_lowerback.obj`))
+      this.scene.add(lowerback);
+      this.lowerback = lowerback;
+      this.lowerback.children[0].material.color = this.baseColor
+    }
+    else {
+      const lowerback = await loadAsync(require(`./models/male_lowerback.obj`))
+      this.scene.add(lowerback);
+      this.lowerback = lowerback;
+      this.lowerback.children[0].material.color = this.baseColor
+    }
+  };
+  loadMidback = async (gender) => {
+    if (gender === 'female'){
+      const midback = await loadAsync(require(`./models/fe_midback.obj`))
+      this.scene.add(midback);
+      this.midback = midback;
+      this.midback.children[0].material.color = this.baseColor
+    }
+    else {
+      const midback = await loadAsync(require(`./models/male_midback.obj`))
+      this.scene.add(midback);
+      this.midback = midback;
+      this.midback.children[0].material.color = this.baseColor
+    }
+  };
+  loadQuads = async (gender) => {
+    if (gender === 'female'){
+      const quads = await loadAsync(require(`./models/fe_quads.obj`))
+      this.scene.add(quads);
+      this.quads = quads;
+      this.quads.children[0].material.color = this.baseColor
+      this.quads.children[1].material.color = this.baseColor
+    }
+    else {
+      const quads = await loadAsync(require(`./models/male_quads.obj`))
+      this.scene.add(quads);
+      this.quads = quads;
+      this.quads.children[0].material.color = this.baseColor
+      this.quads.children[1].material.color = this.baseColor
+
+    }
+  };
+  loadShoulders = async (gender) => {
+    if (gender === 'female'){
+      const shoulders = await loadAsync(require(`./models/fe_shoulders.obj`))
+      this.scene.add(shoulders);
+      this.shoulders = shoulders;
+      this.shoulders.children[0].material.color = this.baseColor
+      this.shoulders.children[1].material.color = this.baseColor
+
+    }
+    else {
+      const shoulders = await loadAsync(require(`./models/male_shoulders.obj`))
+      this.scene.add(shoulders);
+      this.shoulders = shoulders;
+      this.shoulders.children[0].material.color = this.baseColor
+      this.shoulders.children[1].material.color = this.baseColor
+    }
+  };
+  loadSideAbs = async (gender) => {
+    if (gender === 'female'){
+      const sideabs = await loadAsync(require(`./models/fe_sideabs.obj`))
+      this.scene.add(sideabs);
+      this.sideabs = sideabs;
+      this.sideabs.children[0].material.color = this.baseColor
+
+
+    }
+    else {
+      const sideabs = await loadAsync(require(`./models/male_sideabs.obj`))
+      this.scene.add(sideabs);
+      this.sideabs = sideabs;
+      this.sideabs.children[0].material.color = this.baseColor
+
+    }
+  };
+  loadTriceps = async (gender) => {
+    if (gender === 'female'){
+      const triceps = await loadAsync(require(`./models/fe_triceps.obj`))
+      this.scene.add(triceps);
+      this.triceps = triceps;
+      this.triceps.children[0].material.color = this.baseColor
+      this.triceps.children[1].material.color = this.baseColor
+
+    }
+    else {
+      const triceps = await loadAsync(require(`./models/male_triceps.obj`))
+      this.scene.add(triceps);
+      this.triceps = triceps;
+      this.triceps.children[0].material.color = this.baseColor
+      this.triceps.children[1].material.color = this.baseColor
+
+    }
+  };
+  loadUpperback = async (gender) => {
+    if (gender === 'female'){
+      const upperback = await loadAsync(require(`./models/fe_upperback.obj`))
+      this.scene.add(upperback);
+      this.upperback = upperback;
+      this.upperback.children[0].material.color = this.baseColor
+
+    }
+    else {
+      const upperback = await loadAsync(require(`./models/male_upperback.obj`))
+      this.scene.add(upperback);
+      this.upperback = upperback;
+      this.upperback.children[0].material.color = this.baseColor
+    }
+  }
 }

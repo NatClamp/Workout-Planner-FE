@@ -3,27 +3,49 @@ import {
   StyleSheet, Text, View, Button, ScrollView,
 } from 'react-native';
 import Model from '../components/Model';
-import ExerciseList from '../components/ExerciseList';
 
-export default class HomePage extends React.Component {
+export default class HomeScreen extends React.Component {
   render() {
     const { getParam } = this.props.navigation;
     const currentUser = getParam('currentUser');
-
     return (
       <View style={{ flex: 1 }}>
         <View style={{ height: 350, marginTop: 10 }}>
           <Model />
         </View>
-        <View style={{ flex: 1 }}>
-          <ExerciseList />
+        <ScrollView style={{ flex: 1 }}>
+          <Button
+            title="Add Exercise"
+            onPress={() => {
+              this.props.navigation.navigate('MuscleScreen');
+            }}
+          />
+          <Button
+            title="View All Exercises"
+            onPress={() => this.props.navigation.navigate('ExerciseList')}
+          />
           <Button
             style={{ flex: 1, marginTop: 10, backgroundColor: 'blue' }}
-            title="go"
+            title="Workout Preview"
             onPress={() => this.props.navigation.navigate('WorkoutPreview')}
           />
-        </View>
+        </ScrollView>
       </View>
     );
   }
+  // componentDidMount() {
+  // 	return fetch('http://192.168.230.34:9000/api/muscles')
+  // 		.then((response) => response.json())
+  // 		.then((responseJson) => {
+  // 			this.setState(
+  // 				{
+  // 					muscles: responseJson.muscles
+  // 				},
+  // 				function() {}
+  // 			);
+  // 		})
+  // 		.catch((error) => {
+  // 			console.error(error);
+  // 		});
+  // }
 }

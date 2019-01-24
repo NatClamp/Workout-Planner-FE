@@ -6,9 +6,9 @@ import {
   createBottomTabNavigator,
 } from 'react-navigation';
 // import RootNavigator from './navigation/Navigators';
-import WorkoutPreview from '../views/WorkoutPreview';
-import CompanionScreen from '../views/CompanionScreen';
-import UserProfile from '../views/UserProfile';
+import WorkoutPreview from './views/WorkoutPreview';
+import CompanionScreen from './views/CompanionScreen';
+import UserProfile from './views/UserProfile';
 import Loading from './views/Loading';
 import HomePage from './views/HomePage';
 import SignIn from './views/SignIn';
@@ -54,7 +54,7 @@ const AuthStack = createStackNavigator({
     screen: WorkoutStack,
   },
   SignIn: {
-    screen: 'SignIn',
+    screen: SignIn,
     navigationOptions: {
       title: 'Sign In',
     },
