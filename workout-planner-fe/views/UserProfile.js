@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button } from 'react-native';
 import {CalendarList} from 'react-native-calendars'
 import moment from 'moment'
 
-export default class HomeScreen extends React.Component {
+export default class UserProfile extends React.Component {
 	constructor(props){
 		super(props)
 		this.state = {
