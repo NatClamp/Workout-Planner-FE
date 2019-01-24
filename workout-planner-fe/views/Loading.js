@@ -7,6 +7,7 @@ export default class Loading extends React.Component {
     try {
       const userToken = await AsyncStorage.getItem('userToken');
       if (userToken !== null) {
+        AsyncStorage.removeItem('userToken');
         this.props.navigation.navigate('HomePage');
       } else {
         this.props.navigation.navigate('SignIn');

@@ -5,10 +5,10 @@ import { fbApi } from '../utils/facebookApi';
 export default class SignIn extends React.Component {
   FBSignIn = async () => {
     try {
-      const token = await fbApi.logIn();
+      const { token } = await fbApi.logIn();
       await AsyncStorage.setItem('userToken', JSON.stringify(token));
-      const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`)
-        .then(response => JSON.stringify(response))
+      await fetch(`https://graph.facebook.com/me?access_token=${token}`)
+        .then(response => response.json())
         .then(response =>
           this.props.navigation.navigate('HomePage', { currentUser: response.name }),
         );
@@ -20,7 +20,6 @@ export default class SignIn extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>BLAH BLAH BLAH</Text>
         <Button title="Sign in with Facebook" onPress={this.FBSignIn} />
       </View>
     );

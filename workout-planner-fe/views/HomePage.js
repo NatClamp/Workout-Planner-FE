@@ -7,9 +7,9 @@ import ExerciseList from '../components/ExerciseList';
 
 export default class HomePage extends React.Component {
   render() {
-    const { navigation } = this.props;
-    const currentUser = navigation.getParam('currentUser');
-    console.log(currentUser);
+    const { getParam } = this.props.navigation;
+    const currentUser = getParam('currentUser');
+
     return (
       <View style={{ flex: 1 }}>
         <View style={{ height: 350, marginTop: 10 }}>
