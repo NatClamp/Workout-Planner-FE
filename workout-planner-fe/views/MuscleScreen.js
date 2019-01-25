@@ -19,6 +19,8 @@ const swipeoutBtns = [
   },
 ];
 
+const URL = 'https://nc-project-be.herokuapp.com/api/';
+
 export default class MuscleScreen extends Component {
   state = {
     muscles: [],
@@ -59,14 +61,6 @@ export default class MuscleScreen extends Component {
                   <Text>Select Exercise</Text>
                 </Body>
               </Header>
-
-              {/* <View>
-                <Swipeout right={swipeoutBtns}>
-                  <Fragment>
-                    <Accordion data={this.state.muscleExercises} />
-                  </Fragment>
-                </Swipeout>
-              </View> */}
 
               <Container>
                 <Content>
@@ -119,7 +113,7 @@ export default class MuscleScreen extends Component {
     );
   }
   componentDidMount() {
-    return fetch('http://192.168.230.28:9000/api/muscles')
+    return fetch(`${URL}/muscles`)
       .then(response => response.json())
       .then(responseJson => {
         this.setState(
@@ -134,7 +128,7 @@ export default class MuscleScreen extends Component {
       });
   }
   getExerciseByMuscle = muscle_name => {
-    return fetch(`http://192.168.230.28:9000/api/exercises/muscle/${muscle_name}`)
+    return fetch(`${URL}/exercises/muscle/${muscle_name}`)
       .then(response => response.json())
       .then(responseJson => {
         this.setState(

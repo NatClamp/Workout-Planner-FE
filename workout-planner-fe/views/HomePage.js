@@ -3,6 +3,8 @@ import { StyleSheet, View, Button, ScrollView, FlatList } from 'react-native';
 import Model from '../components/Model';
 import { Accordion, Container, Content, Card, CardItem, Text } from 'native-base';
 
+const URL = 'https://nc-project-be.herokuapp.com/api/';
+
 export default class HomeScreen extends React.Component {
   state = {
     workout: [
@@ -48,21 +50,9 @@ export default class HomeScreen extends React.Component {
         </View>
 
         <View style={{ flex: 1 }}>
-          {/* <Container>
-            <Content>
-              {console.log(this.state.workout)}
-              <Card
-                dataArray={this.state.workout}
-                renderRow={exercise => (
-                  <CardItem>
-                    <Text>{exercise.title}</Text>
-                  </CardItem>
-                )}
-              />
-            </Content>
-          </Container> */}
           <Container>
             <Content>
+              {console.log(this.state.workout)}
               {this.state.workout.map((item, index) => {
                 return (
                   <Card key={index}>
@@ -94,37 +84,16 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
-  // componentDidMount() {
-  // 	return fetch('http://192.168.230.34:9000/api/muscles')
-  // 		.then((response) => response.json())
-  // 		.then((responseJson) => {
-  // 			this.setState(
-  // 				{
-  // 					muscles: responseJson.muscles
-  // 				},
-  // 				function() {}
-  // 			);
-  // 		})
-  // 		.catch((error) => {
-  // 			console.error(error);
-  // 		});
-  // }
 
   addExerciseToWorkout = exerciseName => {
     const formattedExercise =
       exerciseName.split(' ').length > 1 ? exerciseName.split(' ').join('%20') : exerciseName;
-    return fetch(`http://192.168.230.28:9000/api/exercises/${formattedExercise}`)
+    return fetch(`${URL}/exercises/${formattedExercise}`)
       .then(response => response.json())
       .then(respJSON => {
         const workout = [...this.state.workout];
-        workout.push(respJSON);
+        workout.push(respJSON.exercise);
         this.setState({ workout });
       });
   };
-
-  // componentDidUpdate(PrevProps, PrevState) {
-  //   if (PrevState.workout !== this.state.workout) {
-
-  //   }
-  // }
 }
