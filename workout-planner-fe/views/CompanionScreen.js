@@ -2,13 +2,24 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, ScrollView, TouchableOpacity } from 'react-native';
 import Model from '../components/Model';
 import { Container, Header, Content, Accordion } from 'native-base';
-const dataArray = [
-	{ title: 'Dead Lift', content: 'Do it' },
-	{ title: 'Crunches', content: 'DO IT' },
-	{ title: 'Squats', content: 'DO IT!!!!!!' }
-];
+import { ListItem, CheckBox } from 'react-native-elements';
+import CompletionModal from './CompletionModal';
 
 export default class CompanionScreen extends React.Component {
+	state = {
+		exercises: [],
+		checked: []
+	};
+
+	checkItem = (exercise) => {
+		const { checked } = this.state;
+
+		if (!checked.includes(exercise)) {
+			this.setState({ checked: [ ...checked, exercise ] });
+		} else {
+			this.setState({ checked: checked.filter((a) => a !== exercise) });
+		}
+	};
 	render() {
 		return (
 			<View style={{ flex: 1 }}>
@@ -17,14 +28,45 @@ export default class CompanionScreen extends React.Component {
 				</View>
 				<Container>
 					<Content padder>
-						<Accordion dataArray={dataArray} expanded={0} />
+						<View>
+							{this.state.exercises.map((exercise, i) => (
+								<ListItem
+									key={i}
+									title={exercise.title}
+									hideChevron
+									subtitle={`Major: ${exercise.major_muscle}`}
+									leftIcon={
+										<CheckBox
+											onPress={() => this.checkItem(exercise)}
+											checked={this.state.checked.includes(exercise)}
+										/>
+									}
+								/>
+							))}
+						</View>
 					</Content>
 				</Container>
-				<TouchableOpacity style={styles.completeWorkout} title='Complete Workout'>
+				<Button title='Complete Workout' onPress={() => this.props.navigation.navigate('CompletionModal')} />
+				{/* <TouchableOpacity style={styles.completeWorkout} title='Complete Workout'>
 					<Text>Complete Workout</Text>
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 			</View>
 		);
+	}
+	componentDidMount() {
+		return fetch('http://192.168.230.34:9000/api/exercises')
+			.then((response) => response.json())
+			.then((responseJson) => {
+				this.setState(
+					{
+						exercises: responseJson.exercises
+					},
+					function() {}
+				);
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 	}
 }
 const styles = StyleSheet.create({
