@@ -32,7 +32,7 @@ export default class UserProfile extends React.Component {
 		}
 	}
 	render() {
-		const {user_name, saved_workouts, completedWorkouts, calendarPoints, currentEvent, savedWorkoutsView, tappedWorkout} = this.state
+		const {user_name, saved_workouts, completedWorkouts, calendarPoints, currentEvent, savedWorkoutsView, tappedWorkout, isFemale} = this.state
 		
 	
 		return (
@@ -69,11 +69,15 @@ export default class UserProfile extends React.Component {
 				{savedWorkoutsView && <FlatList style={{minHeight: 200}} data={saved_workouts.map((item, i)=>{return {workout: item, key: item+i}})} renderItem={({item})=><Text style={tappedWorkout === item.key ?{marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid',backgroundColor: 'green', borderRadius: 3,}:{marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,}} onPress={()=>{this.tapWorkout(item.key)}} key={item.key}>{item.workout}</Text>}/>}
 				<Text style={{fontSize: 16, marginTop: 25, marginBottom: 10, marginLeft: 5, fontWeight: 'bold'}}>Preferences</Text>
 				<Text>Model Gender</Text>
-				<View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-					<Text>Male</Text>
-					<Switch accessibilityLabel='Change model gender' style={{margin: 5}} onValueChange={this.toggleGender} thumbColor={'#FFFFFF'} value={this.state.isFemale} disabled={!this.state.genderSwitchResolved} trackColor={{false: '#BBBBBB', true: '#BBBBBB'}}/>
-					<Text>Female</Text></View>
-					<Text>Change Username</Text>
+				<View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+				<TouchableOpacity style={isFemale ?{width: 100, padding: 10, backgrundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}:{width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}} onPress={()=>{this.toggleGender(false)}}><Text style={{textAlign: 'center'}}>Male</Text></TouchableOpacity>
+				<TouchableOpacity style={!isFemale ?{width: 100, padding: 10, backgrundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}:{width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}} onPress={()=>{this.toggleGender(true)}}><Text style={{textAlign: 'center'}}>Female</Text></TouchableOpacity></View>
+
+				{/* <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}> */}
+					{/* <Text>Male</Text>
+					<Switch accessibilityLabel='Change model gender' style={{margin: 5}} onValueChange={this.toggleGender} thumbColor={'#CCCCCC'} value={this.state.isFemale} disabled={!this.state.genderSwitchResolved} trackColor={{false: '#BBBBBB', true: '#BBBBBB'}}/>
+					<Text>Female</Text></View> */}
+					<Text>Change Username</Text><Button title='Submit'/>
 					<TextInput accessibilityLabel='Change Username' id='' style={{backgroundColor: '#DDDDDD', borderRadius: 5, width: 200, padding: 5}}/>
 				
 				</ScrollView>
@@ -93,13 +97,9 @@ export default class UserProfile extends React.Component {
 		this.setState({tappedWorkout: workout})
 	}
 
-	toggleGender = ()=> { 
-		this.setState({isFemale: !this.state.isFemale, /*genderSwitchResolved: false*/}, ()=>{
-			console.log('Placeholder patch request, setting gender to:', this.state.isFemale ? 'female': 'male')
-			// .then(()=>{this.setState({genderSwitchResolved: true})}) UNCOMMENT ALL ONCE GET REQUEST IS HERE
-			// .catch(()=>{this.setState({genderSwitchResolved: true, isFemale: !this.state.isFemale})})
-		}
-		)
+	toggleGender = (bool)=> { 
+		this.setState({isFemale: bool, /*genderSwitchResolved: false*/})
+		
 }
 	getUserCompletedWorkouts = () => {
 		// get request for completed workouts
