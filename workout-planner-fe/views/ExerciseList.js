@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { Accordion } from 'native-base';
+import { Accordion, Container, Item, Icon, Input, Button } from 'native-base';
 
 class ExerciseList extends Component {
 	state = {
@@ -10,6 +10,35 @@ class ExerciseList extends Component {
 		return (
 			<Fragment>
 				<View style={{ flex: 1 }}>
+					<Container
+						style={{
+							flex: 1,
+							flexDirection: 'row',
+							justifyContent: 'center'
+						}}
+						searchBar
+						rounded
+					>
+						<Item
+							style={{
+								flex: 1,
+								flexDirection: 'row',
+								justifyContent: 'center'
+							}}
+						>
+							<Icon name='ios-search' />
+							<Input placeholder='Search...' />
+						</Item>
+						<Button
+							style={{
+								paddingRight: 10,
+								paddingTop: 10
+							}}
+							transparent
+						>
+							<Text>Search</Text>
+						</Button>
+					</Container>
 					<Accordion data={this.state.exercises} />
 				</View>
 			</Fragment>
