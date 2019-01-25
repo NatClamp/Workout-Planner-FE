@@ -1,16 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Header, Icon, Accordion, Left, Body } from 'native-base';
-import {
-  Container,
-  Header,
-  Icon,
-  Accordion,
-  Left,
-  Body,
-  Content,
-  Card,
-  CardItem,
-} from 'native-base';
+import { Container, Header, Icon, Left, Body, Content, Card, CardItem } from 'native-base';
 import { StyleSheet, Text, View, Modal, TouchableHighlight, Alert, ScrollView } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 
@@ -132,12 +121,17 @@ export default class MuscleScreen extends Component {
     return fetch(`${URL}/exercises/muscle/${muscle_name}`)
       .then(response => response.json())
       .then(responseJson => {
-        this.setState(
-          {
-            muscleExercises: responseJson.exercises,
-          },
-          function() {},
-        );
+        if (responseJson.msg) {
+          Alert.alert('Sorry', "There currently aren't any exercises for this muscle group");
+          this.setModalVisible(!this.state.modalVisible);
+        } else {
+          this.setState(
+            {
+              muscleExercises: responseJson.exercises,
+            },
+            function() {},
+          );
+        }
       })
       .catch(error => {
         console.error(error);
