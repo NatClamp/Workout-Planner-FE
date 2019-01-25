@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Header, Icon, Accordion } from 'native-base';
+import { Container, Header, Icon, Accordion, Left, Body } from 'native-base';
 import {
   StyleSheet,
   Text,

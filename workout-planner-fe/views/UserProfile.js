@@ -73,11 +73,8 @@ export default class UserProfile extends React.Component {
 				<TouchableOpacity style={isFemale ?{width: 100, padding: 10, backgrundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}:{width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}} onPress={()=>{this.toggleGender(false)}}><Text style={{textAlign: 'center'}}>Male</Text></TouchableOpacity>
 				<TouchableOpacity style={!isFemale ?{width: 100, padding: 10, backgrundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}:{width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}} onPress={()=>{this.toggleGender(true)}}><Text style={{textAlign: 'center'}}>Female</Text></TouchableOpacity></View>
 
-				{/* <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}> */}
-					{/* <Text>Male</Text>
-					<Switch accessibilityLabel='Change model gender' style={{margin: 5}} onValueChange={this.toggleGender} thumbColor={'#CCCCCC'} value={this.state.isFemale} disabled={!this.state.genderSwitchResolved} trackColor={{false: '#BBBBBB', true: '#BBBBBB'}}/>
-					<Text>Female</Text></View> */}
-					<Text>Change Username</Text><Button title='Submit'/>
+			
+					<Text>Change Username</Text><Button onPress={()=>{}} title='Submit'/>
 					<TextInput accessibilityLabel='Change Username' id='' style={{backgroundColor: '#DDDDDD', borderRadius: 5, width: 200, padding: 5}}/>
 				
 				</ScrollView>
