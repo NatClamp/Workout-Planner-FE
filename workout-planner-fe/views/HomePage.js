@@ -35,15 +35,22 @@ export default class HomeScreen extends React.Component {
   render() {
     const { getParam } = this.props.navigation;
     const currentUser = getParam('currentUser');
-    console.log('here ====> ', this.state.workout);
     return (
       <View style={{ flex: 1 }}>
         <View style={{ height: 350, marginTop: 10 }}>
           <Model />
         </View>
-        <ScrollView style={{ flex: 1 }}>
-          <Container style={{ height: 150 }}>
+        <View>
+          <Button
+            title="View All Exercises"
+            onPress={() => this.props.navigation.navigate('ExerciseList')}
+          />
+        </View>
+
+        <View style={{ flex: 1 }}>
+          {/* <Container>
             <Content>
+              {console.log(this.state.workout)}
               <Card
                 dataArray={this.state.workout}
                 renderRow={exercise => (
@@ -53,23 +60,37 @@ export default class HomeScreen extends React.Component {
                 )}
               />
             </Content>
+          </Container> */}
+          <Container>
+            <Content>
+              {this.state.workout.map((item, index) => {
+                return (
+                  <Card key={index}>
+                    <CardItem header>
+                      <Text>{item.title}</Text>
+                    </CardItem>
+                  </Card>
+                );
+              })}
+            </Content>
           </Container>
           <Button
             title="Add Exercise"
             onPress={() => {
-              this.props.navigation.navigate('MuscleScreen');
+              this.props.navigation.navigate('MuscleScreen', {
+                addExerciseToWorkout: this.addExerciseToWorkout,
+              });
             }}
           />
-          <Button
-            title="View All Exercises"
-            onPress={() => this.props.navigation.navigate('ExerciseList')}
-          />
+        </View>
+
+        <View>
           <Button
             style={{ flex: 1, marginTop: 10, backgroundColor: 'blue' }}
             title="Workout Preview"
             onPress={() => this.props.navigation.navigate('WorkoutPreview')}
           />
-        </ScrollView>
+        </View>
       </View>
     );
   }
@@ -89,5 +110,21 @@ export default class HomeScreen extends React.Component {
   // 		});
   // }
 
-  addExerciseToWorkout = exercise => {};
+  addExerciseToWorkout = exerciseName => {
+    const formattedExercise =
+      exerciseName.split(' ').length > 1 ? exerciseName.split(' ').join('%20') : exerciseName;
+    return fetch(`http://192.168.230.28:9000/api/exercises/${formattedExercise}`)
+      .then(response => response.json())
+      .then(respJSON => {
+        const workout = [...this.state.workout];
+        workout.push(respJSON);
+        this.setState({ workout });
+      });
+  };
+
+  // componentDidUpdate(PrevProps, PrevState) {
+  //   if (PrevState.workout !== this.state.workout) {
+
+  //   }
+  // }
 }

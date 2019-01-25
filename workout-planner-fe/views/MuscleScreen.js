@@ -1,16 +1,16 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Header, Icon, Accordion } from 'native-base';
 import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  Modal,
-  TouchableHighlight,
-  Alert,
-  FlatList,
-  ScrollView,
-} from 'react-native';
+  Container,
+  Header,
+  Icon,
+  Accordion,
+  Left,
+  Body,
+  Content,
+  Card,
+  CardItem,
+} from 'native-base';
+import { StyleSheet, Text, View, Modal, TouchableHighlight, Alert, ScrollView } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 
 const swipeoutBtns = [
@@ -25,10 +25,14 @@ export default class MuscleScreen extends Component {
     modalVisible: false,
     muscleExercises: [],
   };
+
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
+
   render() {
+    const { getParam } = this.props.navigation;
+    const addExerciseToWorkout = getParam('addExerciseToWorkout');
     return (
       <Fragment>
         <View>
@@ -56,13 +60,37 @@ export default class MuscleScreen extends Component {
                 </Body>
               </Header>
 
-              <View>
+              {/* <View>
                 <Swipeout right={swipeoutBtns}>
                   <Fragment>
                     <Accordion data={this.state.muscleExercises} />
                   </Fragment>
                 </Swipeout>
-              </View>
+              </View> */}
+
+              <Container>
+                <Content>
+                  {this.state.muscleExercises.map((item, index) => {
+                    return (
+                      <Card key={index}>
+                        <Fragment>
+                          <CardItem header>
+                            <Text>{item.title}</Text>
+                          </CardItem>
+                          <CardItem
+                            button
+                            onPress={() => {
+                              addExerciseToWorkout(item.title);
+                            }}
+                          >
+                            <Text>Add to Workout</Text>
+                          </CardItem>
+                        </Fragment>
+                      </Card>
+                    );
+                  })}
+                </Content>
+              </Container>
             </ScrollView>
           </Modal>
 
@@ -91,7 +119,7 @@ export default class MuscleScreen extends Component {
     );
   }
   componentDidMount() {
-    return fetch('http://192.168.230.34:9000/api/muscles')
+    return fetch('http://192.168.230.28:9000/api/muscles')
       .then(response => response.json())
       .then(responseJson => {
         this.setState(
@@ -106,7 +134,7 @@ export default class MuscleScreen extends Component {
       });
   }
   getExerciseByMuscle = muscle_name => {
-    return fetch(`http://192.168.230.34:9000/api/exercises/muscle/${muscle_name}`)
+    return fetch(`http://192.168.230.28:9000/api/exercises/muscle/${muscle_name}`)
       .then(response => response.json())
       .then(responseJson => {
         this.setState(
