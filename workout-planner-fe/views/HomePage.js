@@ -69,56 +69,51 @@ export default class HomeScreen extends React.Component {
   };
   render() {
     // const currentUser = this.props.navigation.getParam('currentUser');
-    // console.log(' from the state on homepage ====>', this.state.currentUser);
-    console.log(this.state.appUserAccount);
+    console.log(' from the state on homepage ====>', this.state.currentUser);
     return (
       <View style={{ flex: 1 }}>
         <View style={{ height: 350, marginTop: 10 }}>
           <Model muscleVals={this.state.muscleVals} />
         </View>
-        <View>
-          <Button
-            title="View All Exercises"
-            onPress={() => this.props.navigation.navigate('ExerciseList')}
-          />
-        </View>
-        <View>
-          <Button
-            title="Create an Exercise"
-            onPress={() => this.props.navigation.navigate('CreateExerciseForm')}
-          />
-        </View>
+        <View style={styles.container}>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="All Exercises"
+              onPress={() => this.props.navigation.navigate('ExerciseList')}
+            />
+          </View>
 
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Add Exercise"
+              onPress={() => {
+                this.props.navigation.navigate('MuscleScreen', {
+                  addExerciseToWorkout: this.addExerciseToWorkout,
+                });
+              }}
+            />
+          </View>
+        </View>
         <View style={{ flex: 1 }}>
-          <Container>
-            <Content>
-              {this.state.workout.length === 0 ? (
-                <Card>
-                  <CardItem>
-                    <Text>Please add an exercise to your workout</Text>
-                  </CardItem>
-                </Card>
-              ) : (
-                this.state.workout.map((item, index) => {
-                  return (
-                    <Card key={index}>
-                      <CardItem header>
-                        <Text>{item.title}</Text>
-                      </CardItem>
-                    </Card>
-                  );
-                })
-              )}
-            </Content>
-          </Container>
-          <Button
-            title="Add Exercise"
-            onPress={() => {
-              this.props.navigation.navigate('MuscleScreen', {
-                addExerciseToWorkout: this.addExerciseToWorkout,
-              });
-            }}
-          />
+          <Content>
+            {this.state.workout.length === 0 ? (
+              <Card>
+                <CardItem>
+                  <Text>Please add an exercise to your workout</Text>
+                </CardItem>
+              </Card>
+            ) : (
+              this.state.workout.map((item, index) => {
+                return (
+                  <Card key={index}>
+                    <CardItem header>
+                      <Text>{item.title}</Text>
+                    </CardItem>
+                  </Card>
+                );
+              })
+            )}
+          </Content>
         </View>
 
         <View>
@@ -182,3 +177,15 @@ export default class HomeScreen extends React.Component {
       });
   };
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonContainer: {
+    flex: 1,
+  },
+});

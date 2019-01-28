@@ -17,110 +17,110 @@ import Register from './views/Register';
 import SuccessfulRegister from './views/SuccessfulRegister';
 
 const ProfileIcon = ({ navigation }) => (
-  <TouchableOpacity
-    style={{ padding: 5, paddingLeft: 10, paddingRight: 15 }}
-    onPress={() => {
-      navigation.navigate('UserProfile');
-    }}
-  >
-    <Text style={{ color: 'white', fontSize: 25 }}>
-      <Icon name="md-person" size={30} />
-    </Text>
-  </TouchableOpacity>
+	<TouchableOpacity
+		style={{ padding: 5, paddingLeft: 10, paddingRight: 15 }}
+		onPress={() => {
+			navigation.navigate('UserProfile');
+		}}
+	>
+		<Text style={{ color: 'white', fontSize: 25 }}>
+			<Icon name='md-person' size={30} />
+		</Text>
+	</TouchableOpacity>
 );
 
 const WorkoutStack = createStackNavigator(
-  {
-    Home: {
-      screen: HomePage,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Home',
-        headerRight: <ProfileIcon navigation={navigation} />,
-      }),
-    },
-    WorkoutPreview: {
-      screen: WorkoutPreview,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Workout Preview',
-        headerRight: <ProfileIcon navigation={navigation} />,
-      }),
-    },
-    CompanionScreen: {
-      screen: CompanionScreen,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Workout',
-        headerRight: <ProfileIcon navigation={navigation} />,
-      }),
-    },
-    MuscleScreen: {
-      screen: MuscleScreen,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Choose a muscle',
-        headerRight: <ProfileIcon navigation={navigation} />,
-      }),
-    },
-    ExerciseList: {
-      screen: ExerciseList,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Exercises',
-        headerRight: <ProfileIcon navigation={navigation} />,
-      }),
-    },
-    UserProfile: {
-      screen: UserProfile,
-    },
-    Register: {
-      screen: Register,
-      navigationOptions: {
-        header: null,
-      },
-    },
-    CompletionModal: {
-      screen: CompletionModal,
-      navigationOptions: {
-        header: null,
-      },
-    },
-    CreateExerciseForm: {
-      screen: CreateExerciseForm,
-    },
-    SuccessfulRegister: {
-      screen: SuccessfulRegister,
-    },
-    saveWorkout: {
-      screen: saveWorkout,
-    },
-  },
-  {
-    initialRouteName: 'Home',
-  },
+	{
+		Home: {
+			screen: HomePage,
+			navigationOptions: ({ navigation }) => ({
+				title: 'Home',
+				headerRight: <ProfileIcon navigation={navigation} />
+			})
+		},
+		WorkoutPreview: {
+			screen: WorkoutPreview,
+			navigationOptions: ({ navigation }) => ({
+				title: 'Workout Preview',
+				headerRight: <ProfileIcon navigation={navigation} />
+			})
+		},
+		CompanionScreen: {
+			screen: CompanionScreen,
+			navigationOptions: ({ navigation }) => ({
+				title: 'Workout',
+				headerRight: <ProfileIcon navigation={navigation} />
+			})
+		},
+		MuscleScreen: {
+			screen: MuscleScreen,
+			navigationOptions: ({ navigation }) => ({
+				title: 'Choose a muscle',
+				headerRight: <ProfileIcon navigation={navigation} />
+			})
+		},
+		ExerciseList: {
+			screen: ExerciseList,
+			navigationOptions: ({ navigation }) => ({
+				title: 'Exercises',
+				headerRight: <ProfileIcon navigation={navigation} />
+			})
+		},
+		UserProfile: {
+			screen: UserProfile
+		},
+		Register: {
+			screen: Register,
+			navigationOptions: {
+				header: null
+			}
+		},
+		CompletionModal: {
+			screen: CompletionModal,
+			navigationOptions: {
+				header: null
+			}
+		},
+		CreateExerciseForm: {
+			screen: CreateExerciseForm
+		},
+		SuccessfulRegister: {
+			screen: SuccessfulRegister
+		},
+		saveWorkout: {
+			screen: saveWorkout
+		}
+	},
+	{
+		initialRouteName: 'Home'
+	}
 );
 
 const AuthStack = createStackNavigator({
-  Home: {
-    screen: WorkoutStack,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  SignIn: {
-    screen: SignIn,
-    navigationOptions: {
-      title: 'Sign In',
-    },
-  },
+	Home: {
+		screen: WorkoutStack,
+		navigationOptions: {
+			header: null
+		}
+	},
+	SignIn: {
+		screen: SignIn,
+		navigationOptions: {
+			title: 'Sign In'
+		}
+	}
 });
 
 const AppContainer = createAppContainer(
-  createSwitchNavigator(
-    {
-      AuthentificationCheck: Loading,
-      Auth: AuthStack,
-    },
-    {
-      initialRouteName: 'AuthentificationCheck',
-    },
-  ),
+	createSwitchNavigator(
+		{
+			AuthentificationCheck: Loading,
+			Auth: AuthStack
+		},
+		{
+			initialRouteName: 'AuthentificationCheck'
+		}
+	)
 );
 
 export default AppContainer;
