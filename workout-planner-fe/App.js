@@ -68,12 +68,7 @@ const WorkoutStack = createStackNavigator(
 		UserProfile: {
 			screen: UserProfile
 		},
-		Register: {
-			screen: Register,
-			navigationOptions: {
-				header: null
-			}
-		},
+
 		CompletionModal: {
 			screen: CompletionModal,
 			navigationOptions: {
@@ -83,8 +78,17 @@ const WorkoutStack = createStackNavigator(
 		CreateExerciseForm: {
 			screen: CreateExerciseForm
 		},
+		Register: {
+			screen: Register,
+			navigationOptions: {
+				header: null
+			}
+		},
 		SuccessfulRegister: {
-			screen: SuccessfulRegister
+			screen: SuccessfulRegister,
+			navigationOptions: {
+				header: null
+			}
 		}
 	},
 	{
