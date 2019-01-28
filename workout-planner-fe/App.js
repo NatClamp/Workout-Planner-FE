@@ -12,6 +12,7 @@ import HomePage from './views/HomePage';
 import SignIn from './views/SignIn';
 import CreateExerciseForm from './views/CreateExerciseForm';
 import CompletionModal from './views/CompletionModal';
+import saveWorkout from './views/saveWorkout';
 
 const ProfileIcon = ({ navigation }) => (
   <TouchableOpacity
@@ -74,6 +75,9 @@ const WorkoutStack = createStackNavigator(
     },
     CreateExerciseForm: {
       screen: CreateExerciseForm,
+    },
+    saveWorkout: {
+      screen: saveWorkout,
     },
   },
   {
