@@ -27,16 +27,23 @@ export default class HomeScreen extends React.Component {
         <View style={{ flex: 1 }}>
           <Container>
             <Content>
-              {console.log(this.state.workout)}
-              {this.state.workout.map((item, index) => {
-                return (
-                  <Card key={index}>
-                    <CardItem header>
-                      <Text>{item.title}</Text>
-                    </CardItem>
-                  </Card>
-                );
-              })}
+              {this.state.workout.length === 0 ? (
+                <Card>
+                  <CardItem>
+                    <Text>Please add an exercise to your workout</Text>
+                  </CardItem>
+                </Card>
+              ) : (
+                this.state.workout.map((item, index) => {
+                  return (
+                    <Card key={index}>
+                      <CardItem header>
+                        <Text>{item.title}</Text>
+                      </CardItem>
+                    </Card>
+                  );
+                })
+              )}
             </Content>
           </Container>
           <Button
@@ -53,7 +60,11 @@ export default class HomeScreen extends React.Component {
           <Button
             style={{ flex: 1, marginTop: 10, backgroundColor: 'blue' }}
             title="Workout Preview"
-            onPress={() => this.props.navigation.navigate('WorkoutPreview')}
+            onPress={() =>
+              this.props.navigation.navigate('WorkoutPreview', {
+                currentWorkout: this.state.workout,
+              })
+            }
           />
         </View>
       </View>
