@@ -26,22 +26,7 @@ export default class HomeScreen extends React.Component {
 	}
 	
 }
-setUserAccount = () => {
-	AsyncStorage.setItem('userAccount', JSON.stringify(this.state.appUserAccount));
-	console.log('stored!')
 
-}
-calculateMuscleVals = () => {
-	const {workout} = this.state;
-	const muscleVals =   {abdominals: 0, biceps: 0, calves: 0, chest: 0, forearms: 0, glutes: 0, hamstrings: 0, lowerback: 0, midback: 0, quadriceps: 0, shoulders: 0, obliques: 0, triceps: 0, upperback: 0}
-	workout.forEach((exercise)=>{
-		muscleVals[exercise.major_muscle] += 3;
-		exercise.minor_muscles.forEach((muscle)=>{
-			muscleVals[muscle] +=  1
-		})
-	})
-	this.setState({muscleVals})
-}
   render() {
     // const currentUser = this.props.navigation.getParam('currentUser');
     console.log(' from the state on homepage ====>', this.state.currentUser);
@@ -115,6 +100,23 @@ calculateMuscleVals = () => {
 	if (currentUser.length > 1) {console.log('NON UNIQUE LOGIN CREDENTIALS')}
 	else {this.setState({appUserAccount: currentUser[0]})}
   }
+  setUserAccount = () => {
+	AsyncStorage.setItem('userAccount', JSON.stringify(this.state.appUserAccount));
+	console.log('stored!')
+	console.log(this.state.appUserAccount)
+
+}
+calculateMuscleVals = () => {
+	const {workout} = this.state;
+	const muscleVals =   {abdominals: 0, biceps: 0, calves: 0, chest: 0, forearms: 0, glutes: 0, hamstrings: 0, lowerback: 0, midback: 0, quadriceps: 0, shoulders: 0, obliques: 0, triceps: 0, upperback: 0}
+	workout.forEach((exercise)=>{
+		muscleVals[exercise.major_muscle] += 3;
+		exercise.minor_muscles.forEach((muscle)=>{
+			muscleVals[muscle] +=  1
+		})
+	})
+	this.setState({muscleVals})
+}
 
   componentDidMount() {
 	this.getCurrentUser();

@@ -31,6 +31,7 @@ export default class UserProfile extends React.Component {
 	assignUser = async () => {
 		const user = await AsyncStorage.getItem('userAccount')
 		const loggedInUser = JSON.parse(user)
+		console.log(loggedInUser, '@@@@@@@')
 		this.setState({loggedInUser: loggedInUser, isFemale: loggedInUser.isFemale})
 
 	}
@@ -58,7 +59,7 @@ export default class UserProfile extends React.Component {
 				<Text style={{fontSize: 25, textAlign: 'center', margin: 5}}>{`${loggedInUser.user_name}'s Page`}</Text>
 				{(completedWorkouts.length > 0) &&<Text style={{textAlign: 'center', margin: 20}}>Your last workout was {completedWorkouts[0].workout_name} on {completedWorkouts[0].dateString}</Text>}
 				{Object.keys(calendarPoints).length > 0 &&
-				<Calendar
+				<><Calendar
 				horizontal={true}
 				style={{marginBottom: 10}}
 				pagingEnabled={true}
@@ -78,8 +79,9 @@ export default class UserProfile extends React.Component {
 					}
 					}}
 		
-				/>}
-				<Text style={{textAlign: 'center'}}>{currentEvent}</Text>
+				/>
+				<Text style={{textAlign: 'center'}}>{currentEvent}</Text></>
+			}
 
 					<View style={{display: 'flex', flexDirection: 'row'}}>
 				{saved_workouts.length > 0 && <TouchableOpacity style={{width: 150, marginLeft: 20, padding: 10, marginRight: 20, marginTop: 20, borderColor: 'black', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,}} id='savedWorkoutsView' onPress={()=>this.handleDropdown('savedWorkoutsView')}><Text>Saved Workouts v</Text></TouchableOpacity>}
@@ -121,12 +123,11 @@ export default class UserProfile extends React.Component {
 		
 }
 	getUserCompletedWorkouts = () => {
-		console.log(this.state.loggedInUser.user_name)
 		getCompletedWorkouts(this.state.loggedInUser.user_name).then(({userCompleted})=>{
 			if (userCompleted){
-			res.sort((a,b)=>{return (b.created_at - a.created_at)})
-			res.map((item)=>{item.dateString = item.created_at.slice(0,10)})
-			this.setState({completedWorkouts: res})}
+				userCompleted.sort((a,b)=>{return (b.created_at - a.created_at)})
+				userCompleted.map((item)=>{item.dateString = item.created_at.slice(0,10)})
+			this.setState({completedWorkouts: userCompleted})}
 		})
 
 	}

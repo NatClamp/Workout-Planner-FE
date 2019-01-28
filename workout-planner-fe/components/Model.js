@@ -1,7 +1,8 @@
 import { View as GraphicsView } from 'expo-graphics';
 import ExpoTHREE, { THREE } from 'expo-three';
 import React, {Fragment} from 'react';
-import {Text, Button} from 'react-native'
+import {Text, TouchableOpacity} from 'react-native'
+import { Icon } from 'react-native-elements'
 import 'three';
 import 'prop-types';
 
@@ -45,7 +46,7 @@ export default class Model extends React.Component {
       <><GraphicsView
         onContextCreate={this.onContextCreate}
         onRender={this.onRender}
-      /><Button title='Spin' onPress={this.handleRotate}></Button></>
+      /><TouchableOpacity style={{position: 'absolute', top: 10, left: 10}}  title='Spin' onPress={this.handleRotate}><Icon name='3d-rotation'/></TouchableOpacity></>
     );
   }
 
@@ -92,7 +93,7 @@ export default class Model extends React.Component {
 
   }
   cameraRotation = () => {
-    this.angleValue = 90
+    this.angleValue = 270
     this.cameraAngle = 0
     this.orbitRange = 125
     this.camera.position.set(this.orbitRange, 120, 0) 
