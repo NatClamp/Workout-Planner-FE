@@ -7,6 +7,7 @@ class WorkoutPreviewList extends Component {
     currentWorkout: [],
   };
   render() {
+    // console.log(this.props);
     return (
       <Fragment>
         <View style={{ flex: 1 }}>
@@ -23,7 +24,14 @@ class WorkoutPreviewList extends Component {
               })}
             </Content>
           </Container>
-          <Button title="Save Workout" onPress={() => this.saveWorkout()} />
+          <Button
+            title="Save Workout for later"
+            onPress={() =>
+              this.props.navigation.navigate('saveWorkout', {
+                currentWorkout: this.state.currentWorkout,
+              })
+            }
+          />
         </View>
       </Fragment>
     );
@@ -33,10 +41,6 @@ class WorkoutPreviewList extends Component {
     const currentWorkout = this.props.currentWorkout;
     this.setState({ currentWorkout });
   }
-
-  saveWorkout = () => {
-    Alert.alert('this still needs doing', "we haven't done the post request yet");
-  };
 }
 
 export default WorkoutPreviewList;

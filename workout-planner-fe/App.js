@@ -12,6 +12,7 @@ import HomePage from './views/HomePage';
 import SignIn from './views/SignIn';
 import CreateExerciseForm from './views/CreateExerciseForm';
 import CompletionModal from './views/CompletionModal';
+import saveWorkout from './views/saveWorkout';
 import Register from './views/Register';
 import SuccessfulRegister from './views/SuccessfulRegister';
 
@@ -68,7 +69,12 @@ const WorkoutStack = createStackNavigator(
 		UserProfile: {
 			screen: UserProfile
 		},
-
+		Register: {
+			screen: Register,
+			navigationOptions: {
+				header: null
+			}
+		},
 		CompletionModal: {
 			screen: CompletionModal,
 			navigationOptions: {
@@ -78,17 +84,11 @@ const WorkoutStack = createStackNavigator(
 		CreateExerciseForm: {
 			screen: CreateExerciseForm
 		},
-		Register: {
-			screen: Register,
-			navigationOptions: {
-				header: null
-			}
-		},
 		SuccessfulRegister: {
-			screen: SuccessfulRegister,
-			navigationOptions: {
-				header: null
-			}
+			screen: SuccessfulRegister
+		},
+		saveWorkout: {
+			screen: saveWorkout
 		}
 	},
 	{
