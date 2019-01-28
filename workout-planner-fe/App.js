@@ -11,7 +11,6 @@ import Loading from './views/Loading';
 import HomePage from './views/HomePage';
 import SignIn from './views/SignIn';
 import CompletionModal from './views/CompletionModal';
-import CreateExerciseForm from './views/CreateExerciseForm';
 
 const ProfileIcon = ({ navigation }) => (
 	<TouchableOpacity
@@ -71,13 +70,6 @@ const WorkoutStack = createStackNavigator(
 			navigationOptions: {
 				header: null
 			}
-		},
-		CreateExerciseForm: {
-			screen: CreateExerciseForm,
-			navigationOptions: ({ navigation }) => ({
-				title: 'Create an Exercise',
-				headerRight: <ProfileIcon navigation={navigation} />
-			})
 		}
 	},
 	{

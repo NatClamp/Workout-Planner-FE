@@ -9,11 +9,6 @@ class ExerciseList extends Component {
 	state = {
 		exercises: []
 	};
-
-	updateSearch = (search) => {
-		this.setState({ search });
-	};
-
 	render() {
 		return (
 			<Fragment>
