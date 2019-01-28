@@ -1,8 +1,17 @@
 import React, { Component, Fragment } from 'react';
-import { KeyboardAvoidingView, ScrollView, View, Button } from 'react-native';
+import { Text, ScrollView, View, Button, TextInput, TouchableOpacity } from 'react-native';
 import { Container, Header, Content, Form, Item, Input } from 'native-base';
 import Model from '../components/Model';
+
+const URL = 'https://nc-project-be.herokuapp.com/api/';
+
 export default class CreateExerciseForm extends Component {
+	state = {
+		title: '',
+		major_muscle: '',
+		minor_muscle: '',
+		created_by: ''
+	};
 	render() {
 		return (
 			<View style={{ flex: 1 }}>
@@ -12,15 +21,15 @@ export default class CreateExerciseForm extends Component {
 						<Content>
 							<Form>
 								<Item>
-									<Input placeholder='Exercise name...' />
+									<TextInput
+										placeholder='Exercise name...'
+										onChangeText={(title) => this.setState({ title })}
+										value={this.state.title}
+									/>
 								</Item>
-								<Item last>
-									<Input placeholder='Major Muscle...' />
-								</Item>
-								<Item last>
-									<Input placeholder='Minor Muscle...' />
-								</Item>
-								<Button title='Submit Exercise' />
+								<TouchableOpacity onPress={() => this.submit()}>
+									<Text>Submit</Text>
+								</TouchableOpacity>
 							</Form>
 						</Content>
 					</Container>
@@ -28,6 +37,19 @@ export default class CreateExerciseForm extends Component {
 			</View>
 		);
 	}
-}
 
-//
+	submit() {
+		let fullExercise = {};
+		(fullExercise.title = this.state.title),
+			(fullExercise.major_muscle = this.state.major_muscle),
+			(fullExercise.minor_muscle = this.state.minor_muscle),
+			(url = `${URL}/exercises`);
+
+		fetch(url, {
+			method: 'POST',
+			body: JSON.stringify(fullExercise)
+		})
+			.then((res) => res.json())
+			.catch((err) => console.log(err));
+	}
+}
