@@ -10,6 +10,7 @@ import ExerciseList from './views/ExerciseList';
 import Loading from './views/Loading';
 import HomePage from './views/HomePage';
 import SignIn from './views/SignIn';
+import CreateExerciseForm from './views/CreateExerciseForm';
 import CompletionModal from './views/CompletionModal';
 
 const ProfileIcon = ({ navigation }) => (
@@ -70,6 +71,9 @@ const WorkoutStack = createStackNavigator(
 			navigationOptions: {
 				header: null
 			}
+		},
+		CreateExerciseForm: {
+			screen: CreateExerciseForm
 		}
 	},
 	{
