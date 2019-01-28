@@ -1,12 +1,11 @@
 import React, {Fragment} from 'react';
-import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, TextInput, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, TextInput, ScrollView, AsyncStorage } from 'react-native';
 import {Calendar} from 'react-native-calendars'
 import moment from 'moment'
 import { Switch } from 'native-base';
 import {getCompletedWorkouts,
 		getSavedWorkouts,
 		patchUserGender,} from '../utils/backendAPI'
-import throttle from 'lodash.throttle'
 
 
 
@@ -25,6 +24,15 @@ export default class UserProfile extends React.Component {
 			tappedWorkout: ''
 		}
 	}
+	componentWillMount(){
+		this.assignUser()
+	}
+	assignUser = async () => {
+		const loggedInUser = await AsyncStorage.getItem('userAccount')
+		this.setState({loggedInUser: JSON.parse(loggedInUser)})
+
+	}
+
 	componentDidMount(){
 		this.getUserCompletedWorkouts()
 		this.getUserSavedWorkouts()
@@ -104,8 +112,6 @@ export default class UserProfile extends React.Component {
 		const originalGender = isFemale
 		this.setState({isFemale: bool}, ()=>{
 				patchUserGender(user_name, this.state.isFemale).catch((err)=>{this.setState({isFemale: originalGender,})})
-	
-		
 		})
 		
 }
