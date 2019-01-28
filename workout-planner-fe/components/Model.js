@@ -11,7 +11,12 @@ import 'prop-types';
 
 
 export default class Model extends React.Component {
-
+  componentDidUpdate(prevProps){
+    if (this.props.muscleVals !== prevProps.muscleVals){
+      this.recolourMuscles()
+      console.log(this.props.muscleVals)
+    }
+  }
   componentWillMount() {
   THREE.suppressExpoWarnings();
   if (!this.props.gender){
@@ -64,19 +69,18 @@ export default class Model extends React.Component {
     this.cameraRotation()
 	  this.loadModel(this.state.gender)
     this.establishLighting()
-    setTimeout(	this.recolourMuscles, 5000)
   };
 
   recolourMuscles = () => {
 	if (this.props.muscleVals){
-	muscleObj = this.props.muscleVals}
-	else muscleObj = {abdominals: 0, biceps: 0, calves: 0, chest: 0, forearms: 0, glutes: 0, hamstrings: 0, lowerback: 0, midback: 0, quadriceps: 0, shoulders: 0, obliques: 0, triceps: 0, upperback: 0}
-	const muscles = Object.keys(muscleObj)
+	muscleVals = this.props.muscleVals}
+	else muscleVals = {abdominals: 0, biceps: 0, calves: 0, chest: 0, forearms: 0, glutes: 0, hamstrings: 0, lowerback: 0, midback: 0, quadriceps: 0, shoulders: 0, obliques: 0, triceps: 0, upperback: 0}
+	const muscles = Object.keys(muscleVals)
 	muscles.forEach((part)=>{
 		if (this[part]){
 			this[part].traverse((obj)=>{
 				if (obj instanceof THREE.Mesh){
-					obj.material.color = this.colorValues[muscleObj[part]]
+					obj.material.color = this.colorValues[muscleVals[part]]
 				}
 			})
 		}

@@ -6,6 +6,7 @@ import { Switch } from 'native-base';
 import {getCompletedWorkouts,
 		getSavedWorkouts,
 		patchUserGender,} from '../utils/backendAPI'
+import throttle from 'lodash.throttle'
 
 
 
@@ -99,14 +100,13 @@ export default class UserProfile extends React.Component {
 	}
 
 	toggleGender = (bool)=> { 
-		
-		const {isFemale, user_name, genderResolved} = this.state
+		const {isFemale, user_name} = this.state
 		const originalGender = isFemale
-		if (genderResolved){
-		this.setState({isFemale: bool, genderResolved: false}, ()=>{
-			patchUserGender(user_name, isFemale).then((res)=>{if (res) this.setState({genderResolved: true})}).catch((err)=>{this.setState({isFemale: originalGender, genderResolved: true})})
+		this.setState({isFemale: bool}, ()=>{
+				patchUserGender(user_name, this.state.isFemale).catch((err)=>{this.setState({isFemale: originalGender,})})
+	
 		
-		})}
+		})
 		
 }
 	getUserCompletedWorkouts = () => {
