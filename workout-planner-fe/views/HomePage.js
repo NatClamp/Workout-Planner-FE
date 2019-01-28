@@ -19,6 +19,10 @@ export default class HomeScreen extends React.Component {
 				</View>
 				<View>
 					<Button title='View All Exercises' onPress={() => this.props.navigation.navigate('ExerciseList')} />
+					<Button
+						title='Create an Exercise'
+						onPress={() => this.props.navigation.navigate('CreateExerciseForm')}
+					/>
 				</View>
 
 				<View style={{ flex: 1 }}>
