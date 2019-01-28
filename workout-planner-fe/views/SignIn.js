@@ -10,7 +10,9 @@ export default class SignIn extends React.Component {
       await fetch(`https://graph.facebook.com/me?access_token=${token}`)
         .then(response => response.json())
         .then(response =>
-          this.props.navigation.navigate('HomePage', { currentUser: response.name }),
+          AsyncStorage.setItem('currentUser', JSON.stringify(response.name)).then(() =>
+            this.props.navigation.navigate('Home', { currentUser: response.name }),
+          ),
         );
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);

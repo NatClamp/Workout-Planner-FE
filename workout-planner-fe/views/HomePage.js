@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Button, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, View, Button, AsyncStorage } from 'react-native';
 import Model from '../components/Model';
 import { Accordion, Container, Content, Card, CardItem, Text } from 'native-base';
 
@@ -7,11 +7,13 @@ const URL = 'https://nc-project-be.herokuapp.com/api/';
 
 export default class HomeScreen extends React.Component {
   state = {
+    currentUser: '',
     workout: [],
   };
   render() {
-    const { getParam } = this.props.navigation;
-    const currentUser = getParam('currentUser');
+    // const currentUser = this.props.navigation.getParam('currentUser');
+
+    console.log(' from the state on homepage ====>', this.state.currentUser);
     return (
       <View style={{ flex: 1 }}>
         <View style={{ height: 350, marginTop: 10 }}>
@@ -63,6 +65,7 @@ export default class HomeScreen extends React.Component {
             onPress={() =>
               this.props.navigation.navigate('WorkoutPreview', {
                 currentWorkout: this.state.workout,
+                currentUser: this.state.currentUser,
               })
             }
           />
@@ -70,6 +73,22 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
+
+  componentDidMount() {
+    this.getCurrentUser();
+  }
+  getCurrentUser = async () => {
+    try {
+      const currentUser = await AsyncStorage.getItem('currentUser');
+      if (currentUser) {
+        this.setState({ currentUser });
+      } else {
+        console.log('error in the getCurrentUser function');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   addExerciseToWorkout = exerciseName => {
     const formattedExercise =
