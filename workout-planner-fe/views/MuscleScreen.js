@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
-import { Container, Header, Left, Body, Icon, Accordion } from 'native-base';
-import { StyleSheet, Text, View, Button, Modal, TouchableHighlight, Alert, FlatList, ScrollView } from 'react-native';
+import { Container, Header, Icon, Left, Body, Content, Card, CardItem } from 'native-base';
+import { StyleSheet, Text, View, Modal, TouchableHighlight, Alert, ScrollView } from 'react-native';
 import Swipeout from 'react-native-swipeout';
 
 const swipeoutBtns = [
@@ -9,16 +9,22 @@ const swipeoutBtns = [
 	}
 ];
 
+const URL = 'https://nc-project-be.herokuapp.com/api/';
+
 export default class MuscleScreen extends Component {
 	state = {
 		muscles: [],
 		modalVisible: false,
 		muscleExercises: []
 	};
+
 	setModalVisible(visible) {
 		this.setState({ modalVisible: visible });
 	}
+
 	render() {
+		const { getParam } = this.props.navigation;
+		const addExerciseToWorkout = getParam('addExerciseToWorkout');
 		return (
 			<Fragment>
 				<View>
@@ -46,13 +52,29 @@ export default class MuscleScreen extends Component {
 								</Body>
 							</Header>
 
-							<View>
-								<Swipeout right={swipeoutBtns}>
-									<Fragment>
-										<Accordion data={this.state.muscleExercises} />
-									</Fragment>
-								</Swipeout>
-							</View>
+							<Container>
+								<Content>
+									{this.state.muscleExercises.map((item, index) => {
+										return (
+											<Card key={index}>
+												<Fragment>
+													<CardItem header>
+														<Text>{item.title}</Text>
+													</CardItem>
+													<CardItem
+														button
+														onPress={() => {
+															addExerciseToWorkout(item.title);
+														}}
+													>
+														<Text>Add to Workout</Text>
+													</CardItem>
+												</Fragment>
+											</Card>
+										);
+									})}
+								</Content>
+							</Container>
 						</ScrollView>
 					</Modal>
 
@@ -81,7 +103,7 @@ export default class MuscleScreen extends Component {
 		);
 	}
 	componentDidMount() {
-		return fetch('https://nc-project-be.herokuapp.com/api/muscles')
+		return fetch(`${URL}/muscles`)
 			.then((response) => response.json())
 			.then((responseJson) => {
 				this.setState(
@@ -96,15 +118,20 @@ export default class MuscleScreen extends Component {
 			});
 	}
 	getExerciseByMuscle = (muscle_name) => {
-		return fetch(`https://nc-project-be.herokuapp.com/api/exercises/muscle/${muscle_name}`)
+		return fetch(`${URL}/exercises/muscle/${muscle_name}`)
 			.then((response) => response.json())
 			.then((responseJson) => {
-				this.setState(
-					{
-						muscleExercises: responseJson.exercises
-					},
-					function() {}
-				);
+				if (responseJson.msg) {
+					Alert.alert('Sorry', "There currently aren't any exercises for this muscle group");
+					this.setModalVisible(!this.state.modalVisible);
+				} else {
+					this.setState(
+						{
+							muscleExercises: responseJson.exercises
+						},
+						function() {}
+					);
+				}
 			})
 			.catch((error) => {
 				console.error(error);

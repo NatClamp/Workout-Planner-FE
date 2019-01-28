@@ -2,6 +2,8 @@ import React, { Component, Fragment } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { Accordion, Container, Item, Icon, Input, Button } from 'native-base';
 
+const URL = 'https://nc-project-be.herokuapp.com/api/';
+
 class ExerciseList extends Component {
 	state = {
 		exercises: []
@@ -44,8 +46,9 @@ class ExerciseList extends Component {
 			</Fragment>
 		);
 	}
+
 	componentDidMount() {
-		return fetch('https://nc-project-be.herokuapp.com/api/exercises')
+		return fetch(`${URL}/exercises`)
 			.then((response) => response.json())
 			.then((responseJson) => {
 				this.setState(
