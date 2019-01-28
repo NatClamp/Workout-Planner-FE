@@ -3,7 +3,9 @@ import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, TextInput, 
 import {Calendar} from 'react-native-calendars'
 import moment from 'moment'
 import { Switch } from 'native-base';
-import {getCompletedWorkouts} from '../utils/backendAPI'
+import {getCompletedWorkouts,
+		getSavedWorkouts,
+		patchUserGender,} from '../utils/backendAPI'
 
 
 
@@ -24,6 +26,7 @@ export default class UserProfile extends React.Component {
 	}
 	componentDidMount(){
 		this.getUserCompletedWorkouts()
+		this.getUserSavedWorkouts()
 	}
 	componentDidUpdate(prevProps, prevState){
 		if (prevState.completedWorkouts !== this.state.completedWorkouts) {
@@ -39,7 +42,7 @@ export default class UserProfile extends React.Component {
 		return (
 			<ScrollView style={{ flex: 1 }}>
 				<Text style={{fontSize: 25, textAlign: 'center', margin: 5}}>{`${user_name}'s Page`}</Text>
-				{(completedWorkouts.length > 0) &&<Text style={{textAlign: 'center', margin: 20}}>Your last workout was {completedWorkouts[0].workout} on {completedWorkouts[0].dateString}</Text>}
+				{(completedWorkouts.length > 0) &&<Text style={{textAlign: 'center', margin: 20}}>Your last workout was {completedWorkouts[0].workout_name} on {completedWorkouts[0].dateString}</Text>}
 				{Object.keys(calendarPoints).length > 0 &&
 				<Calendar
 				horizontal={true}
@@ -53,10 +56,10 @@ export default class UserProfile extends React.Component {
 						this.setState({currentEvent: ''})
 					}
 					else if (workoutOnThatDay.length === 1){
-						this.setState({currentEvent: `${workoutOnThatDay[0].dateString}: ${workoutOnThatDay[0].workout}`})
+						this.setState({currentEvent: `${workoutOnThatDay[0].dateString}: ${workoutOnThatDay[0].workout_name}`})
 					}
 					else if (workoutOnThatDay.length > 1){
-						const activities = workoutOnThatDay.map((item)=>{return item.workout}).join(', ')
+						const activities = workoutOnThatDay.map((item)=>{return item.workout_name}).join(', ')
 						this.setState({currentEvent: `${workoutOnThatDay[0].dateString}: ${activities}`})
 					}
 					}}
@@ -65,7 +68,7 @@ export default class UserProfile extends React.Component {
 				<Text style={{textAlign: 'center'}}>{currentEvent}</Text>
 
 					<View style={{display: 'flex', flexDirection: 'row'}}>
-					<TouchableOpacity style={{width: 150, marginLeft: 20, padding: 10, marginRight: 20, marginTop: 20, borderColor: 'black', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,}} id='savedWorkoutsView' onPress={()=>this.handleDropdown('savedWorkoutsView')}><Text>Saved Workouts v</Text></TouchableOpacity>
+				{saved_workouts.length > 0 && <TouchableOpacity style={{width: 150, marginLeft: 20, padding: 10, marginRight: 20, marginTop: 20, borderColor: 'black', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,}} id='savedWorkoutsView' onPress={()=>this.handleDropdown('savedWorkoutsView')}><Text>Saved Workouts v</Text></TouchableOpacity>}
 					{tappedWorkout.length > 0 && <TouchableOpacity style={{width: 150, marginLeft: 20, padding: 10, marginRight: 20, marginTop: 20, borderColor: 'black', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,}}><Text>Load Selected</Text></TouchableOpacity>}</View>
 				{savedWorkoutsView && <FlatList style={{minHeight: 200}} data={saved_workouts.map((item, i)=>{return {workout: item, key: item+i}})} renderItem={({item})=><Text style={tappedWorkout === item.key ?{marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid',backgroundColor: 'green', borderRadius: 3,}:{marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,}} onPress={()=>{this.tapWorkout(item.key)}} key={item.key}>{item.workout}</Text>}/>}
 				<Text style={{fontSize: 16, marginTop: 25, marginBottom: 10, marginLeft: 5, fontWeight: 'bold'}}>Preferences</Text>
@@ -84,7 +87,7 @@ export default class UserProfile extends React.Component {
 	}
 
 	handleDropdown = (id) => {
-		this.setState({[id]: !this.state[id], tappedWorkout: ''}, console.log(this.state))
+		this.setState({[id]: !this.state[id], tappedWorkout: ''})
 	}
 	loadWorkout = () => {
 		// save workout data into props and navigate to companion page
@@ -96,15 +99,23 @@ export default class UserProfile extends React.Component {
 	}
 
 	toggleGender = (bool)=> { 
-		this.setState({isFemale: bool, /*genderSwitchResolved: false*/})
+		this.setState({isFemale: bool, /*genderSwitchResolved: false*/}, ()=>{
+			patchUserGender()
+		})
 		
 }
 	getUserCompletedWorkouts = () => {
 		getCompletedWorkouts(this.state.user_name).then((res)=>{
+			console.log(res)
 			res.sort((a,b)=>{return (b.created_at - a.created_at)})
 			res.map((item)=>{item.dateString = item.created_at.slice(0,10)})
-			this.setState({completedWorkouts: res}, ()=>{console.log(this.state.completedWorkouts)})
+			this.setState({completedWorkouts: res})
 		})
 
+	}
+	getUserSavedWorkouts = () => {
+		getSavedWorkouts(this.state.user_name).then((res)=>{
+			this.setState({saved_workouts: res})
+		})
 	}
 }
