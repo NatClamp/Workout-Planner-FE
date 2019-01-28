@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, TextInput, 
 import {Calendar} from 'react-native-calendars'
 import moment from 'moment'
 import { Switch } from 'native-base';
+import {getCompletedWorkouts} from '../utils/backendAPI'
 
 
 
@@ -70,8 +71,8 @@ export default class UserProfile extends React.Component {
 				<Text style={{fontSize: 16, marginTop: 25, marginBottom: 10, marginLeft: 5, fontWeight: 'bold'}}>Preferences</Text>
 				<Text>Model Gender</Text>
 				<View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-				<TouchableOpacity style={isFemale ?{width: 100, padding: 10, backgrundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}:{width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}} onPress={()=>{this.toggleGender(false)}}><Text style={{textAlign: 'center'}}>Male</Text></TouchableOpacity>
-				<TouchableOpacity style={!isFemale ?{width: 100, padding: 10, backgrundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}:{width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}} onPress={()=>{this.toggleGender(true)}}><Text style={{textAlign: 'center'}}>Female</Text></TouchableOpacity></View>
+				<TouchableOpacity style={isFemale ?{width: 100, padding: 10, backgroundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}:{width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}} onPress={()=>{this.toggleGender(false)}}><Text style={{textAlign: 'center'}}>Male</Text></TouchableOpacity>
+				<TouchableOpacity style={!isFemale ?{width: 100, padding: 10, backgroundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}:{width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}} onPress={()=>{this.toggleGender(true)}}><Text style={{textAlign: 'center'}}>Female</Text></TouchableOpacity></View>
 
 			
 					<Text>Change Username</Text><Button onPress={()=>{}} title='Submit'/>
@@ -99,44 +100,11 @@ export default class UserProfile extends React.Component {
 		
 }
 	getUserCompletedWorkouts = () => {
-		// get request for completed workouts
-		const fakeData = [
-			{
-			  "created_at": 1548328270,
-		  
-			  "workout": "workout 1",
-		  
-			  "user": "charlie"
-			},
-			{
-				"created_at": 1547769600,
-			
-				"workout": "my favourite",
-			
-				"user": "charlie"
-			  },
-			  {
-				"created_at": 1548201600,
-			
-				"workout": "back workout",
-			
-				"user": "charlie"
-			  }, {
-			  "created_at": 1548201600,
-			
-			  "workout": "arm workout",
-		  
-			  "user": "charlie"
-			},{
-			"created_at": 1548201600,
-			
-			"workout": "head workout",
-		
-			"user": "charlie"
-		  }
-		  ]
-		  fakeData.sort((a,b)=>{return (b.created_at - a.created_at)})
-		  fakeData.map((item)=>{item.dateString = moment.unix(item.created_at).format("YYYY-MM-DD")})
-		  this.setState({completedWorkouts: fakeData})
+		getCompletedWorkouts(this.state.user_name).then((res)=>{
+			res.sort((a,b)=>{return (b.created_at - a.created_at)})
+			res.map((item)=>{item.dateString = item.created_at.slice(0,10)})
+			this.setState({completedWorkouts: res}, ()=>{console.log(this.state.completedWorkouts)})
+		})
+
 	}
 }
