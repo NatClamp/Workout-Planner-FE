@@ -19,7 +19,7 @@ export default class UserProfile extends React.Component {
 			calendarPoints: {},
 			currentEvent: 'Touch day to see workout',
 			isFemale: true,
-			genderSwitchResolved: true,
+			genderResolved: true,
 			savedWorkoutsView: false,
 			tappedWorkout: ''
 		}
@@ -99,14 +99,18 @@ export default class UserProfile extends React.Component {
 	}
 
 	toggleGender = (bool)=> { 
-		this.setState({isFemale: bool, /*genderSwitchResolved: false*/}, ()=>{
-			patchUserGender()
-		})
+		
+		const {isFemale, user_name, genderResolved} = this.state
+		const originalGender = isFemale
+		if (genderResolved){
+		this.setState({isFemale: bool, genderResolved: false}, ()=>{
+			patchUserGender(user_name, isFemale).then((res)=>{if (res) this.setState({genderResolved: true})}).catch((err)=>{this.setState({isFemale: originalGender, genderResolved: true})})
+		
+		})}
 		
 }
 	getUserCompletedWorkouts = () => {
 		getCompletedWorkouts(this.state.user_name).then((res)=>{
-			console.log(res)
 			res.sort((a,b)=>{return (b.created_at - a.created_at)})
 			res.map((item)=>{item.dateString = item.created_at.slice(0,10)})
 			this.setState({completedWorkouts: res})
