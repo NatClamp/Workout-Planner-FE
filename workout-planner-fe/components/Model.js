@@ -7,7 +7,7 @@ import 'prop-types';
 
 // TAKES PROPS IN THIS FORMAT
 // gender="female" || "male"
-// muscleVals={{abs: 0, biceps: 0, calves: 0, chest: 0, forearms: 1, glutes: 0, hamstrings: 7, lowerback: 0, midback: 0, quads: 3, shoulders: 0, sideabs: 10, triceps: 4, upperback: 0}}
+// muscleVals={{abdominals: 0, biceps: 0, calves: 0, chest: 0, forearms: 1, glutes: 0, hamstrings: 7, lowerback: 0, midback: 0, quadriceps: 3, shoulders: 0, obliques: 10, triceps: 4, upperback: 0}}
 
 
 export default class Model extends React.Component {
@@ -70,7 +70,7 @@ export default class Model extends React.Component {
   recolourMuscles = () => {
 	if (this.props.muscleVals){
 	muscleObj = this.props.muscleVals}
-	else muscleObj = {abs: 1, biceps: 2, calves: 3, chest: 4, forearms: 5, glutes: 6, hamstrings: 7, lowerback: 8, midback: 9, quads: 10, shoulders: 1, sideabs: 2, triceps: 3, upperback: 4}
+	else muscleObj = {abdominals: 0, biceps: 0, calves: 0, chest: 0, forearms: 0, glutes: 0, hamstrings: 0, lowerback: 0, midback: 0, quadriceps: 0, shoulders: 0, obliques: 0, triceps: 0, upperback: 0}
 	const muscles = Object.keys(muscleObj)
 	muscles.forEach((part)=>{
 		if (this[part]){
@@ -149,16 +149,16 @@ export default class Model extends React.Component {
   };
   loadAbs = async (gender) => {
     if (gender === 'female'){
-      const abs = await loadAsync(require(`./models/fe_abs.obj`))
-      this.scene.add(abs);
-      this.abs = abs;
-      this.abs.children[0].material.color = this.baseColor
+      const abdominals = await loadAsync(require(`./models/fe_abs.obj`))
+      this.scene.add(abdominals);
+      this.abdominals = abdominals;
+      this.abdominals.children[0].material.color = this.baseColor
     }
     else {
-      const abs = await loadAsync(require(`./models/male_abs.obj`))
-      this.scene.add(abs);
-      this.abs = abs;
-      this.abs.children[0].material.color = this.baseColor
+      const abdominals = await loadAsync(require(`./models/male_abs.obj`))
+      this.scene.add(abdominals);
+      this.abdominals = abdominals;
+      this.abdominals.children[0].material.color = this.baseColor
     }
   };
   loadGlutes = async (gender) => {
@@ -287,18 +287,18 @@ export default class Model extends React.Component {
   };
   loadQuads = async (gender) => {
     if (gender === 'female'){
-      const quads = await loadAsync(require(`./models/fe_quads.obj`))
-      this.scene.add(quads);
-      this.quads = quads;
-      this.quads.children[0].material.color = this.baseColor
-      this.quads.children[1].material.color = this.baseColor
+      const quadriceps = await loadAsync(require(`./models/fe_quads.obj`))
+      this.scene.add(quadriceps);
+      this.quadriceps = quadriceps;
+      this.quadriceps.children[0].material.color = this.baseColor
+      this.quadriceps.children[1].material.color = this.baseColor
     }
     else {
-      const quads = await loadAsync(require(`./models/male_quads.obj`))
-      this.scene.add(quads);
-      this.quads = quads;
-      this.quads.children[0].material.color = this.baseColor
-      this.quads.children[1].material.color = this.baseColor
+      const quadriceps = await loadAsync(require(`./models/male_quads.obj`))
+      this.scene.add(quadriceps);
+      this.quadriceps = quadriceps;
+      this.quadriceps.children[0].material.color = this.baseColor
+      this.quadriceps.children[1].material.color = this.baseColor
 
     }
   };
@@ -321,18 +321,18 @@ export default class Model extends React.Component {
   };
   loadSideAbs = async (gender) => {
     if (gender === 'female'){
-      const sideabs = await loadAsync(require(`./models/fe_sideabs.obj`))
-      this.scene.add(sideabs);
-      this.sideabs = sideabs;
-      this.sideabs.children[0].material.color = this.baseColor
+      const obliques = await loadAsync(require(`./models/fe_sideabs.obj`))
+      this.scene.add(obliques);
+      this.obliques = obliques;
+      this.obliques.children[0].material.color = this.baseColor
 
 
     }
     else {
-      const sideabs = await loadAsync(require(`./models/male_sideabs.obj`))
-      this.scene.add(sideabs);
-      this.sideabs = sideabs;
-      this.sideabs.children[0].material.color = this.baseColor
+      const obliques = await loadAsync(require(`./models/male_sideabs.obj`))
+      this.scene.add(obliques);
+      this.obliques = obliques;
+      this.obliques.children[0].material.color = this.baseColor
 
     }
   };
