@@ -21,21 +21,22 @@ export default class UserProfile extends React.Component {
 			isFemale: true,
 			genderResolved: true,
 			savedWorkoutsView: false,
-			tappedWorkout: ''
+			tappedWorkout: '',
+			loggedInUser: {}
 		}
 	}
 	componentWillMount(){
 		this.assignUser()
 	}
 	assignUser = async () => {
-		const loggedInUser = await AsyncStorage.getItem('userAccount')
-		this.setState({loggedInUser: JSON.parse(loggedInUser)})
+		const user = await AsyncStorage.getItem('userAccount')
+		const loggedInUser = JSON.parse(user)
+		this.setState({loggedInUser: loggedInUser, isFemale: loggedInUser.isFemale})
 
 	}
 
 	componentDidMount(){
-		this.getUserCompletedWorkouts()
-		this.getUserSavedWorkouts()
+	
 	}
 	componentDidUpdate(prevProps, prevState){
 		if (prevState.completedWorkouts !== this.state.completedWorkouts) {
@@ -43,14 +44,18 @@ export default class UserProfile extends React.Component {
 			return acc}, {})
 		this.setState({calendarPoints})
 		}
+		if (prevState.loggedInUser !== this.state.loggedInUser){
+			this.getUserCompletedWorkouts()
+			this.getUserSavedWorkouts()
+		}
 	}
 	render() {
-		const {user_name, saved_workouts, completedWorkouts, calendarPoints, currentEvent, savedWorkoutsView, tappedWorkout, isFemale} = this.state
+		const {loggedInUser, saved_workouts, completedWorkouts, calendarPoints, currentEvent, savedWorkoutsView, tappedWorkout, isFemale} = this.state
 		
 	
 		return (
 			<ScrollView style={{ flex: 1 }}>
-				<Text style={{fontSize: 25, textAlign: 'center', margin: 5}}>{`${user_name}'s Page`}</Text>
+				<Text style={{fontSize: 25, textAlign: 'center', margin: 5}}>{`${loggedInUser.user_name}'s Page`}</Text>
 				{(completedWorkouts.length > 0) &&<Text style={{textAlign: 'center', margin: 20}}>Your last workout was {completedWorkouts[0].workout_name} on {completedWorkouts[0].dateString}</Text>}
 				{Object.keys(calendarPoints).length > 0 &&
 				<Calendar
@@ -108,23 +113,25 @@ export default class UserProfile extends React.Component {
 	}
 
 	toggleGender = (bool)=> { 
-		const {isFemale, user_name} = this.state
+		const {isFemale, loggedInUser} = this.state
 		const originalGender = isFemale
 		this.setState({isFemale: bool}, ()=>{
-				patchUserGender(user_name, this.state.isFemale).catch((err)=>{this.setState({isFemale: originalGender,})})
+				patchUserGender(loggedInUser.user_name, loggedInUser.isFemale).catch((err)=>{this.setState({isFemale: originalGender,})})
 		})
 		
 }
 	getUserCompletedWorkouts = () => {
-		getCompletedWorkouts(this.state.user_name).then((res)=>{
+		console.log(this.state.loggedInUser.user_name)
+		getCompletedWorkouts(this.state.loggedInUser.user_name).then(({userCompleted})=>{
+			if (userCompleted){
 			res.sort((a,b)=>{return (b.created_at - a.created_at)})
 			res.map((item)=>{item.dateString = item.created_at.slice(0,10)})
-			this.setState({completedWorkouts: res})
+			this.setState({completedWorkouts: res})}
 		})
 
 	}
 	getUserSavedWorkouts = () => {
-		getSavedWorkouts(this.state.user_name).then((res)=>{
+		getSavedWorkouts(this.state.loggedInUser.user_name).then((res)=>{
 			this.setState({saved_workouts: res})
 		})
 	}
