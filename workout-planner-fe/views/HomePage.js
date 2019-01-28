@@ -21,7 +21,15 @@ export default class HomeScreen extends React.Component {
 	if (prevState.workout !== this.state.workout){
 		this.calculateMuscleVals()
 	}
+	if (prevState.appUserAccount !== this.setState.appUserAccount){
+		this.setUserAccount()
+	}
 	
+}
+setUserAccount = () => {
+	AsyncStorage.setItem('userAccount', JSON.stringify(this.state.appUserAccount));
+	console.log('stored!')
+
 }
 calculateMuscleVals = () => {
 	const {workout} = this.state;
@@ -105,7 +113,7 @@ calculateMuscleVals = () => {
 		return user.actual_name === fbUser;
 	})
 	if (currentUser.length > 1) {console.log('NON UNIQUE LOGIN CREDENTIALS')}
-	else {this.setState({appUserAccount: currentUser})}
+	else {this.setState({appUserAccount: currentUser[0]})}
   }
 
   componentDidMount() {
