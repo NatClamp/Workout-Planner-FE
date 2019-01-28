@@ -25,7 +25,9 @@ export default class MuscleScreen extends Component {
   render() {
     const { getParam } = this.props.navigation;
     const addExerciseToWorkout = getParam('addExerciseToWorkout');
-    return (
+    return this.state.muscles.length === 0 ? (
+      <Text>Loading...</Text>
+    ) : (
       <Fragment>
         <View>
           <Modal
