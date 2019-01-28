@@ -108,12 +108,9 @@ export default class MuscleScreen extends Component {
     return fetch(`${URL}/muscles`)
       .then(response => response.json())
       .then(responseJson => {
-        this.setState(
-          {
-            muscles: responseJson.muscles,
-          },
-          function() {},
-        );
+        this.setState({
+          muscles: responseJson.muscles,
+        });
       })
       .catch(error => {
         console.error(error);
@@ -127,12 +124,9 @@ export default class MuscleScreen extends Component {
           Alert.alert('Sorry', "There currently aren't any exercises for this muscle group");
           this.setModalVisible(!this.state.modalVisible);
         } else {
-          this.setState(
-            {
-              muscleExercises: responseJson.exercises,
-            },
-            function() {},
-          );
+          this.setState({
+            muscleExercises: responseJson.exercises,
+          });
         }
       })
       .catch(error => {
