@@ -7,6 +7,7 @@
 		"eject": "expo eject"
 	},
 	"dependencies": {
+		"axios": "^0.18.0",
 		"expo": "^32.0.0",
 		"expo-graphics": "^1.0.2",
 		"expo-three": "^3.0.0-alpha.6",
