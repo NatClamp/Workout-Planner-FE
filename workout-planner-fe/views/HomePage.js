@@ -3,6 +3,7 @@ import { StyleSheet, View, Button, AsyncStorage } from 'react-native';
 import Model from '../components/Model';
 import { Accordion, Container, Content, Card, CardItem, Text } from 'native-base';
 import { getAllUsers } from '../utils/backendAPI';
+import Axios from 'axios';
 
 const URL = 'https://nc-project-be.herokuapp.com/api/';
 
@@ -40,9 +41,15 @@ export default class HomeScreen extends React.Component {
 			const { params } = this.props.navigation.state;
 			const workoutToLoad = params.workoutToLoad;
 			if (workoutToLoad) {
-				console.log(workoutToLoad);
+				this.setState({workout: workoutToLoad}, ()=>{
+					this.cheapWorkaround()
+				})
 			}
 		}
+	}
+	cheapWorkaround = () =>{
+		Axios.get(`https://nc-project-be.herokuapp.com/api/exercises`).then((data)=>{console.log(data, 'data')})
+
 	}
 	setUserAccount = () => {
 		AsyncStorage.setItem('userAccount', JSON.stringify(this.state.appUserAccount));
