@@ -6,9 +6,16 @@ import { SearchBar } from 'react-native-elements';
 const URL = 'https://nc-project-be.herokuapp.com/api/';
 
 class ExerciseList extends Component {
-	state = {
-		exercises: []
-	};
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			exercises: []
+		};
+
+		this.arrayholder = [];
+	}
+
 	render() {
 		return (
 			<Fragment>
@@ -18,11 +25,6 @@ class ExerciseList extends Component {
 						onChangeText={(text) => this.searchFilterFunction(text)}
 						autoCorrect={false}
 					/>
-					{/* <FlatList
-						data={this.state.exercises}
-						renderItem={({ item }) => <Text>{item.title}</Text>}
-						keyExtractor={({ title }) => title}
-					/> */}
 					<Accordion data={this.state.exercises} />
 				</View>
 			</Fragment>
@@ -30,7 +32,7 @@ class ExerciseList extends Component {
 	}
 
 	searchFilterFunction = (text) => {
-		const newData = this.state.exercises.filter((exercise) => {
+		const newData = this.arrayholder.filter((exercise) => {
 			const exerciseData = `${exercise.title.toUpperCase()}`;
 			const textData = text.toUpperCase();
 			return exerciseData.indexOf(textData) > -1;
@@ -45,6 +47,7 @@ class ExerciseList extends Component {
 				this.setState({
 					exercises: responseJson.exercises
 				});
+				this.arrayholder = responseJson.exercises;
 			})
 			.catch((error) => {
 				console.error(error);
