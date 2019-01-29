@@ -75,6 +75,7 @@ export default class HomeScreen extends React.Component {
 				<View style={{ height: 350, marginTop: 10 }}>
 					<Model muscleVals={this.state.muscleVals} />
 				</View>
+				<Button title='OpeningScreen' onPress={() => this.props.navigation.navigate('OpeningScreen')} />
 				<View style={styles.container}>
 					<View style={styles.buttonContainer}>
 						<Button title='All Exercises' onPress={() => this.props.navigation.navigate('ExerciseList')} />

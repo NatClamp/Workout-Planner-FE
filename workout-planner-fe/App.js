@@ -93,13 +93,13 @@ const WorkoutStack = createStackNavigator(
 			screen: saveWorkout
 		},
 		OpeningScreen: {
-			screen: OpeningScreen
-		},
-		SavedWorkouts: {
-			screen: SavedWorkouts,
+			screen: OpeningScreen,
 			navigationOptions: {
 				header: null
 			}
+		},
+		SavedWorkouts: {
+			screen: SavedWorkouts
 		}
 	},
 	{
