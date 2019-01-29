@@ -25,9 +25,9 @@ class WorkoutPreviewList extends Component {
             </Content>
           </Container>
           <Button
-            title="Save Workout for later"
+            title="Share Workout"
             onPress={() =>
-              this.props.navigation.navigate('saveWorkout', {
+              this.props.navigation.navigate('postWorkout', {
                 currentWorkout: this.state.currentWorkout,
                 appUserAccount: this.state.appUserAccount,
               })
