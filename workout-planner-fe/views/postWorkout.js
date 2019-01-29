@@ -67,7 +67,7 @@ export default class postWorkout extends React.Component {
 	saveWorkout = () => {
 		this.postWorkout();
 		const workoutName = this.state.workoutName;
-		const username = this.state.appUserAccount._id;
+		const username = this.state.appUserAccount.user_name;
 		axios
 			.post(`${URL}/workouts/${workoutName}/save/${username}`)
 			.then(() => {
@@ -93,16 +93,16 @@ export default class postWorkout extends React.Component {
 
 	postWorkout = () => {
 		const workoutName = this.state.workoutName;
-		const username = this.state.appUserAccount._id;
+		const user_id = this.state.appUserAccount._id;
 		const isPrivate = this.state.isPrivate;
 		const exercises = this.state.currentWorkout.map((exercise) => exercise._id);
-		console.log(workoutName, username, isPrivate, exercises);
+		console.log(workoutName, user_id, isPrivate, exercises);
 		axios
 			.post(`${URL}/workouts`, {
 				name: workoutName,
 				exercises: exercises,
 				private: isPrivate,
-				created_by: username
+				created_by: user_id
 			})
 			.catch((err) => {
 				console.log(err);
