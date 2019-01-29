@@ -1,105 +1,138 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
-import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
-import HomePage from '../views/HomePage';
+import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
+import { Icon } from 'native-base';
 import WorkoutPreview from '../views/WorkoutPreview';
 import CompanionScreen from '../views/CompanionScreen';
 import UserProfile from '../views/UserProfile';
-import Login from '../views/Login';
 import MuscleScreen from '../views/MuscleScreen';
 import ExerciseList from '../views/ExerciseList';
-import { Icon } from 'native-base';
-import { Button } from 'react-native-elements';
+import Loading from '../views/Loading';
+import HomePage from '../views/HomePage';
+import SignIn from '../views/SignIn';
+import CreateExerciseForm from '../views/CreateExerciseForm';
+import CompletionModal from '../views/CompletionModal';
+import postWorkout from '../views/postWorkout';
+import Register from '../views/Register';
+import SuccessfulRegister from '../views/SuccessfulRegister';
+import OpeningScreen from '../views/OpeningScreen';
+import SavedWorkouts from '../views/SavedWorkouts';
 
-const DrawerIcon = ({ navigation }) => {
-	return (
-		<TouchableOpacity
-			style={{ padding: 5, paddingLeft: 10, paddingRight: 15 }}
-			onPress={() => {
-				navigation.toggleDrawer();
-			}}
-		>
-			<Text style={{ color: 'white', fontSize: 25 }}>
-				<Icon name='menu' />
-			</Text>
-		</TouchableOpacity>
-	);
-};
+const ProfileIcon = ({ navigation }) => (
+  <TouchableOpacity
+    style={{ padding: 5, paddingLeft: 10, paddingRight: 15 }}
+    onPress={() => {
+      navigation.navigate('UserProfile');
+    }}
+  >
+    <Text style={{ color: 'white', fontSize: 25 }}>
+      <Icon name="md-person" size={30} />
+    </Text>
+  </TouchableOpacity>
+);
 
-const Stack = {
-	Login: {
-		screen: Login,
-		navigationOptions: {
-			header: null
-		}
-	},
-	Home: {
-		screen: HomePage,
-		navigationOptions: ({ navigation }) => ({
-			title: 'Home',
-			headerLeft: <DrawerIcon navigation={navigation} />
-		})
-	},
-	WorkoutPreview: {
-		screen: WorkoutPreview,
-		navigationOptions: ({ navigation }) => ({
-			title: 'Workout Preview',
-			headerLeft: <DrawerIcon navigation={navigation} />
-		})
-	},
-	CompanionScreen: {
-		screen: CompanionScreen,
-		navigationOptions: ({ navigation }) => ({
-			title: 'Workout Companion',
-			headerLeft: <DrawerIcon navigation={navigation} />
-		})
-	},
-	UserProfile: {
-		screen: UserProfile,
-		navigationOptions: ({ navigation }) => ({
-			title: 'Profile',
-			headerLeft: <DrawerIcon navigation={navigation} />
-		})
-	},
-	MuscleScreen: {
-		screen: MuscleScreen,
-		navigationOptions: {
-			title: 'Choose a Muscle',
-			headerLeft: <Icon name='md-arrow-back' />
-		}
-	},
-	ExerciseList: {
-		screen: ExerciseList,
-		navigationOptions: {
-			title: 'Choose an Exercise',
-			headerLeft: <Icon name='md-arrow-back' />
-		}
-	}
-};
+const WorkoutStack = createStackNavigator(
+  {
+    Home: {
+      screen: HomePage,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Home',
+        headerRight: <ProfileIcon navigation={navigation} />,
+      }),
+    },
+    WorkoutPreview: {
+      screen: WorkoutPreview,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Workout Preview',
+        headerRight: <ProfileIcon navigation={navigation} />,
+      }),
+    },
+    CompanionScreen: {
+      screen: CompanionScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Workout',
+        headerRight: <ProfileIcon navigation={navigation} />,
+      }),
+    },
+    MuscleScreen: {
+      screen: MuscleScreen,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Choose a muscle',
+        headerRight: <ProfileIcon navigation={navigation} />,
+      }),
+    },
+    ExerciseList: {
+      screen: ExerciseList,
+      navigationOptions: ({ navigation }) => ({
+        title: 'Exercises',
+        headerRight: <ProfileIcon navigation={navigation} />,
+      }),
+    },
+    UserProfile: {
+      screen: UserProfile,
+    },
+    Register: {
+      screen: Register,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    CompletionModal: {
+      screen: CompletionModal,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    CreateExerciseForm: {
+      screen: CreateExerciseForm,
+    },
+    SuccessfulRegister: {
+      screen: SuccessfulRegister,
+    },
+    postWorkout: {
+      screen: postWorkout,
+    },
+    OpeningScreen: {
+      screen: OpeningScreen,
+    },
+    SavedWorkouts: {
+      screen: SavedWorkouts,
+      navigationOptions: {
+        header: null,
+      },
+    },
+  },
+  {
+    initialRouteName: 'Home',
+  },
+);
 
-const DrawerRoutes = {
-	Home: {
-		name: 'Home',
-		screen: createStackNavigator(Stack, { initialRouteName: 'Home' })
-	},
-	Profile: {
-		name: 'Profile',
-		screen: createStackNavigator(Stack, { initialRouteName: 'UserProfile' })
-	},
-	Logout: {
-		name: 'logout',
-		screen: createStackNavigator(Stack, { initialRouteName: 'Login' })
-	}
-};
+const AuthStack = createStackNavigator({
+  Home: {
+    screen: WorkoutStack,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  SignIn: {
+    screen: SignIn,
+    navigationOptions: {
+      title: 'Sign In',
+      header: null,
+    },
+  },
+});
 
-export default (RootNavigator = createStackNavigator({
-	Drawer: {
-		name: 'Drawer',
-		screen: createDrawerNavigator(DrawerRoutes),
-		navigationOptions: {
-			title: 'Butt-Buster',
-			header: null
-		}
-	},
-	...Stack
-}));
+const AppContainer = createAppContainer(
+  createSwitchNavigator(
+    {
+      AuthentificationCheck: Loading,
+      Auth: AuthStack,
+    },
+    {
+      initialRouteName: 'AuthentificationCheck',
+    },
+  ),
+);
+
+export default AppContainer;
