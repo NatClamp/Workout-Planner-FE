@@ -78,6 +78,9 @@ export default class App extends React.Component {
       Font.loadAsync({
         'Roboto-Italic': require('./assets/Roboto-Italic.ttf'),
       }),
+      Font.loadAsync({
+        'Roboto-Light': require('./assets/Roboto-Light.ttf'),
+      }),
     ]);
   }
 }
