@@ -1,13 +1,12 @@
 import { View as GraphicsView } from 'expo-graphics';
 import ExpoTHREE, { THREE } from 'expo-three';
 import React, {Fragment} from 'react';
-import {Text, TouchableOpacity} from 'react-native'
+import {Text, TouchableOpacity, AsyncStorage} from 'react-native'
 import { Icon } from 'react-native-elements'
 import 'three';
 import 'prop-types';
 
 // TAKES PROPS IN THIS FORMAT
-// gender="female" || "male"
 // muscleVals={{abdominals: 0, biceps: 0, calves: 0, chest: 0, forearms: 1, glutes: 0, hamstrings: 7, lowerback: 0, midback: 0, quadriceps: 3, shoulders: 0, obliques: 10, triceps: 4, upperback: 0}}
 
 
@@ -17,13 +16,19 @@ export default class Model extends React.Component {
       this.recolourMuscles()
       console.log(this.props.muscleVals)
     }
+
   }
+  assignUser = async () => {
+		const user = await AsyncStorage.getItem('userAccount')
+		const loggedInUser = JSON.parse(user)
+		this.setState({loggedInUser: loggedInUser, gender: loggedInUser.isFemale ? 'female': 'male'}, ()=>{
+      this.loadModel(this.state.gender)
+    })
+	}
   componentWillMount() {
   THREE.suppressExpoWarnings();
-  if (!this.props.gender){
-    const randGend = Math.random() > 0.5 ? 'male' : 'female'
-    this.setState({gender: randGend})
-  } else this.setState({gender: this.props.gender}) 
+  this.assignUser()
+
 
 	this.colorValues = {
 		0 : new THREE.Color('#66D60A'),
@@ -68,7 +73,6 @@ export default class Model extends React.Component {
     this.baseColor = this.colorValues[0]
 
     this.cameraRotation()
-	  this.loadModel(this.state.gender)
     this.establishLighting()
   };
 

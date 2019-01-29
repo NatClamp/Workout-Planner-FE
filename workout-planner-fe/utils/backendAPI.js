@@ -8,4 +8,5 @@ module.exports = {
   getSavedWorkouts: username => fetch(`${URL}users/${username}/saved_workouts`).then(res => res.json()).then(res => res.userSaved).catch((err) => { console.log(err); }),
   patchUser: (username, gender) => Axios.patch(`${URL}users/${username}/`, { newName: username, isFemale: gender }),
   getAllUsers: () => fetch(`${URL}users/`).then(res => res.json()),
+  getSingleUser: username => fetch(`${URL}/users/${username}`),
 };
