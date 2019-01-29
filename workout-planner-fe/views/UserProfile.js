@@ -1,8 +1,6 @@
 import React, {Fragment} from 'react';
-import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, TextInput, ScrollView, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, TextInput, ScrollView, AsyncStorage, Alert } from 'react-native';
 import {Calendar} from 'react-native-calendars'
-import moment from 'moment'
-import { Switch } from 'native-base';
 import {getCompletedWorkouts,
 		getSavedWorkouts,
 		patchUser,
@@ -107,8 +105,12 @@ export default class UserProfile extends React.Component {
 	}
 	loadWorkout = () => {
 		// save workout data into props and navigate to companion page
+	
+		this.props.navigation.navigate('Home', { workoutToLoad: this.state.tappedWorkout })
+	
 
 	}
+
 	tapWorkout = (workout) => {
 		this.state.tappedWorkout === workout ? this.setState({tappedWorkout: ''}):
 		this.setState({tappedWorkout: workout})
@@ -117,6 +119,11 @@ export default class UserProfile extends React.Component {
 		getSingleUser(this.state.loggedInUser.user_name).then((data)=>{return data.json()}).then(({user})=>{
 			AsyncStorage.setItem('userAccount', JSON.stringify(user))
 			this.assignUser()
+			Alert.alert(
+				'Model Changed',
+				'Model successfully changed. Changes won\'t take effect until the app is restarted',
+				[{text: 'OK'}]
+			)
 		})
 	}
 

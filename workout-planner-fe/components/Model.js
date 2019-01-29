@@ -22,7 +22,11 @@ export default class Model extends React.Component {
 		const user = await AsyncStorage.getItem('userAccount')
 		const loggedInUser = JSON.parse(user)
 		this.setState({loggedInUser: loggedInUser, gender: loggedInUser.isFemale ? 'female': 'male'}, ()=>{
-      this.loadModel(this.state.gender)
+      if (this.state.gender){
+      this.loadModel(this.state.gender)}
+      else {
+        this.loadModel('male')
+      }
     })
 	}
   componentWillMount() {

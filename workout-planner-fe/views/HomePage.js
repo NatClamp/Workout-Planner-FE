@@ -35,7 +35,12 @@ export default class HomeScreen extends React.Component {
     }
     if (prevState.appUserAccount !== this.setState.appUserAccount) {
       this.setUserAccount();
-    }
+	}
+	if (prevProps.navigation.state !== this.props.navigation.state){
+		const { params } = this.props.navigation.state;
+		const workoutToLoad = params.workoutToLoad;
+		if (workoutToLoad){console.log(workoutToLoad)}
+	}
   }
   setUserAccount = () => {
     AsyncStorage.setItem('userAccount', JSON.stringify(this.state.appUserAccount));
