@@ -5,7 +5,7 @@ import moment from 'moment'
 import { Switch } from 'native-base';
 import {getCompletedWorkouts,
 		getSavedWorkouts,
-		patchUserGender,} from '../utils/backendAPI'
+		patchUser,} from '../utils/backendAPI'
 
 
 
@@ -118,7 +118,7 @@ export default class UserProfile extends React.Component {
 		const {isFemale, loggedInUser} = this.state
 		const originalGender = isFemale
 		this.setState({isFemale: bool}, ()=>{
-				patchUserGender(loggedInUser.user_name, loggedInUser.isFemale).catch((err)=>{this.setState({isFemale: originalGender,})})
+			patchUser(loggedInUser.user_name, isFemale).catch((err)=>{this.setState({isFemale: originalGender,})})
 		})
 		
 }
