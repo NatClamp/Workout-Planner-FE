@@ -14,6 +14,7 @@ export default class Register extends React.Component {
     user_name: '',
     actual_name: '',
     isFemale: false,
+    err: false,
   };
   onChangeText = (key, val) => {
     this.setState({ [key]: val });
@@ -30,6 +31,7 @@ export default class Register extends React.Component {
           placeholder="Full Name"
           autoCapitalize="none"
           placeholderTextColor="white"
+          isRequired={true}
           onChangeText={val => this.onChangeText('actual_name', val)}
         />
 
@@ -37,6 +39,7 @@ export default class Register extends React.Component {
           style={styles.input}
           placeholder="Username"
           autoCapitalize="none"
+          isRequired={true}
           placeholderTextColor="white"
           onChangeText={val => this.onChangeText('user_name', val)}
         />
@@ -58,6 +61,14 @@ export default class Register extends React.Component {
         <TouchableOpacity onPress={this.addToUsers} style={styles.button}>
           <Text style={styles.buttonText}>Sign up</Text>
         </TouchableOpacity>
+
+        {this.state.err == true && (
+          <View style={styles.error}>
+            <Text style={styles.errorText}>
+              There are one or more required fields empty. Please try again.
+            </Text>
+          </View>
+        )}
       </View>
     );
   }
@@ -72,6 +83,7 @@ export default class Register extends React.Component {
         this.props.navigation.navigate('SuccessfulRegister');
       })
       .catch(err => {
+        this.setState({ err: true });
         console.log(err);
       });
   };
@@ -95,6 +107,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  error: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: 300,
+    textAlign: 'center',
+    marginTop: 20,
+  },
   titleText: {
     fontFamily: 'Krub-Medium',
     fontSize: 20,
@@ -108,6 +127,14 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
     color: '#2C497F',
+  },
+  errorText: {
+    fontFamily: 'Krub-Medium',
+    fontSize: 15,
+    padding: 0,
+    margin: 0,
+    color: '#2C497F',
+    textAlign: 'center',
   },
   span: {
     fontSize: 40,
