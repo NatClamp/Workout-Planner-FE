@@ -9,17 +9,22 @@ export default class WorkoutPreview extends React.Component {
   render() {
     const { params } = this.props.navigation.state;
     const currentWorkout = params.currentWorkout;
+    const appUserAccount = params.appUserAccount;
     const currentUser = params.currentUser;
     return (
       <View style={{ flex: 1 }}>
         <View style={{ height: 350, marginTop: 10 }}>
           <Model />
         </View>
-        <WorkoutPreviewList currentWorkout={currentWorkout} currentUser={currentUser} navigation={this.props.navigation}/>
+        <WorkoutPreviewList
+          currentWorkout={currentWorkout}
+          currentUser={currentUser}
+          appUserAccount={appUserAccount}
+          navigation={this.props.navigation}
+        />
         <Button
           title="Start Workout"
-          onPress={() => this.props.navigation.navigate('CompanionScreen', { currentWorkout })
-          }
+          onPress={() => this.props.navigation.navigate('CompanionScreen', { currentWorkout })}
         />
       </View>
     );

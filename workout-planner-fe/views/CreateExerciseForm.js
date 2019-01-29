@@ -12,7 +12,13 @@ export default class CreateExerciseForm extends Component {
 		content: '',
 		major_muscle: '',
 		minor_muscle: '',
-		muscles: []
+		muscles: [],
+		loggedInUser: {}
+	};
+
+	assignUser = async () => {
+		const user = await AsyncStorage.getItem('userAccount');
+		const loggedInUser = JSON.parse(user);
 	};
 
 	render() {
@@ -94,7 +100,7 @@ export default class CreateExerciseForm extends Component {
 					content: this.state.content,
 					major_muscle: this.state.major_muscle,
 					minor_muscle: this.state.minor_muscle,
-					created_by: '5c4ee735eff6044a774a70ce'
+					created_by: this.user.user_id
 				},
 				console.log()
 			)

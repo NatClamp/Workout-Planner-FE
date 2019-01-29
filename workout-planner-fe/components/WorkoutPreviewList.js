@@ -5,9 +5,9 @@ import { Container, Content, Card, CardItem, Text } from 'native-base';
 class WorkoutPreviewList extends Component {
   state = {
     currentWorkout: [],
+    appUserAccount: {},
   };
   render() {
-    // console.log(this.props);
     return (
       <Fragment>
         <View style={{ flex: 1 }}>
@@ -29,6 +29,7 @@ class WorkoutPreviewList extends Component {
             onPress={() =>
               this.props.navigation.navigate('saveWorkout', {
                 currentWorkout: this.state.currentWorkout,
+                appUserAccount: this.state.appUserAccount,
               })
             }
           />
@@ -39,7 +40,8 @@ class WorkoutPreviewList extends Component {
 
   componentDidMount() {
     const currentWorkout = this.props.currentWorkout;
-    this.setState({ currentWorkout });
+    const appUserAccount = this.props.appUserAccount;
+    this.setState({ currentWorkout, appUserAccount });
   }
 }
 

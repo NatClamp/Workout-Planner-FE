@@ -90,9 +90,6 @@ export default class HomeScreen extends React.Component {
 							}}
 						/>
 					</View>
-					<View style={styles.buttonContainer}>
-						<Button title='Create' onPress={() => this.props.navigation.navigate('CreateExerciseForm')} />
-					</View>
 				</View>
 				<View style={{ flex: 1 }}>
 					<Content>
@@ -123,7 +120,8 @@ export default class HomeScreen extends React.Component {
 						onPress={() =>
 							this.props.navigation.navigate('WorkoutPreview', {
 								currentWorkout: this.state.workout,
-								currentUser: this.state.currentUser
+								currentUser: this.state.currentUser,
+								appUserAccount: this.state.appUserAccount
 							})}
 					/>
 				</View>
