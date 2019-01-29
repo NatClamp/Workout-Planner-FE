@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, View, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
+import { Text, ScrollView, View, TextInput, TouchableOpacity, AsyncStorage, Alert } from 'react-native';
 import { Container, Content, Form, Item } from 'native-base';
 import Model from '../components/Model';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -13,7 +13,8 @@ export default class CreateExerciseForm extends Component {
 		major_muscle: '',
 		minor_muscle: '',
 		muscles: [],
-		loggedInUser: {}
+		loggedInUser: {},
+		err: false
 	};
 
 	assignUser = async () => {
@@ -72,6 +73,11 @@ export default class CreateExerciseForm extends Component {
 						</Content>
 					</Container>
 				</ScrollView>
+				{this.state.err == true && (
+					<View>
+						<Text>There are one or more required fields empty. Please try again.</Text>
+					</View>
+				)}
 			</View>
 		);
 	}
@@ -104,6 +110,7 @@ export default class CreateExerciseForm extends Component {
 				this.props.navigation.navigate('Home');
 			})
 			.catch((err) => {
+				this.setState({ err: true });
 				console.log(err);
 			});
 	};

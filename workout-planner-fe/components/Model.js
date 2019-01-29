@@ -92,8 +92,13 @@ export default class Model extends React.Component {
 	})
   }
   handleRotate = () => {
-    this.angleValue += 180
-    this.desiredAngle = this.angleValue * Math.PI/180
+    if (this.state.moving){}
+    else {
+      this.setState({moving: true})
+        this.angleValue += 180
+        this.desiredAngle = this.angleValue * Math.PI/180
+    
+    }
 
   }
   cameraRotation = () => {
@@ -120,8 +125,9 @@ export default class Model extends React.Component {
     this.scene.add(light);
   }
   onRender = delta => {
-    if (this.cameraAngle >= this.desiredAngle){this.orbitSpeed=0}
-    else {this.orbitSpeed = 4*Math.PI/180
+    if (this.cameraAngle >= this.desiredAngle){this.orbitSpeed=0; this.setState({moving: false})}
+    else {
+      this.orbitSpeed = 4*Math.PI/180
       this.cameraAngle += this.orbitSpeed;
     this.camera.position.x = Math.cos(this.cameraAngle) * this.orbitRange;
     this.camera.position.z = Math.sin(this.cameraAngle) * this.orbitRange;

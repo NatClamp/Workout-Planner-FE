@@ -84,7 +84,7 @@ export default class UserProfile extends React.Component {
 				{saved_workouts.length > 0 && <TouchableOpacity style={styles.loadWorkout} id='savedWorkoutsView' onPress={()=>this.handleDropdown('savedWorkoutsView')}><Text>Saved Workouts v</Text></TouchableOpacity>}
 					{tappedWorkout.length > 0 && <TouchableOpacity style={styles.loadWorkout} onPress={this.loadWorkout}><Text>Load Selected</Text></TouchableOpacity>}</View>
 				{savedWorkoutsView && <FlatList style={{minHeight: 200}} data={saved_workouts.map((item, i)=>{return {workout: item.workout, key: item.workout}})} renderItem={({item})=><Text style={tappedWorkout === item.key ? styles.selectedWorkout:styles.workoutItem} onPress={()=>{this.tapWorkout(item.key)}} key={item.key}>{item.workout}</Text>}/>}
-				<Text style={{fontSize: 16, marginTop: 25, marginBottom: 10, marginLeft: 5, fontWeight: 'bold'}}>Preferences</Text>
+				<Text style={styles.title}>Preferences</Text>
 				<Text>Model Gender</Text>
 				<View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
 				<TouchableOpacity style={isFemale ? styles.buttonActive:styles.buttonInactive} onPress={()=>{this.toggleGender(false)}}><Text style={{textAlign: 'center'}}>Male</Text></TouchableOpacity>
@@ -159,5 +159,6 @@ const styles = StyleSheet.create({
 	buttonInactive: {width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'},
 	loadWorkout: {width: 150, marginLeft: 20, padding: 10, marginRight: 20, marginTop: 20, borderColor: 'black', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,},
 	selectedWorkout: {marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid',backgroundColor: 'green', borderRadius: 3,},
-	workoutItem: {marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,}
+	workoutItem: {marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,},
+	title: {fontSize: 16, marginTop: 25, marginBottom: 10, marginLeft: 5, fontWeight: 'bold'}
 });
