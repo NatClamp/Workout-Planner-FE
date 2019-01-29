@@ -10,7 +10,6 @@ import {
   Image,
 } from 'react-native';
 import { fbApi } from '../utils/facebookApi';
-import { Row } from 'native-base';
 
 export default class SignIn extends React.Component {
   FBSignIn = async () => {
