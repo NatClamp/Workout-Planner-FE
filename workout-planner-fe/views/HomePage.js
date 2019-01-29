@@ -36,6 +36,13 @@ export default class HomeScreen extends React.Component {
 		if (prevState.appUserAccount !== this.setState.appUserAccount) {
 			this.setUserAccount();
 		}
+		if (prevProps.navigation.state !== this.props.navigation.state) {
+			const { params } = this.props.navigation.state;
+			const workoutToLoad = params.workoutToLoad;
+			if (workoutToLoad) {
+				console.log(workoutToLoad);
+			}
+		}
 	}
 	setUserAccount = () => {
 		AsyncStorage.setItem('userAccount', JSON.stringify(this.state.appUserAccount));
@@ -68,14 +75,13 @@ export default class HomeScreen extends React.Component {
 		this.setState({ muscleVals });
 	};
 	render() {
-		// const currentUser = this.props.navigation.getParam('currentUser');
 		console.log(' from the state on homepage ====>', this.state.currentUser);
+		const { workout } = this.state;
 		return (
 			<View style={{ flex: 1 }}>
 				<View style={{ height: 350, marginTop: 10 }}>
 					<Model muscleVals={this.state.muscleVals} />
 				</View>
-				<Button title='OpeningScreen' onPress={() => this.props.navigation.navigate('OpeningScreen')} />
 				<View style={styles.container}>
 					<View style={styles.buttonContainer}>
 						<Button title='All Exercises' onPress={() => this.props.navigation.navigate('ExerciseList')} />
@@ -123,16 +129,18 @@ export default class HomeScreen extends React.Component {
 				</View>
 
 				<View>
-					<Button
-						style={{ flex: 1, marginTop: 10, backgroundColor: 'blue' }}
-						title='Workout Preview'
-						onPress={() =>
-							this.props.navigation.navigate('WorkoutPreview', {
-								currentWorkout: this.state.workout,
-								currentUser: this.state.currentUser,
-								appUserAccount: this.state.appUserAccount
-							})}
-					/>
+					{workout.length > 0 && (
+						<Button
+							style={{ flex: 1, marginTop: 10, backgroundColor: 'blue' }}
+							title='Workout Preview'
+							onPress={() =>
+								this.props.navigation.navigate('WorkoutPreview', {
+									currentWorkout: this.state.workout,
+									currentUser: this.state.currentUser,
+									appUserAccount: this.state.appUserAccount
+								})}
+						/>
+					)}
 				</View>
 			</View>
 		);

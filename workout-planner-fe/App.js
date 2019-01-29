@@ -12,7 +12,7 @@ import HomePage from './views/HomePage';
 import SignIn from './views/SignIn';
 import CreateExerciseForm from './views/CreateExerciseForm';
 import CompletionModal from './views/CompletionModal';
-import saveWorkout from './views/saveWorkout';
+import postWorkout from './views/postWorkout';
 import Register from './views/Register';
 import SuccessfulRegister from './views/SuccessfulRegister';
 import OpeningScreen from './views/OpeningScreen';
@@ -89,17 +89,17 @@ const WorkoutStack = createStackNavigator(
 		SuccessfulRegister: {
 			screen: SuccessfulRegister
 		},
-		saveWorkout: {
-			screen: saveWorkout
+		postWorkout: {
+			screen: postWorkout
 		},
 		OpeningScreen: {
-			screen: OpeningScreen,
+			screen: OpeningScreen
+		},
+		SavedWorkouts: {
+			screen: SavedWorkouts,
 			navigationOptions: {
 				header: null
 			}
-		},
-		SavedWorkouts: {
-			screen: SavedWorkouts
 		}
 	},
 	{

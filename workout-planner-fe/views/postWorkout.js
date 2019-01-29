@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const URL = 'https://nc-project-be.herokuapp.com/api/';
 
-export default class saveWorkout extends React.Component {
+export default class postWorkout extends React.Component {
   state = {
     workoutName: '',
     currentWorkout: [],

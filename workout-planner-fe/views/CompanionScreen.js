@@ -11,22 +11,72 @@ export default class CompanionScreen extends React.Component {
   state = {
     exercises: [],
     checked: [],
+    muscleVals: {
+      abdominals: 0,
+      biceps: 0,
+      calves: 0,
+      chest: 0,
+      forearms: 0,
+      glutes: 0,
+      hamstrings: 0,
+      lowerback: 0,
+      midback: 0,
+      quadriceps: 0,
+      shoulders: 0,
+      obliques: 0,
+      triceps: 0,
+      upperback: 0,
+    },
   };
 
   checkItem = exercise => {
     const { checked } = this.state;
-
     if (!checked.includes(exercise)) {
       this.setState({ checked: [...checked, exercise] });
     } else {
       this.setState({ checked: checked.filter(a => a !== exercise) });
     }
   };
+
+  calculateMuscleVals = () => {
+    const { checked } = this.state;
+    const muscleVals = {
+      abdominals: 0,
+      biceps: 0,
+      calves: 0,
+      chest: 0,
+      forearms: 0,
+      glutes: 0,
+      hamstrings: 0,
+      lowerback: 0,
+      midback: 0,
+      quadriceps: 0,
+      shoulders: 0,
+      obliques: 0,
+      triceps: 0,
+      upperback: 0,
+    };
+    checked.forEach(exercise => {
+      muscleVals[exercise.major_muscle] += 3;
+      exercise.minor_muscles.forEach(muscle => {
+        muscleVals[muscle] += 1;
+      });
+    });
+    this.setState({ muscleVals });
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.checked !== this.state.checked) {
+      this.calculateMuscleVals();
+    }
+  }
+
   render() {
+
     return (
       <View style={{ flex: 1 }}>
         <View style={{ height: 350, marginTop: 10 }}>
-          <Model />
+          <Model muscleVals={this.state.muscleVals} />
         </View>
         <Container>
           <Content padder>

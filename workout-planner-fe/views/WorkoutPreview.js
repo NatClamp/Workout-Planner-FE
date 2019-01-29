@@ -13,9 +13,6 @@ export default class WorkoutPreview extends React.Component {
     const currentUser = params.currentUser;
     return (
       <View style={{ flex: 1 }}>
-        <View style={{ height: 350, marginTop: 10 }}>
-          <Model />
-        </View>
         <WorkoutPreviewList
           currentWorkout={currentWorkout}
           currentUser={currentUser}
