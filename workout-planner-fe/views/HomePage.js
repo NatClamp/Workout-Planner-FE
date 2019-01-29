@@ -90,6 +90,9 @@ export default class HomeScreen extends React.Component {
 							}}
 						/>
 					</View>
+					<View style={styles.buttonContainer}>
+						<Button title='Create' onPress={() => this.props.navigation.navigate('CreateExerciseForm')} />
+					</View>
 				</View>
 				<View style={{ flex: 1 }}>
 					<Content>
