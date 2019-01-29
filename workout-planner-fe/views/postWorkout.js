@@ -52,7 +52,6 @@ export default class postWorkout extends React.Component {
 						}}
 					/>
 					<Button title='Save Workout' onPress={this.saveWorkout} />
-					<Button title='Post Workout' onPress={this.postWorkout} />
 				</View>
 			</Fragment>
 		);
@@ -95,7 +94,7 @@ export default class postWorkout extends React.Component {
 		const workoutName = this.state.workoutName;
 		const user_id = this.state.appUserAccount._id;
 		const isPrivate = this.state.isPrivate;
-		const exercises = this.state.currentWorkout.map((exercise) => exercise._id);
+		const exercises = this.state.currentWorkout.map((exercise) => exercise.title);
 		console.log(workoutName, user_id, isPrivate, exercises);
 		axios
 			.post(`${URL}/workouts`, {
