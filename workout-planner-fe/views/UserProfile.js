@@ -84,7 +84,7 @@ export default class UserProfile extends React.Component {
 					<View style={{display: 'flex', flexDirection: 'row'}}>
 				{saved_workouts.length > 0 && <TouchableOpacity style={styles.loadWorkout} id='savedWorkoutsView' onPress={()=>this.handleDropdown('savedWorkoutsView')}><Text>Saved Workouts v</Text></TouchableOpacity>}
 					{tappedWorkout.length > 0 && <TouchableOpacity style={styles.loadWorkout} onPress={this.loadWorkout}><Text>Load Selected</Text></TouchableOpacity>}</View>
-				{savedWorkoutsView && <FlatList style={{minHeight: 200}} data={saved_workouts.map((item, i)=>{return {workout: item.workout, key: item.workout+i}})} renderItem={({item})=><Text style={tappedWorkout === item.key ?{marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid',backgroundColor: 'green', borderRadius: 3,}:{marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,}} onPress={()=>{this.tapWorkout(item.key)}} key={item.key}>{item.workout}</Text>}/>}
+				{savedWorkoutsView && <FlatList style={{minHeight: 200}} data={saved_workouts.map((item, i)=>{return {workout: item.workout, key: item.workout}})} renderItem={({item})=><Text style={tappedWorkout === item.key ? styles.selectedWorkout:styles.workoutItem} onPress={()=>{this.tapWorkout(item.key)}} key={item.key}>{item.workout}</Text>}/>}
 				<Text style={{fontSize: 16, marginTop: 25, marginBottom: 10, marginLeft: 5, fontWeight: 'bold'}}>Preferences</Text>
 				<Text>Model Gender</Text>
 				<View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
@@ -105,8 +105,8 @@ export default class UserProfile extends React.Component {
 	}
 	loadWorkout = () => {
 		// save workout data into props and navigate to companion page
-	
-		this.props.navigation.navigate('Home', { workoutToLoad: this.state.tappedWorkout })
+		const selectedWorkout = this.state.saved_workouts.filter((item)=>{return item.workout === this.state.tappedWorkout})[0]
+		this.props.navigation.navigate('Home', { workoutToLoad: selectedWorkout.exercises })
 	
 
 	}
@@ -148,9 +148,10 @@ export default class UserProfile extends React.Component {
 	}
 	getUserSavedWorkouts = () => {
 		getSavedWorkouts(this.state.loggedInUser.user_name).then((res)=>{
-			fakeObj = [{saved_on: '2018-12-12', saved_by: 'mike', workout: 'workout 1', created_id: '1111', created_by: 'jake'
-			}]
-			this.setState({saved_workouts: fakeObj})
+		
+			this.setState({saved_workouts: res}, ()=>{
+				console.log(this.state.saved_workouts)
+			})
 		})
 	}
 }
@@ -159,5 +160,7 @@ export default class UserProfile extends React.Component {
 const styles = StyleSheet.create({
 	buttonActive: {width: 100, padding: 10, backgroundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'},
 	buttonInactive: {width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'},
-	loadWorkout: {width: 150, marginLeft: 20, padding: 10, marginRight: 20, marginTop: 20, borderColor: 'black', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,}
+	loadWorkout: {width: 150, marginLeft: 20, padding: 10, marginRight: 20, marginTop: 20, borderColor: 'black', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,},
+	selectedWorkout: {marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid',backgroundColor: 'green', borderRadius: 3,},
+	workoutItem: {marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,}
 });
