@@ -34,8 +34,8 @@ export default class SignIn extends React.Component {
       <View style={styles.container}>
         <Text style={styles.curlFriend}>curlFriend</Text>
         <View style={styles.innerContainer}>
-          <Image style={styles.image} source={require('../assets/fb-logo.png')} />
-          <TouchableOpacity onPress={this.FBSignIn}>
+          <TouchableOpacity onPress={this.FBSignIn} style={styles.innerContainer}>
+            <Image style={styles.image} source={require('../assets/fb-logo.png')} />
             <Text style={styles.generalText}>Sign in</Text>
           </TouchableOpacity>
           <View style={styles.register}>

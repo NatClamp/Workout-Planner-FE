@@ -23,7 +23,7 @@ export default class Register extends React.Component {
     const radio_props = [{ label: 'Male', value: false }, { label: 'Female', value: true }];
     return (
       <View style={styles.container}>
-        <Text style={styles.generalText}>Register with</Text>
+        <Text style={styles.titleText}>Register with</Text>
         <Text style={styles.span}>curlFriend</Text>
         <TextInput
           style={styles.input}
@@ -40,18 +40,21 @@ export default class Register extends React.Component {
           placeholderTextColor="white"
           onChangeText={val => this.onChangeText('user_name', val)}
         />
+        <View style={styles.radioContainer}>
+          <Text style={styles.generalText}>Which 3D model would you prefer?</Text>
+          <RadioForm
+            style={styles.radio}
+            radio_props={radio_props}
+            buttonColor={'#2C497F'}
+            selectedButtonColor={'#2C497F'}
+            labelColor={'#2C497F'}
+            initial={0}
+            onPress={value => {
+              this.setState({ isFemale: value });
+            }}
+          />
+        </View>
 
-        <RadioForm
-          style={styles.radio}
-          radio_props={radio_props}
-          buttonColor={'#2C497F'}
-          selectedButtonColor={'#2C497F'}
-          labelColor={'#2C497F'}
-          initial={0}
-          onPress={value => {
-            this.setState({ isFemale: value });
-          }}
-        />
         <TouchableOpacity onPress={this.addToUsers} style={styles.button}>
           <Text style={styles.buttonText}>Sign up</Text>
         </TouchableOpacity>
@@ -92,9 +95,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  generalText: {
+  titleText: {
     fontFamily: 'Krub-Medium',
     fontSize: 20,
+    padding: 0,
+    margin: 0,
+    color: '#2C497F',
+  },
+  generalText: {
+    fontFamily: 'Krub-Medium',
+    fontSize: 15,
     padding: 0,
     margin: 0,
     color: '#2C497F',
@@ -105,6 +115,11 @@ const styles = StyleSheet.create({
     padding: 0,
     margin: 0,
     color: '#2C497F',
+  },
+  radioContainer: {
+    marginTop: 20,
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   radio: {
     padding: 20,
