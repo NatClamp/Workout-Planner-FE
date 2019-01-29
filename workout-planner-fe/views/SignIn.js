@@ -64,19 +64,22 @@ const styles = StyleSheet.create({
     fontSize: 50,
     marginBottom: 20,
     fontFamily: 'Krub-Bold',
+    color: '#2C497F',
   },
   generalText: {
+    color: '#2C497F',
     fontFamily: 'Roboto-Medium',
     fontSize: 20,
   },
   register: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 30,
+    marginTop: 40,
   },
   registerText: {
     fontFamily: 'Roboto-Regular',
-    fontSize: 16,
+    fontSize: 18,
+    color: 'rgba(44,73,127, 0.7)',
   },
   image: {
     height: 80,

@@ -118,6 +118,7 @@ const AuthStack = createStackNavigator({
     screen: SignIn,
     navigationOptions: {
       title: 'Sign In',
+      header: null,
     },
   },
 });
