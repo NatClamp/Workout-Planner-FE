@@ -15,14 +15,12 @@ export default class Model extends React.Component {
     if (this.props.muscleVals !== prevProps.muscleVals){
       this.recolourMuscles()
     }
-
   }
   assignUser = async () => {
 		const user = await AsyncStorage.getItem('userAccount')
 		const loggedInUser = JSON.parse(user)
 		this.setState({loggedInUser: loggedInUser, gender: loggedInUser.isFemale ? 'female': 'male'}, ()=>{
       this.loadModel(this.state.gender)
-
     })
 	}
   componentWillMount() {
