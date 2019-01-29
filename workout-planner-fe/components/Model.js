@@ -14,7 +14,6 @@ export default class Model extends React.Component {
   componentDidUpdate(prevProps){
     if (this.props.muscleVals !== prevProps.muscleVals){
       this.recolourMuscles()
-      console.log(this.props.muscleVals)
     }
 
   }

@@ -9,4 +9,5 @@ module.exports = {
   patchUser: (username, gender) => Axios.patch(`${URL}users/${username}/`, { newName: username, isFemale: gender }),
   getAllUsers: () => fetch(`${URL}users/`).then(res => res.json()),
   getSingleUser: username => fetch(`${URL}/users/${username}`),
+  getExerciseDetails: exerciseName => fetch(`${URL}/exercises/${exerciseName}`),
 };

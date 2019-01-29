@@ -29,7 +29,6 @@ export default class UserProfile extends React.Component {
 	assignUser = async () => {
 		const user = await AsyncStorage.getItem('userAccount')
 		const loggedInUser = JSON.parse(user)
-		console.log(loggedInUser)
 		this.setState({loggedInUser: loggedInUser, isFemale: loggedInUser.isFemale})
 
 	}
@@ -149,9 +148,7 @@ export default class UserProfile extends React.Component {
 	getUserSavedWorkouts = () => {
 		getSavedWorkouts(this.state.loggedInUser.user_name).then((res)=>{
 		
-			this.setState({saved_workouts: res}, ()=>{
-				console.log(this.state.saved_workouts)
-			})
+			this.setState({saved_workouts: res})
 		})
 	}
 }
