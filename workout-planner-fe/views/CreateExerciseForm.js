@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react';
-import { Text, ScrollView, View, Button, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
-import { Container, Header, Content, Form, Item, Input } from 'native-base';
+import React, { Component } from 'react';
+import { Text, ScrollView, View, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
+import { Container, Content, Form, Item } from 'native-base';
 import Model from '../components/Model';
 import { Dropdown } from 'react-native-material-dropdown';
 import axios from 'axios';
@@ -19,9 +19,7 @@ export default class CreateExerciseForm extends Component {
 	assignUser = async () => {
 		const user = await AsyncStorage.getItem('userAccount');
 		const loggedInUser = JSON.parse(user);
-		this.setState({ loggedInUser }, () => {
-			console.log(this.state.loggedInUser);
-		});
+		this.setState({ loggedInUser });
 	};
 
 	render() {
@@ -83,12 +81,9 @@ export default class CreateExerciseForm extends Component {
 		return fetch(`${URL}/muscles`)
 			.then((response) => response.json())
 			.then((responseJson) => {
-				this.setState(
-					{
-						muscles: responseJson.muscles
-					},
-					function() {}
-				);
+				this.setState({
+					muscles: responseJson.muscles
+				});
 			})
 			.catch((error) => {
 				console.error(error);
@@ -103,11 +98,9 @@ export default class CreateExerciseForm extends Component {
 			minor_muscle: this.state.minor_muscle,
 			created_by: this.state.loggedInUser._id
 		};
-		console.log(obj);
 		axios
-			.post(`${URL}/exercises`, obj, console.log('heyyyyyy'))
+			.post(`${URL}/exercises`, obj)
 			.then(() => {
-				console.log('hi');
 				this.props.navigation.navigate('Home');
 			})
 			.catch((err) => {
