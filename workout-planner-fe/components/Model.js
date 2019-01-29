@@ -338,6 +338,8 @@ export default class Model extends React.Component {
       this.scene.add(obliques);
       this.obliques = obliques;
       this.obliques.children[0].material.color = this.baseColor
+      this.obliques.children[1].material.color = this.baseColor
+
 
 
     }
@@ -346,6 +348,7 @@ export default class Model extends React.Component {
       this.scene.add(obliques);
       this.obliques = obliques;
       this.obliques.children[0].material.color = this.baseColor
+
 
     }
   };
