@@ -94,6 +94,7 @@ export default class UserProfile extends React.Component {
 					<Text>Change Username</Text><Button onPress={()=>{}} title='Submit'/>
 					<TextInput accessibilityLabel='Change Username' id='' style={{backgroundColor: '#DDDDDD', borderRadius: 5, width: 200, padding: 5}}/>
 				 */}
+				 <Button title='Logout' onPress={this.handleLogout}/>
 				</ScrollView>
 				
 		);
@@ -150,6 +151,14 @@ export default class UserProfile extends React.Component {
 		
 			this.setState({saved_workouts: res})
 		})
+	}
+
+	handleLogout = () => {
+		AsyncStorage.removeItem('userAccount')
+		AsyncStorage.removeItem('currentUser')
+		// AsyncStorage.clear()
+		this.props.navigation.navigate('SignIn')
+
 	}
 }
 
