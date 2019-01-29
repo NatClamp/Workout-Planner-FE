@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Button, AsyncStorage } from 'react-native';
 import Model from '../components/Model';
 import { Accordion, Container, Content, Card, CardItem, Text } from 'native-base';
-import { getAllUsers } from '../utils/backendAPI';
+import { getAllUsers, getExerciseDetails } from '../utils/backendAPI';
 import Axios from 'axios';
 
 const URL = 'https://nc-project-be.herokuapp.com/api/';
@@ -31,29 +31,33 @@ export default class HomeScreen extends React.Component {
 	};
 
 	componentDidUpdate(prevProps, prevState) {
-		if (prevState.workout !== this.state.workout) {
-			this.calculateMuscleVals();
-		}
-		if (prevState.appUserAccount !== this.setState.appUserAccount) {
-			this.setUserAccount();
-		}
 		if (prevProps.navigation.state !== this.props.navigation.state) {
 			const { params } = this.props.navigation.state;
 			const workoutToLoad = params.workoutToLoad;
 			if (workoutToLoad) {
-				this.setState({workout: workoutToLoad}, ()=>{
-					this.cheapWorkaround()
-				})
+				this.fetchWorkoutExercises(workoutToLoad)
+				this.setState({workout: workoutToLoad})
 			}
 		}
-	}
-	cheapWorkaround = () =>{
-		Axios.get(`https://nc-project-be.herokuapp.com/api/exercises`).then((data)=>{console.log(data, 'data')})
+		if (prevState.workout !== this.state.workout) {
+		}
+		if (prevState.appUserAccount !== this.setState.appUserAccount) {
+			this.setUserAccount();
+		}
 
 	}
+	fetchWorkoutExercises = (workoutToLoad) => {
+		const workoutExercises = []
+		workoutToLoad.forEach((exerciseName)=>{
+			workoutExercises.push(getExerciseDetails(exerciseName))
+		})
+		Promise.all(workoutExercises).then((data)=>{return Promise.all(data.map((i)=>{return i.json()}))}).then((data)=>{this.setState({workout:(data.map((exercise)=>{return exercise.exercise}))})}).then(()=>{	this.calculateMuscleVals();
+			;
+		})
+	}
+
 	setUserAccount = () => {
 		AsyncStorage.setItem('userAccount', JSON.stringify(this.state.appUserAccount));
-		console.log('stored!');
 	};
 	calculateMuscleVals = () => {
 		const { workout } = this.state;
@@ -191,7 +195,7 @@ export default class HomeScreen extends React.Component {
 		return fetch(`${URL}/exercises/${formattedExercise}`).then((response) => response.json()).then((respJSON) => {
 			const workout = [ ...this.state.workout ];
 			workout.push(respJSON.exercise);
-			this.setState({ workout });
+			this.setState({ workout }, ()=>{this.calculateMuscleVals()});
 		});
 	};
 }
