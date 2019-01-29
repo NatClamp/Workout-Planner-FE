@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Text, ScrollView, View, Button, TextInput, TouchableOpacity } from 'react-native';
+import { Text, ScrollView, View, Button, TextInput, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Container, Header, Content, Form, Item, Input } from 'native-base';
 import Model from '../components/Model';
 import { Dropdown } from 'react-native-material-dropdown';
@@ -19,6 +19,9 @@ export default class CreateExerciseForm extends Component {
 	assignUser = async () => {
 		const user = await AsyncStorage.getItem('userAccount');
 		const loggedInUser = JSON.parse(user);
+		this.setState({ loggedInUser }, () => {
+			console.log(this.state.loggedInUser);
+		});
 	};
 
 	render() {
@@ -76,6 +79,7 @@ export default class CreateExerciseForm extends Component {
 	}
 
 	componentDidMount() {
+		this.assignUser();
 		return fetch(`${URL}/muscles`)
 			.then((response) => response.json())
 			.then((responseJson) => {
@@ -92,21 +96,19 @@ export default class CreateExerciseForm extends Component {
 	}
 
 	addToExercises = () => {
+		const obj = {
+			title: this.state.title,
+			content: this.state.content,
+			major_muscle: this.state.major_muscle,
+			minor_muscle: this.state.minor_muscle,
+			created_by: this.state.loggedInUser._id
+		};
+		console.log(obj);
 		axios
-			.post(
-				`${URL}/exercises`,
-				{
-					title: this.state.title,
-					content: this.state.content,
-					major_muscle: this.state.major_muscle,
-					minor_muscle: this.state.minor_muscle,
-					created_by: this.user.user_id
-				},
-				console.log()
-			)
+			.post(`${URL}/exercises`, obj, console.log('heyyyyyy'))
 			.then(() => {
-				console.log();
-				this.props.navigation.navigate('HomePage');
+				console.log('hi');
+				this.props.navigation.navigate('Home');
 			})
 			.catch((err) => {
 				console.log(err);
