@@ -1,137 +1,83 @@
 import React from 'react';
+import { AppLoading, SplashScreen, Font } from 'expo';
 import { TouchableOpacity, Text } from 'react-native';
-import { createSwitchNavigator, createStackNavigator, createAppContainer } from 'react-navigation';
-import { Icon } from 'native-base';
-import WorkoutPreview from './views/WorkoutPreview';
-import CompanionScreen from './views/CompanionScreen';
-import UserProfile from './views/UserProfile';
-import MuscleScreen from './views/MuscleScreen';
-import ExerciseList from './views/ExerciseList';
-import Loading from './views/Loading';
-import HomePage from './views/HomePage';
-import SignIn from './views/SignIn';
-import CreateExerciseForm from './views/CreateExerciseForm';
-import CompletionModal from './views/CompletionModal';
-import postWorkout from './views/postWorkout';
-import Register from './views/Register';
-import SuccessfulRegister from './views/SuccessfulRegister';
-import OpeningScreen from './views/OpeningScreen';
-import SavedWorkouts from './views/SavedWorkouts';
+import AppContainer from './navigation/Navigators';
 
-const ProfileIcon = ({ navigation }) => (
-  <TouchableOpacity
-    style={{ padding: 5, paddingLeft: 10, paddingRight: 15 }}
-    onPress={() => {
-      navigation.navigate('UserProfile');
-    }}
-  >
-    <Text style={{ color: 'white', fontSize: 25 }}>
-      <Icon name="md-person" size={30} />
-    </Text>
-  </TouchableOpacity>
-);
+export default class App extends React.Component {
+  state = {
+    appIsReady: false,
+  };
+  render() {
+    if (this.state.appIsReady) {
+      return <AppContainer />;
+    } else {
+      return <AppLoading />;
+    }
+  }
 
-const WorkoutStack = createStackNavigator(
-  {
-    Home: {
-      screen: HomePage,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Home',
-        headerRight: <ProfileIcon navigation={navigation} />,
-      }),
-    },
-    WorkoutPreview: {
-      screen: WorkoutPreview,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Workout Preview',
-        headerRight: <ProfileIcon navigation={navigation} />,
-      }),
-    },
-    CompanionScreen: {
-      screen: CompanionScreen,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Workout',
-        headerRight: <ProfileIcon navigation={navigation} />,
-      }),
-    },
-    MuscleScreen: {
-      screen: MuscleScreen,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Choose a muscle',
-        headerRight: <ProfileIcon navigation={navigation} />,
-      }),
-    },
-    ExerciseList: {
-      screen: ExerciseList,
-      navigationOptions: ({ navigation }) => ({
-        title: 'Exercises',
-        headerRight: <ProfileIcon navigation={navigation} />,
-      }),
-    },
-    UserProfile: {
-      screen: UserProfile,
-    },
-    Register: {
-      screen: Register,
-      navigationOptions: {
-        header: null,
-      },
-    },
-    CompletionModal: {
-      screen: CompletionModal,
-      navigationOptions: {
-        header: null,
-      },
-    },
-    CreateExerciseForm: {
-      screen: CreateExerciseForm,
-    },
-    SuccessfulRegister: {
-      screen: SuccessfulRegister,
-    },
-    postWorkout: {
-      screen: postWorkout,
-    },
-    OpeningScreen: {
-      screen: OpeningScreen,
-    },
-    SavedWorkouts: {
-      screen: SavedWorkouts,
-      navigationOptions: {
-        header: null,
-      },
-    },
-  },
-  {
-    initialRouteName: 'Home',
-  },
-);
+  componentDidMount() {
+    SplashScreen.preventAutoHide();
+    this.loadResourcesAsync()
+      .then(() => this.setState({ appIsReady: true }))
+      .catch(error =>
+        console.error(`Unexpected error thrown when loading:
+    ${error.stack}`),
+      );
+  }
 
-const AuthStack = createStackNavigator({
-  Home: {
-    screen: WorkoutStack,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  SignIn: {
-    screen: SignIn,
-    navigationOptions: {
-      title: 'Sign In',
-    },
-  },
-});
-
-const AppContainer = createAppContainer(
-  createSwitchNavigator(
-    {
-      AuthentificationCheck: Loading,
-      Auth: AuthStack,
-    },
-    {
-      initialRouteName: 'AuthentificationCheck',
-    },
-  ),
-);
-
-export default AppContainer;
+  async loadResourcesAsync() {
+    return Promise.all([
+      Font.loadAsync({
+        'Krub-Regular': require('./assets/Krub-Regular.ttf'),
+      }),
+      Font.loadAsync({
+        'Krub-Bold': require('./assets/Krub-Bold.ttf'),
+      }),
+      Font.loadAsync({
+        'Krub-BoldItalic': require('./assets/Krub-BoldItalic.ttf'),
+      }),
+      Font.loadAsync({
+        'Krub-ExtraLight': require('./assets/Krub-ExtraLight.ttf'),
+      }),
+      Font.loadAsync({
+        'Krub-ExtraLightItalic': require('./assets/Krub-ExtraLightItalic.ttf'),
+      }),
+      Font.loadAsync({
+        'Krub-Italic': require('./assets/Krub-Italic.ttf'),
+      }),
+      Font.loadAsync({
+        'Krub-Light': require('./assets/Krub-Light.ttf'),
+      }),
+      Font.loadAsync({
+        'Krub-LightItalic': require('./assets/Krub-LightItalic.ttf'),
+      }),
+      Font.loadAsync({
+        'Krub-Medium': require('./assets/Krub-Medium.ttf'),
+      }),
+      Font.loadAsync({
+        'Krub-MediumItalic': require('./assets/Krub-MediumItalic.ttf'),
+      }),
+      Font.loadAsync({
+        'Krub-SemiBold': require('./assets/Krub-SemiBold.ttf'),
+      }),
+      Font.loadAsync({
+        'Krub-SemiBoldItalic': require('./assets/Krub-SemiBoldItalic.ttf'),
+      }),
+      Font.loadAsync({
+        'Roboto-Regular': require('./assets/Roboto-Regular.ttf'),
+      }),
+      Font.loadAsync({
+        'Roboto-Thin': require('./assets/Roboto-Thin.ttf'),
+      }),
+      Font.loadAsync({
+        'Roboto-Medium': require('./assets/Roboto-Medium.ttf'),
+      }),
+      Font.loadAsync({
+        'Roboto-Bold': require('./assets/Roboto-Bold.ttf'),
+      }),
+      Font.loadAsync({
+        'Roboto-Italic': require('./assets/Roboto-Italic.ttf'),
+      }),
+    ]);
+  }
+}
