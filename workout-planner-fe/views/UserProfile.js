@@ -1,11 +1,10 @@
 import React, {Fragment} from 'react';
-import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, TextInput, ScrollView, AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View, Button, FlatList, TouchableOpacity, TextInput, ScrollView, AsyncStorage, Alert } from 'react-native';
 import {Calendar} from 'react-native-calendars'
-import moment from 'moment'
-import { Switch } from 'native-base';
 import {getCompletedWorkouts,
 		getSavedWorkouts,
-		patchUser,} from '../utils/backendAPI'
+		patchUser,
+		getSingleUser} from '../utils/backendAPI'
 
 
 
@@ -13,8 +12,7 @@ export default class UserProfile extends React.Component {
 	constructor(props){
 		super(props)
 		this.state = {
-			user_name: 'charlie',
-			saved_workouts: ['leg day', 'arm day', 'chest day'],
+			saved_workouts: [],
 			completedWorkouts: [],
 			calendarPoints: {},
 			currentEvent: 'Touch day to see workout',
@@ -31,7 +29,7 @@ export default class UserProfile extends React.Component {
 	assignUser = async () => {
 		const user = await AsyncStorage.getItem('userAccount')
 		const loggedInUser = JSON.parse(user)
-		console.log(loggedInUser, '@@@@@@@')
+		console.log(loggedInUser)
 		this.setState({loggedInUser: loggedInUser, isFemale: loggedInUser.isFemale})
 
 	}
@@ -93,10 +91,10 @@ export default class UserProfile extends React.Component {
 				<TouchableOpacity style={isFemale ?{width: 100, padding: 10, backgroundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}:{width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}} onPress={()=>{this.toggleGender(false)}}><Text style={{textAlign: 'center'}}>Male</Text></TouchableOpacity>
 				<TouchableOpacity style={!isFemale ?{width: 100, padding: 10, backgroundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}:{width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'}} onPress={()=>{this.toggleGender(true)}}><Text style={{textAlign: 'center'}}>Female</Text></TouchableOpacity></View>
 
-			
+{/* 			
 					<Text>Change Username</Text><Button onPress={()=>{}} title='Submit'/>
 					<TextInput accessibilityLabel='Change Username' id='' style={{backgroundColor: '#DDDDDD', borderRadius: 5, width: 200, padding: 5}}/>
-				
+				 */}
 				</ScrollView>
 				
 		);
@@ -107,18 +105,35 @@ export default class UserProfile extends React.Component {
 	}
 	loadWorkout = () => {
 		// save workout data into props and navigate to companion page
+	
+		this.props.navigation.navigate('Home', { workoutToLoad: this.state.tappedWorkout })
+	
 
 	}
+
 	tapWorkout = (workout) => {
 		this.state.tappedWorkout === workout ? this.setState({tappedWorkout: ''}):
 		this.setState({tappedWorkout: workout})
+	}
+	refreshUserData = () => {
+		getSingleUser(this.state.loggedInUser.user_name).then((data)=>{return data.json()}).then(({user})=>{
+			AsyncStorage.setItem('userAccount', JSON.stringify(user))
+			this.assignUser()
+			Alert.alert(
+				'Model Changed',
+				'Model successfully changed. Changes won\'t take effect until the app is restarted',
+				[{text: 'OK'}]
+			)
+		})
 	}
 
 	toggleGender = (bool)=> { 
 		const {isFemale, loggedInUser} = this.state
 		const originalGender = isFemale
 		this.setState({isFemale: bool}, ()=>{
-			patchUser(loggedInUser.user_name, isFemale).catch((err)=>{this.setState({isFemale: originalGender,})})
+			patchUser(loggedInUser.user_name, this.state.isFemale).then(()=>{
+				this.refreshUserData()
+			}).catch((err)=>{this.setState({isFemale: originalGender,})})
 		})
 		
 }

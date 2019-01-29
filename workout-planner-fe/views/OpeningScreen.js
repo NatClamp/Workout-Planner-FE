@@ -5,8 +5,8 @@ export default class OpeningScreen extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Button title='Profile' onPress={() => this.props.navigation.navigate('Profile')} />
-				<Button title='Home' onPress={() => this.props.navigation.navigate('Home')} />
+				<Button title='Profile' onPress={() => this.props.navigation.navigate('UserProfile')} />
+				<Button title='Build Your Workout' onPress={() => this.props.navigation.navigate('Home')} />
 				<Button title='Saved Workouts' onPress={() => this.props.navigation.navigate('SavedWorkouts')} />
 			</View>
 		);
