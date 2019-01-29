@@ -15,6 +15,8 @@ import CompletionModal from './views/CompletionModal';
 import saveWorkout from './views/saveWorkout';
 import Register from './views/Register';
 import SuccessfulRegister from './views/SuccessfulRegister';
+import OpeningScreen from './views/OpeningScreen';
+import SavedWorkouts from './views/SavedWorkouts';
 
 const ProfileIcon = ({ navigation }) => (
 	<TouchableOpacity
@@ -89,6 +91,15 @@ const WorkoutStack = createStackNavigator(
 		},
 		saveWorkout: {
 			screen: saveWorkout
+		},
+		OpeningScreen: {
+			screen: OpeningScreen
+		},
+		SavedWorkouts: {
+			screen: SavedWorkouts,
+			navigationOptions: {
+				header: null
+			}
 		}
 	},
 	{
