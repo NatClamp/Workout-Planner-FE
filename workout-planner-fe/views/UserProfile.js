@@ -4,7 +4,8 @@ import {Calendar} from 'react-native-calendars'
 import {getCompletedWorkouts,
 		getSavedWorkouts,
 		patchUser,
-		getSingleUser} from '../utils/backendAPI'
+		getSingleUser,
+		removeSavedWorkout} from '../utils/backendAPI'
 
 
 
@@ -52,7 +53,7 @@ export default class UserProfile extends React.Component {
 		
 	
 		return (
-			<ScrollView style={{ flex: 1 }}>
+			<ScrollView style={{ flex: 1, padding: 10 }}>
 				<Text style={{fontSize: 25, textAlign: 'center', margin: 5}}>{`${loggedInUser.user_name}'s Page`}</Text>
 				{(completedWorkouts.length > 0) &&<Text style={{textAlign: 'center', margin: 20}}>Your last workout was {completedWorkouts[0].workout_name} on {completedWorkouts[0].dateString}</Text>}
 				{Object.keys(calendarPoints).length > 0 &&
@@ -82,7 +83,7 @@ export default class UserProfile extends React.Component {
 
 					<View style={{display: 'flex', flexDirection: 'row'}}>
 				{saved_workouts.length > 0 && <TouchableOpacity style={styles.loadWorkout} id='savedWorkoutsView' onPress={()=>this.handleDropdown('savedWorkoutsView')}><Text>Saved Workouts v</Text></TouchableOpacity>}
-					{tappedWorkout.length > 0 && <TouchableOpacity style={styles.loadWorkout} onPress={this.loadWorkout}><Text>Load Selected</Text></TouchableOpacity>}</View>
+					{tappedWorkout.length > 0 && <><TouchableOpacity style={styles.loadWorkout} onPress={this.loadWorkout}><Text>Load Selected</Text></TouchableOpacity><TouchableOpacity style={styles.loadWorkout} onPress={this.unSaveWorkout}><Text>Remove</Text></TouchableOpacity></>}</View>
 				{savedWorkoutsView && <FlatList style={{minHeight: 200}} data={saved_workouts.map((item, i)=>{return {workout: item.workout, key: item.workout}})} renderItem={({item})=><Text style={tappedWorkout === item.key ? styles.selectedWorkout:styles.workoutItem} onPress={()=>{this.tapWorkout(item.key)}} key={item.key}>{item.workout}</Text>}/>}
 				<Text style={styles.title}>Preferences</Text>
 				<Text>Model Gender</Text>
@@ -90,14 +91,17 @@ export default class UserProfile extends React.Component {
 				<TouchableOpacity style={isFemale ? styles.buttonActive:styles.buttonInactive} onPress={()=>{this.toggleGender(false)}}><Text style={{textAlign: 'center'}}>Male</Text></TouchableOpacity>
 				<TouchableOpacity style={!isFemale ? styles.buttonActive:styles.buttonInactive} onPress={()=>{this.toggleGender(true)}}><Text style={{textAlign: 'center'}}>Female</Text></TouchableOpacity></View>
 
-{/* 			
-					<Text>Change Username</Text><Button onPress={()=>{}} title='Submit'/>
-					<TextInput accessibilityLabel='Change Username' id='' style={{backgroundColor: '#DDDDDD', borderRadius: 5, width: 200, padding: 5}}/>
-				 */}
 				 <Button title='Logout' onPress={this.handleLogout}/>
 				</ScrollView>
 				
 		);
+	}
+	unSaveWorkout = () => {
+		
+		const user = this.state.loggedInUser.user_name;
+		const workout =  this.state.tappedWorkout;
+		removeSavedWorkout(user, workout)
+		
 	}
 
 	handleDropdown = (id) => {
@@ -156,7 +160,7 @@ export default class UserProfile extends React.Component {
 	handleLogout = () => {
 		AsyncStorage.removeItem('userAccount')
 		AsyncStorage.removeItem('currentUser')
-		// AsyncStorage.clear()
+		AsyncStorage.removeItem('userToken')
 		this.props.navigation.navigate('SignIn')
 
 	}
@@ -166,7 +170,7 @@ export default class UserProfile extends React.Component {
 const styles = StyleSheet.create({
 	buttonActive: {width: 100, padding: 10, backgroundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'},
 	buttonInactive: {width: 100, padding: 10,backgroundColor: 'blue', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid'},
-	loadWorkout: {width: 150, marginLeft: 20, padding: 10, marginRight: 20, marginTop: 20, borderColor: 'black', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,},
+	loadWorkout: {width: 100, padding: 10, marginTop: 20, borderColor: 'black', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,},
 	selectedWorkout: {marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid',backgroundColor: 'green', borderRadius: 3,},
 	workoutItem: {marginLeft: 20, marginRight: 20, marginTop: 0, padding: 10, borderColor: 'grey', borderWidth: 1, borderStyle: 'solid', borderRadius: 3,},
 	title: {fontSize: 16, marginTop: 25, marginBottom: 10, marginLeft: 5, fontWeight: 'bold'}

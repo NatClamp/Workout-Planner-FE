@@ -15,41 +15,12 @@ export default class Model extends React.Component {
     if (this.props.muscleVals !== prevProps.muscleVals){
       this.recolourMuscles()
     }
-    // if (this.prevProps && this.props.gender !== prevProps.gender && this.scene.children.length > 5){
-      
-    //   console.log(this.props.gender, this.prevProps.gender)
-    //   this.initReloadModel(this.props.gender)
-    // }
   }
-  initReloadModel = (newGender) =>{
-    console.log('triggering reload')
-    this.scene.remove(this.base)
-    this.scene.remove(this.abdominals);
-    this.scene.remove(this.glutes);
-    this.scene.remove(this.biceps);
-    this.scene.remove(this.calves);
-    this.scene.remove(this.chest);
-    this.scene.remove(this.forearms);
-    this.scene.remove(this.hamstrings);
-    this.scene.remove(this.lowerback);
-    this.scene.remove(this.midback);
-    this.scene.remove(this.quadriceps);
-    this.scene.remove(this.shoulders);
-    this.scene.remove(this.obliques);
-    this.scene.remove(this.triceps);
-    this.scene.remove(this.upperback);
-    this.assignUser()
 
-
-
-
-  }
   assignUser = async () => {
 		const user = await AsyncStorage.getItem('userAccount')
     const loggedInUser = JSON.parse(user)
-    console.log(loggedInUser)
 		this.setState({loggedInUser: loggedInUser, gender: loggedInUser.isFemale ? 'female': 'male'}, ()=>{
-      console.log(this.state.gender)
       this.loadModel(this.state.gender)
     })
 	}
@@ -176,8 +147,8 @@ export default class Model extends React.Component {
     this.loadShoulders(gender)
     this.loadSideAbs(gender)
     this.loadTriceps(gender)
-	this.loadUpperback(gender)
-	this.loadBase(gender);
+	  this.loadUpperback(gender)
+	  this.loadBase(gender);
   };
   loadBase = async (gender) => {
     if (gender === 'female'){
