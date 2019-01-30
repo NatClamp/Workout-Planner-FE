@@ -1,13 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Container, Header, Icon, Left, Body, Content, Card, CardItem } from 'native-base';
-import { StyleSheet, Text, View, Modal, TouchableHighlight, Alert, ScrollView } from 'react-native';
-import Swipeout from 'react-native-swipeout';
-
-const swipeoutBtns = [
-  {
-    text: 'Button',
-  },
-];
+import { StyleSheet, Text, View, Modal, TouchableOpacity, Alert, ScrollView } from 'react-native';
 
 const URL = 'https://nc-project-be.herokuapp.com/api/';
 
@@ -29,78 +22,76 @@ export default class MuscleScreen extends Component {
       <Text>Loading...</Text>
     ) : (
       <Fragment>
-        <View>
-          <Modal
-            animationType="fade"
-            transparent={false}
-            visible={this.state.modalVisible}
-            presentationStyle="overFullScreen"
-            onRequestClose={() => {
-              Alert.alert('Modal has been closed.');
-            }}
-          >
-            <ScrollView style={{ marginTop: 22 }}>
-              <Header style={{ textAlign: 'left' }}>
-                <Left>
-                  <Icon
-                    name="md-arrow-back"
-                    onPress={() => {
-                      this.setModalVisible(!this.state.modalVisible);
-                    }}
-                  />
-                </Left>
-                <Body>
-                  <Text>Select Exercise</Text>
-                </Body>
-              </Header>
+        <Modal
+          animationType="fade"
+          transparent={false}
+          visible={this.state.modalVisible}
+          presentationStyle="overFullScreen"
+          onRequestClose={() => {
+            this.setModalVisible(!this.state.modalVisible);
+          }}
+        >
+          <View>
+            <Header style={styles.modalHeader}>
+              <Left style={{ marginLeft: 5 }}>
+                <Icon
+                  name="md-arrow-back"
+                  onPress={() => {
+                    this.setModalVisible(!this.state.modalVisible);
+                  }}
+                />
+              </Left>
+              <Body>
+                <Text style={styles.modalHeaderText}>Select Exercise</Text>
+              </Body>
+            </Header>
 
-              <Container>
-                <Content>
-                  {this.state.muscleExercises.map((item, index) => {
-                    return (
-                      <Card key={index}>
-                        <Fragment>
-                          <CardItem header>
-                            <Text>{item.title}</Text>
-                          </CardItem>
-                          <CardItem
-                            button
-                            onPress={() => {
-                              addExerciseToWorkout(item.title);
-                            }}
-                          >
-                            <Text>Add to Workout</Text>
-                          </CardItem>
-                        </Fragment>
-                      </Card>
+            <ScrollView style={styles.outerContainer}>
+              {this.state.muscleExercises.map((item, key) => (
+                <TouchableOpacity
+                  key={key}
+                  style={styles.linkContainer}
+                  onPress={() => {
+                    addExerciseToWorkout(item.title);
+                    Alert.alert(
+                      'Successful addition',
+                      `${item.title} has been added to your workout`,
+                      [
+                        {
+                          text: 'Preview Workout',
+                          onPress: () => this.props.navigation.navigate('Home'),
+                        },
+                        {
+                          text: 'Add another',
+                          onPress: () => this.setModalVisible(!this.state.modalVisible),
+                        },
+                      ],
                     );
-                  })}
-                </Content>
-              </Container>
+                  }}
+                >
+                  <Text style={styles.linkText}>{item.title}</Text>
+                </TouchableOpacity>
+              ))}
             </ScrollView>
-          </Modal>
+          </View>
+        </Modal>
 
-          <TouchableHighlight>
-            <ScrollView>
-              <Swipeout right={swipeoutBtns}>
-                <Fragment>
-                  {this.state.muscles.map((item, key) => (
-                    <Text
-                      key={key}
-                      style={styles.TextStyle}
-                      onPress={() => {
-                        this.getExerciseByMuscle(item.muscle_name);
-                        this.setModalVisible(true);
-                      }}
-                    >
-                      {item.muscle_name}
-                    </Text>
-                  ))}
-                </Fragment>
-              </Swipeout>
-            </ScrollView>
-          </TouchableHighlight>
-        </View>
+        <ScrollView style={styles.outerContainer}>
+          {this.state.muscles.map((item, key) => (
+            <TouchableOpacity
+              key={key}
+              style={styles.linkContainer}
+              onPress={() => {
+                this.getExerciseByMuscle(item.muscle_name);
+                this.setModalVisible(true);
+              }}
+            >
+              <Text style={styles.linkText}>
+                {item.muscle_name.slice(0, 1).toUpperCase() + item.muscle_name.slice(1)}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
       </Fragment>
     );
   }
@@ -140,12 +131,25 @@ export default class MuscleScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  TextStyle: {
-    fontSize: 15,
-    textAlign: 'left',
-    backgroundColor: 'green',
+  outerContainer: {
+    margin: 10,
+  },
+  modalHeader: {
+    backgroundColor: '#fff',
+  },
+  linkContainer: {
+    margin: 5,
     padding: 10,
-    borderColor: 'black',
-    borderWidth: 4,
+    backgroundColor: 'rgba(33,160,160, 0.5)',
+  },
+  linkText: {
+    fontSize: 15,
+    fontFamily: 'Roboto-Light',
+    color: '#fff',
+    textAlign: 'left',
+  },
+  modalHeaderText: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
