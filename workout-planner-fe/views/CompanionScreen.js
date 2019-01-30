@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Model from '../components/Model';
 import { Container, Content } from 'native-base';
 import { ListItem, CheckBox } from 'react-native-elements';
@@ -67,7 +67,7 @@ export default class CompanionScreen extends React.Component {
 		this.setState({ muscleVals });
 	};
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(prevState) {
 		if (prevState.checked !== this.state.checked) {
 			this.calculateMuscleVals();
 		}
@@ -100,10 +100,7 @@ export default class CompanionScreen extends React.Component {
 					</Content>
 				</Container>
 				<View style={styles.buttonContainer}>
-					<TouchableOpacity
-						style={styles.button}
-						onPress={() => this.props.navigation.navigate('CompletionModal')}
-					>
+					<TouchableOpacity style={styles.button} onPress={this.completeWorkout()}>
 						<Text style={styles.linkText}>Complete Workout</Text>
 					</TouchableOpacity>
 				</View>

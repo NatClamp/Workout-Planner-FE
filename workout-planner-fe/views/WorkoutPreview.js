@@ -18,7 +18,8 @@ export default class WorkoutPreview extends React.Component {
 				/>
 				<TouchableOpacity
 					style={styles.linkContainer}
-					onPress={() => this.props.navigation.navigate('CompanionScreen', { currentWorkout })}
+					onPress={() =>
+						this.props.navigation.navigate('CompanionScreen', { currentWorkout, appUserAccount })}
 				>
 					<Text style={styles.linkText}>Start Workout</Text>
 				</TouchableOpacity>
