@@ -145,9 +145,7 @@ export default class HomeScreen extends React.Component {
         <View style={styles.exerciseList}>
           <Content>
             {this.state.workout.length === 0 ? (
-              <Text style={{ textAlign: 'center', marginTop: 20 }}>
-                Please add an exercise to your workout
-              </Text>
+              <Text style={styles.emptyWorkout}>Please add an exercise to your workout</Text>
             ) : (
               this.state.workout.map((item, index) => {
                 return (
@@ -247,12 +245,12 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 5,
-    backgroundColor: 'rgba(33,160,160, 0.5)',
+    backgroundColor: 'rgba(44,73,127, 0.5)',
     borderRadius: 4,
   },
   exerciseButton: {
-    padding: 5,
-    backgroundColor: 'rgba(33,160,160, 1)',
+    padding: 6,
+    backgroundColor: 'rgba(44,73,127, 1)',
     borderRadius: 4,
   },
   previewWorkoutButtonContainer: {
@@ -266,7 +264,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     padding: 10,
     width: 250,
-    backgroundColor: '#21A0A0',
+    backgroundColor: 'rgba(44,73,127, 1)',
     borderRadius: 4,
   },
   model: {
@@ -284,12 +282,18 @@ const styles = StyleSheet.create({
     padding: 5,
     flex: 1,
     borderWidth: 1,
-    borderColor: '#21A0A0',
+    borderColor: 'rgba(44,73,127, 1)',
     borderRadius: 4,
   },
   cardText: {
     fontFamily: 'Roboto-Light',
     fontSize: 14,
+    color: '#2C497F',
+  },
+  emptyWorkout: {
+    textAlign: 'center',
+    marginTop: 20,
+    fontFamily: 'Roboto-Light',
     color: '#2C497F',
   },
 });
