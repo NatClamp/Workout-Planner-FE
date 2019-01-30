@@ -134,6 +134,7 @@ export default class Model extends React.Component {
     this.renderer.render(this.scene, this.camera);
   };
   loadModel = (gender) => {
+    console.log('Loading model with gender as', gender, 'user:', this.state.loggedInUser)
     this.loadGlutes(gender)
     this.loadAbs(gender)
     this.loadBiceps(gender)
@@ -152,24 +153,24 @@ export default class Model extends React.Component {
   };
   loadBase = async (gender) => {
     if (gender === 'female'){
-      const base = await loadAsync(require(`./models/fe_base.obj`))
+      const base = await loadAsync(require(`./models/fe_base.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(base);
       this.base = base;}
     else {
-      const base = await loadAsync(require(`./models/male_base.obj`))
+      const base = await loadAsync(require(`./models/male_base.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(base);
 	    this.base = base;
     }
   };
   loadAbs = async (gender) => {
     if (gender === 'female'){
-      const abdominals = await loadAsync(require(`./models/fe_abs.obj`))
+      const abdominals = await loadAsync(require(`./models/fe_abs.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(abdominals);
       this.abdominals = abdominals;
       this.abdominals.children[0].material.color = this.baseColor
     }
     else {
-      const abdominals = await loadAsync(require(`./models/male_abs.obj`))
+      const abdominals = await loadAsync(require(`./models/male_abs.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(abdominals);
       this.abdominals = abdominals;
       this.abdominals.children[0].material.color = this.baseColor
@@ -177,13 +178,13 @@ export default class Model extends React.Component {
   };
   loadGlutes = async (gender) => {
     if (gender === 'female'){
-      const glutes = await loadAsync(require(`./models/fe_glutes.obj`))
+      const glutes = await loadAsync(require(`./models/fe_glutes.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(glutes);
       this.glutes = glutes;
       this.glutes.children[0].material.color = this.baseColor
     }
     else {
-      const glutes = await loadAsync(require(`./models/male_glutes.obj`))
+      const glutes = await loadAsync(require(`./models/male_glutes.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(glutes);
       this.glutes = glutes;
       this.glutes.children[0].material.color = this.baseColor
@@ -191,7 +192,7 @@ export default class Model extends React.Component {
   };
   loadBiceps = async (gender) => {
     if (gender === 'female'){
-      const biceps = await loadAsync(require(`./models/fe_biceps.obj`))
+      const biceps = await loadAsync(require(`./models/fe_biceps.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(biceps);
       this.biceps = biceps;
       this.biceps.children[0].material.color = this.baseColor
@@ -199,7 +200,7 @@ export default class Model extends React.Component {
 
     }
     else {
-      const biceps = await loadAsync(require(`./models/male_biceps.obj`))
+      const biceps = await loadAsync(require(`./models/male_biceps.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(biceps);
       this.biceps = biceps;
       this.biceps.children[0].material.color = this.baseColor
@@ -208,7 +209,7 @@ export default class Model extends React.Component {
   };
   loadCalves = async (gender) => {
     if (gender === 'female'){
-      const calves = await loadAsync(require(`./models/fe_calves.obj`))
+      const calves = await loadAsync(require(`./models/fe_calves.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(calves);
       this.calves = calves;
       this.calves.children[0].material.color = this.baseColor
@@ -216,7 +217,7 @@ export default class Model extends React.Component {
 
     }
     else {
-      const calves = await loadAsync(require(`./models/male_calves.obj`))
+      const calves = await loadAsync(require(`./models/male_calves.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(calves);
       this.calves = calves;
       this.calves.children[0].material.color = this.baseColor
@@ -225,14 +226,14 @@ export default class Model extends React.Component {
   };
   loadChest = async (gender) => {
     if (gender === 'female'){
-      const chest = await loadAsync(require(`./models/fe_chest.obj`))
+      const chest = await loadAsync(require(`./models/fe_chest.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(chest);
       this.chest = chest;
       this.chest.children[0].material.color = this.baseColor
 
     }
     else {
-      const chest = await loadAsync(require(`./models/male_chest.obj`))
+      const chest = await loadAsync(require(`./models/male_chest.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(chest);
       this.chest = chest;
       this.chest.children[0].material.color = this.baseColor
@@ -240,14 +241,14 @@ export default class Model extends React.Component {
   };
   loadForearms = async (gender) => {
     if (gender === 'female'){
-      const forearms = await loadAsync(require(`./models/fe_forearms.obj`))
+      const forearms = await loadAsync(require(`./models/fe_forearms.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(forearms);
       this.forearms = forearms;
       this.forearms.children[0].material.color = this.baseColor
       this.forearms.children[1].material.color = this.baseColor
     }
     else {
-      const forearms = await loadAsync(require(`./models/male_forearms.obj`))
+      const forearms = await loadAsync(require(`./models/male_forearms.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(forearms);
       this.forearms = forearms;
       this.forearms.children[0].material.color = this.baseColor
@@ -257,14 +258,14 @@ export default class Model extends React.Component {
 
   loadHamstrings = async (gender) => {
     if (gender === 'female'){
-      const hamstrings = await loadAsync(require(`./models/fe_hamstrings.obj`))
+      const hamstrings = await loadAsync(require(`./models/fe_hamstrings.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(hamstrings);
       this.hamstrings = hamstrings;
       this.hamstrings.children[0].material.color = this.baseColor
       this.hamstrings.children[1].material.color = this.baseColor
     }
     else {
-      const hamstrings = await loadAsync(require(`./models/male_hamstrings.obj`))
+      const hamstrings = await loadAsync(require(`./models/male_hamstrings.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(hamstrings);
       this.hamstrings = hamstrings;
       this.hamstrings.children[0].material.color = this.baseColor
@@ -273,13 +274,13 @@ export default class Model extends React.Component {
   };
   loadLowerback = async (gender) => {
     if (gender === 'female'){
-      const lowerback = await loadAsync(require(`./models/fe_lowerback.obj`))
+      const lowerback = await loadAsync(require(`./models/fe_lowerback.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(lowerback);
       this.lowerback = lowerback;
       this.lowerback.children[0].material.color = this.baseColor
     }
     else {
-      const lowerback = await loadAsync(require(`./models/male_lowerback.obj`))
+      const lowerback = await loadAsync(require(`./models/male_lowerback.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(lowerback);
       this.lowerback = lowerback;
       this.lowerback.children[0].material.color = this.baseColor
@@ -287,13 +288,13 @@ export default class Model extends React.Component {
   };
   loadMidback = async (gender) => {
     if (gender === 'female'){
-      const midback = await loadAsync(require(`./models/fe_midback.obj`))
+      const midback = await loadAsync(require(`./models/fe_midback.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(midback);
       this.midback = midback;
       this.midback.children[0].material.color = this.baseColor
     }
     else {
-      const midback = await loadAsync(require(`./models/male_midback.obj`))
+      const midback = await loadAsync(require(`./models/male_midback.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(midback);
       this.midback = midback;
       this.midback.children[0].material.color = this.baseColor
@@ -301,14 +302,14 @@ export default class Model extends React.Component {
   };
   loadQuads = async (gender) => {
     if (gender === 'female'){
-      const quadriceps = await loadAsync(require(`./models/fe_quads.obj`))
+      const quadriceps = await loadAsync(require(`./models/fe_quads.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(quadriceps);
       this.quadriceps = quadriceps;
       this.quadriceps.children[0].material.color = this.baseColor
       this.quadriceps.children[1].material.color = this.baseColor
     }
     else {
-      const quadriceps = await loadAsync(require(`./models/male_quads.obj`))
+      const quadriceps = await loadAsync(require(`./models/male_quads.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(quadriceps);
       this.quadriceps = quadriceps;
       this.quadriceps.children[0].material.color = this.baseColor
@@ -318,7 +319,7 @@ export default class Model extends React.Component {
   };
   loadShoulders = async (gender) => {
     if (gender === 'female'){
-      const shoulders = await loadAsync(require(`./models/fe_shoulders.obj`))
+      const shoulders = await loadAsync(require(`./models/fe_shoulders.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(shoulders);
       this.shoulders = shoulders;
       this.shoulders.children[0].material.color = this.baseColor
@@ -326,7 +327,7 @@ export default class Model extends React.Component {
 
     }
     else {
-      const shoulders = await loadAsync(require(`./models/male_shoulders.obj`))
+      const shoulders = await loadAsync(require(`./models/male_shoulders.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(shoulders);
       this.shoulders = shoulders;
       this.shoulders.children[0].material.color = this.baseColor
@@ -335,7 +336,7 @@ export default class Model extends React.Component {
   };
   loadSideAbs = async (gender) => {
     if (gender === 'female'){
-      const obliques = await loadAsync(require(`./models/fe_sideabs.obj`))
+      const obliques = await loadAsync(require(`./models/fe_sideabs.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(obliques);
       this.obliques = obliques;
       this.obliques.children[0].material.color = this.baseColor
@@ -345,7 +346,7 @@ export default class Model extends React.Component {
 
     }
     else {
-      const obliques = await loadAsync(require(`./models/male_sideabs.obj`))
+      const obliques = await loadAsync(require(`./models/male_sideabs.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(obliques);
       this.obliques = obliques;
       this.obliques.children[0].material.color = this.baseColor
@@ -355,7 +356,7 @@ export default class Model extends React.Component {
   };
   loadTriceps = async (gender) => {
     if (gender === 'female'){
-      const triceps = await loadAsync(require(`./models/fe_triceps.obj`))
+      const triceps = await loadAsync(require(`./models/fe_triceps.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(triceps);
       this.triceps = triceps;
       this.triceps.children[0].material.color = this.baseColor
@@ -363,7 +364,7 @@ export default class Model extends React.Component {
 
     }
     else {
-      const triceps = await loadAsync(require(`./models/male_triceps.obj`))
+      const triceps = await loadAsync(require(`./models/male_triceps.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(triceps);
       this.triceps = triceps;
       this.triceps.children[0].material.color = this.baseColor
@@ -373,14 +374,14 @@ export default class Model extends React.Component {
   };
   loadUpperback = async (gender) => {
     if (gender === 'female'){
-      const upperback = await loadAsync(require(`./models/fe_upperback.obj`))
+      const upperback = await loadAsync(require(`./models/fe_upperback.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(upperback);
       this.upperback = upperback;
       this.upperback.children[0].material.color = this.baseColor
 
     }
     else {
-      const upperback = await loadAsync(require(`./models/male_upperback.obj`))
+      const upperback = await loadAsync(require(`./models/male_upperback.obj`)).catch((err)=>{console.log(err)})
       this.scene.add(upperback);
       this.upperback = upperback;
       this.upperback.children[0].material.color = this.baseColor
