@@ -29,13 +29,86 @@ export default class HomeScreen extends React.Component {
     appUserAccount: {},
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.navigation.state !== this.props.navigation.state) {
+      const { params } = this.props.navigation.state;
+      const workoutToLoad = params.workoutToLoad;
+      if (workoutToLoad) {
+        this.fetchWorkoutExercises(workoutToLoad);
+        this.setState({ workout: workoutToLoad });
+      }
+    }
+    if (prevState.workout !== this.state.workout) {
+    }
+    if (prevState.appUserAccount !== this.setState.appUserAccount) {
+    }
+  }
+  fetchWorkoutExercises = workoutToLoad => {
+    const workoutExercises = [];
+    workoutToLoad.forEach(exerciseName => {
+      workoutExercises.push(getExerciseDetails(exerciseName));
+    });
+    Promise.all(workoutExercises)
+      .then(data => {
+        return Promise.all(
+          data.map(i => {
+            return i.json();
+          }),
+        );
+      })
+      .then(data => {
+        this.setState({
+          workout: data.map(exercise => {
+            return exercise.exercise;
+          }),
+        });
+      })
+      .then(() => {
+        this.calculateMuscleVals();
+      });
+  };
+
+  setUserAccount = data => {
+    AsyncStorage.setItem('userAccount', JSON.stringify(data));
+  };
+  calculateMuscleVals = () => {
+    const { workout } = this.state;
+    const muscleVals = {
+      abdominals: 0,
+      biceps: 0,
+      calves: 0,
+      chest: 0,
+      forearms: 0,
+      glutes: 0,
+      hamstrings: 0,
+      lowerback: 0,
+      midback: 0,
+      quadriceps: 0,
+      shoulders: 0,
+      obliques: 0,
+      triceps: 0,
+      upperback: 0,
+    };
+    workout.forEach(exercise => {
+      muscleVals[exercise.major_muscle] += 3;
+      exercise.minor_muscles.forEach(muscle => {
+        muscleVals[muscle] += 1;
+      });
+    });
+    this.setState({ muscleVals });
+  };
   render() {
     console.log(' from the state on homepage ====>', this.state.currentUser);
-    const { workout } = this.state;
+    const { workout, appUserAccount } = this.state;
+    if (Object.keys(appUserAccount).length > 0) {
+      this.gender = appUserAccount.isFemale;
+    }
     return (
       <View style={styles.outerContainer}>
         <View style={styles.model}>
-          <Model muscleVals={this.state.muscleVals} />
+          {this.gender !== undefined && appUserAccount && (
+            <Model muscleVals={this.state.muscleVals} gender={this.gender} />
+          )}
         </View>
         <View style={styles.allButtonContainer}>
           <View style={styles.buttonContainer}>
@@ -105,8 +178,7 @@ export default class HomeScreen extends React.Component {
       </View>
     );
   }
-
-  convertFBLogin = allUsers => {
+  convertFBLogin = async allUsers => {
     const currentUser = allUsers.users.filter(user => {
       const fbUser = this.state.currentUser.slice(1, this.state.currentUser.length - 1);
       return user.actual_name === fbUser;
@@ -114,7 +186,9 @@ export default class HomeScreen extends React.Component {
     if (currentUser.length > 1) {
       console.log('NON UNIQUE LOGIN CREDENTIALS');
     } else {
-      this.setState({ appUserAccount: currentUser[0] });
+      await this.setUserAccount(currentUser[0]);
+      const storedUser = await AsyncStorage.getItem('userAccount');
+      this.setState({ appUserAccount: JSON.parse(storedUser) });
     }
   };
 
@@ -151,76 +225,6 @@ export default class HomeScreen extends React.Component {
           this.calculateMuscleVals();
         });
       });
-  };
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.navigation.state !== this.props.navigation.state) {
-      const { params } = this.props.navigation.state;
-      const workoutToLoad = params.workoutToLoad;
-      if (workoutToLoad) {
-        this.fetchWorkoutExercises(workoutToLoad);
-        this.setState({ workout: workoutToLoad });
-      }
-    }
-    if (prevState.workout !== this.state.workout) {
-    }
-    if (prevState.appUserAccount !== this.setState.appUserAccount) {
-      this.setUserAccount();
-    }
-  }
-  fetchWorkoutExercises = workoutToLoad => {
-    const workoutExercises = [];
-    workoutToLoad.forEach(exerciseName => {
-      workoutExercises.push(getExerciseDetails(exerciseName));
-    });
-    Promise.all(workoutExercises)
-      .then(data => {
-        return Promise.all(
-          data.map(i => {
-            return i.json();
-          }),
-        );
-      })
-      .then(data => {
-        this.setState({
-          workout: data.map(exercise => {
-            return exercise.exercise;
-          }),
-        });
-      })
-      .then(() => {
-        this.calculateMuscleVals();
-      });
-  };
-
-  setUserAccount = () => {
-    AsyncStorage.setItem('userAccount', JSON.stringify(this.state.appUserAccount));
-  };
-  calculateMuscleVals = () => {
-    const { workout } = this.state;
-    const muscleVals = {
-      abdominals: 0,
-      biceps: 0,
-      calves: 0,
-      chest: 0,
-      forearms: 0,
-      glutes: 0,
-      hamstrings: 0,
-      lowerback: 0,
-      midback: 0,
-      quadriceps: 0,
-      shoulders: 0,
-      obliques: 0,
-      triceps: 0,
-      upperback: 0,
-    };
-    workout.forEach(exercise => {
-      muscleVals[exercise.major_muscle] += 3;
-      exercise.minor_muscles.forEach(muscle => {
-        muscleVals[muscle] += 1;
-      });
-    });
-    this.setState({ muscleVals });
   };
 }
 

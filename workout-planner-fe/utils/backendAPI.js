@@ -10,4 +10,5 @@ module.exports = {
   getAllUsers: () => fetch(`${URL}users/`).then(res => res.json()),
   getSingleUser: username => fetch(`${URL}/users/${username}`),
   getExerciseDetails: exerciseName => fetch(`${URL}/exercises/${exerciseName}`),
+  removeSavedWorkout: (user, workout_name) => { Axios.delete(`${URL}users/${user}/saved_workouts`, { workout_name }).then((res) => { console.log(res); }); },
 };
