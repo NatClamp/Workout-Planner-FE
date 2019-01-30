@@ -35,8 +35,8 @@ export default class HomeScreen extends React.Component {
 			const { params } = this.props.navigation.state;
 			const workoutToLoad = params.workoutToLoad;
 			if (workoutToLoad) {
-				this.fetchWorkoutExercises(workoutToLoad)
-				this.setState({workout: workoutToLoad})
+				this.fetchWorkoutExercises(workoutToLoad);
+				this.setState({ workout: workoutToLoad });
 			}
 		}
 		if (prevState.workout !== this.state.workout) {
@@ -44,17 +44,31 @@ export default class HomeScreen extends React.Component {
 		if (prevState.appUserAccount !== this.setState.appUserAccount) {
 			this.setUserAccount();
 		}
-
 	}
 	fetchWorkoutExercises = (workoutToLoad) => {
-		const workoutExercises = []
-		workoutToLoad.forEach((exerciseName)=>{
-			workoutExercises.push(getExerciseDetails(exerciseName))
-		})
-		Promise.all(workoutExercises).then((data)=>{return Promise.all(data.map((i)=>{return i.json()}))}).then((data)=>{this.setState({workout:(data.map((exercise)=>{return exercise.exercise}))})}).then(()=>{	this.calculateMuscleVals();
-			;
-		})
-	}
+		const workoutExercises = [];
+		workoutToLoad.forEach((exerciseName) => {
+			workoutExercises.push(getExerciseDetails(exerciseName));
+		});
+		Promise.all(workoutExercises)
+			.then((data) => {
+				return Promise.all(
+					data.map((i) => {
+						return i.json();
+					})
+				);
+			})
+			.then((data) => {
+				this.setState({
+					workout: data.map((exercise) => {
+						return exercise.exercise;
+					})
+				});
+			})
+			.then(() => {
+				this.calculateMuscleVals();
+			});
+	};
 
 	setUserAccount = () => {
 		AsyncStorage.setItem('userAccount', JSON.stringify(this.state.appUserAccount));
@@ -95,7 +109,13 @@ export default class HomeScreen extends React.Component {
 				</View>
 				<View style={styles.container}>
 					<View style={styles.buttonContainer}>
-						<Button title='All Exercises' onPress={() => this.props.navigation.navigate('ExerciseList')} />
+						<Button
+							title='All Exercises'
+							onPress={() =>
+								this.props.navigation.navigate('ExerciseList', {
+									addExerciseToWorkout: this.addExerciseToWorkout
+								})}
+						/>
 					</View>
 
 					<View style={styles.buttonContainer}>
@@ -195,7 +215,9 @@ export default class HomeScreen extends React.Component {
 		return fetch(`${URL}/exercises/${formattedExercise}`).then((response) => response.json()).then((respJSON) => {
 			const workout = [ ...this.state.workout ];
 			workout.push(respJSON.exercise);
-			this.setState({ workout }, ()=>{this.calculateMuscleVals()});
+			this.setState({ workout }, () => {
+				this.calculateMuscleVals();
+			});
 		});
 	};
 }

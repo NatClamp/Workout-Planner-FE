@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
-import { Accordion, Container, Item, Icon, Input, Button } from 'native-base';
+import PropTypes from 'prop-types';
+import { StyleSheet, Text, View, FlatList, ScrollView } from 'react-native';
+import { Accordion, Container, Item, Icon, Input, Button, Content, Card, CardItem } from 'native-base';
 import { SearchBar } from 'react-native-elements';
+import Panel from 'react-native-panel';
 
 const URL = 'https://nc-project-be.herokuapp.com/api/';
 
-class ExerciseList extends Component {
+export default class ExerciseList extends Component {
 	constructor(props) {
 		super(props);
 
@@ -13,26 +15,42 @@ class ExerciseList extends Component {
 			exercises: []
 		};
 
-		this.arrayholder = [];
+		this.exerciseholder = [];
 	}
 
 	render() {
+		const { getParam } = this.props.navigation;
+		const addExerciseToWorkout = getParam('addExerciseToWorkout');
 		return (
-			<Fragment>
-				<View style={{ flex: 1 }}>
-					<SearchBar
-						placeholder='Type Here...'
-						onChangeText={(text) => this.searchFilterFunction(text)}
-						autoCorrect={false}
-					/>
-					<Accordion data={this.state.exercises} />
-				</View>
-			</Fragment>
+			<View style={{ flex: 1 }}>
+				<SearchBar
+					placeholder='Type Here...'
+					onChangeText={(text) => this.searchFilterFunction(text)}
+					autoCorrect={false}
+				/>
+				<ScrollView>
+					{this.state.exercises.map((item, index) => {
+						return (
+							<Panel key={index} header={item.title}>
+								<Text style={styles.myDescription}>{item.content}</Text>
+								<Text>{`Major Muscle: ${item.major_muscle}`}</Text>
+								<Button
+									onPress={() => {
+										addExerciseToWorkout(item.title);
+									}}
+								>
+									<Text>Add to Workout</Text>
+								</Button>
+							</Panel>
+						);
+					})}
+				</ScrollView>
+			</View>
 		);
 	}
 
 	searchFilterFunction = (text) => {
-		const newData = this.arrayholder.filter((exercise) => {
+		const newData = this.exerciseholder.filter((exercise) => {
 			const exerciseData = `${exercise.title.toUpperCase()}`;
 			const textData = text.toUpperCase();
 			return exerciseData.indexOf(textData) > -1;
@@ -47,7 +65,7 @@ class ExerciseList extends Component {
 				this.setState({
 					exercises: responseJson.exercises
 				});
-				this.arrayholder = responseJson.exercises;
+				this.exerciseholder = responseJson.exercises;
 			})
 			.catch((error) => {
 				console.error(error);
@@ -55,4 +73,14 @@ class ExerciseList extends Component {
 	}
 }
 
-export default ExerciseList;
+const styles = StyleSheet.create({
+	myDescription: {
+		padding: 10,
+		paddingTop: 0,
+		height: 150
+	}
+});
+
+ExerciseList.propTypes = {
+	Panel: PropTypes.array
+};
