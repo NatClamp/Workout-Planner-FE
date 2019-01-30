@@ -16,9 +16,10 @@ export default class Model extends React.Component {
       this.recolourMuscles()
     }
   }
+
   assignUser = async () => {
 		const user = await AsyncStorage.getItem('userAccount')
-		const loggedInUser = JSON.parse(user)
+    const loggedInUser = JSON.parse(user)
 		this.setState({loggedInUser: loggedInUser, gender: loggedInUser.isFemale ? 'female': 'male'}, ()=>{
       this.loadModel(this.state.gender)
     })
@@ -146,8 +147,8 @@ export default class Model extends React.Component {
     this.loadShoulders(gender)
     this.loadSideAbs(gender)
     this.loadTriceps(gender)
-	this.loadUpperback(gender)
-	this.loadBase(gender);
+	  this.loadUpperback(gender)
+	  this.loadBase(gender);
   };
   loadBase = async (gender) => {
     if (gender === 'female'){
