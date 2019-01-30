@@ -68,7 +68,7 @@ export default class CompanionScreen extends React.Component {
 		this.setState({ muscleVals });
 	};
 
-	componentDidUpdate(prevProps, prevState) {
+	componentDidUpdate(prevState) {
 		if (prevState.checked !== this.state.checked) {
 			this.calculateMuscleVals();
 		}
@@ -103,8 +103,8 @@ export default class CompanionScreen extends React.Component {
 				<Button
 					title='Complete Workout'
 					onPress={() => {
-						this.completeWorkout;
-						this.props.navigation.navigate('CompletionModal');
+						this.completeWorkout();
+						// this.props.navigation.navigate('CompletionModal');
 					}}
 				/>
 			</View>
