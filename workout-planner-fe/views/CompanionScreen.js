@@ -12,7 +12,6 @@ export default class CompanionScreen extends React.Component {
 		isPrivate: true,
 		exercises: [],
 		checked: [],
-		loggedInUser: {},
 		appUserAccount: {},
 		muscleVals: {
 			abdominals: 0,
@@ -68,7 +67,7 @@ export default class CompanionScreen extends React.Component {
 		this.setState({ muscleVals });
 	};
 
-	componentDidUpdate(prevState) {
+	componentDidUpdate(prevProps, prevState) {
 		if (prevState.checked !== this.state.checked) {
 			this.calculateMuscleVals();
 		}
@@ -104,7 +103,6 @@ export default class CompanionScreen extends React.Component {
 					title='Complete Workout'
 					onPress={() => {
 						this.completeWorkout();
-						// this.props.navigation.navigate('CompletionModal');
 					}}
 				/>
 			</View>
@@ -120,11 +118,13 @@ export default class CompanionScreen extends React.Component {
 	completeWorkout = () => {
 		this.saveWorkout();
 		const username = this.state.appUserAccount.user_name;
-		const nameWorkout = `${this.state.appUserAccount.user_name}s_workout${this.state.appUserAccount._id}`;
-		console.log(nameWorkout, username);
+		const nameWorkout = `${username}s_workout${this.state.appUserAccount._id}`;
 		axios
 			.post(`${URL}/workouts/${nameWorkout}`, {
 				completed_by: username
+			})
+			.then(() => {
+				this.props.navigation.navigate('CompletionModal');
 			})
 			.catch((err) => {
 				console.log(err);
@@ -133,9 +133,8 @@ export default class CompanionScreen extends React.Component {
 
 	saveWorkout = () => {
 		this.postWorkout();
-		const nameWorkout = `${this.state.appUserAccount.user_name}s_workout${this.state.appUserAccount._id}`;
 		const username = this.state.appUserAccount.user_name;
-		console.log(nameWorkout, username);
+		const nameWorkout = `${username}s_workout${this.state.appUserAccount._id}`;
 		axios.post(`${URL}/workouts/${nameWorkout}/save/${username}`).catch((err) => {
 			console.log(err);
 		});
@@ -143,16 +142,15 @@ export default class CompanionScreen extends React.Component {
 
 	postWorkout = () => {
 		const nameWorkout = `${this.state.appUserAccount.user_name}s_workout${this.state.appUserAccount._id}`;
-		const username = this.state.appUserAccount.user_name;
+		const id = this.state.appUserAccount._id;
 		const isPrivate = this.state.isPrivate;
 		const exercises = this.state.exercises.map((exercise) => exercise.title);
-		console.log(nameWorkout, username, isPrivate, exercises);
 		axios
 			.post(`${URL}/workouts`, {
 				name: nameWorkout,
 				exercises: exercises,
 				private: isPrivate,
-				created_by: username
+				created_by: id
 			})
 			.catch((err) => {
 				console.log(err);
