@@ -140,7 +140,10 @@ const styles = StyleSheet.create({
   linkContainer: {
     margin: 5,
     padding: 10,
-    backgroundColor: 'rgba(33,160,160, 0.5)',
+    backgroundColor: 'rgba(44,73,127, 0.7)',
+    borderColor: 'rgba(44,73,127, 1)',
+    borderWidth: 2,
+    borderRadius: 4,
   },
   linkText: {
     fontSize: 15,
