@@ -5,7 +5,8 @@ import {
 	getCompletedWorkouts,
 	getSavedWorkouts,
 	patchUser,
-	getSingleUser
+	getSingleUser,
+  removeSavedWorkout
 } from '../utils/backendAPI'
 
 
@@ -56,9 +57,10 @@ export default class UserProfile extends React.Component {
 
 
 		return (
-			<ScrollView style={{ flex: 1 }}>
-				<Text style={{ fontSize: 25, textAlign: 'center', margin: 5 }}>{`${loggedInUser.user_name}'s Page`}</Text>
-				{(completedWorkouts.length > 0) && <Text style={{ textAlign: 'center', margin: 20 }}>Your last workout was {completedWorkouts[0].workout_name} on {completedWorkouts[0].dateString}</Text>}
+			<ScrollView style={{ flex: 1, padding: 10 }}>
+				<Text style={{fontSize: 25, textAlign: 'center', margin: 5}}>{`${loggedInUser.user_name}'s Page`}</Text>
+				{(completedWorkouts.length > 0) &&<Text style={{textAlign: 'center', margin: 20}}>Your last workout was {completedWorkouts[0].workout_name} on {completedWorkouts[0].dateString}</Text>}
+
 				{Object.keys(calendarPoints).length > 0 &&
 					<><Calendar
 						horizontal={true}
@@ -84,16 +86,14 @@ export default class UserProfile extends React.Component {
 						<Text style={{ textAlign: 'center' }}>{currentEvent}</Text></>
 				}
 
+
 				<Text style={styles.title}>Preferences</Text>
 				<Text style={styles.subtitle}>Model Gender</Text>
 				<View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
 					<TouchableOpacity style={isFemale ? styles.buttonActive : styles.buttonInactive} onPress={() => { this.toggleGender(false) }}><Text style={{ textAlign: 'center' }}>Male</Text></TouchableOpacity>
 					<TouchableOpacity style={!isFemale ? styles.buttonActive : styles.buttonInactive} onPress={() => { this.toggleGender(true) }}><Text style={{ textAlign: 'center' }}>Female</Text></TouchableOpacity></View>
 
-				{/* 			
-					<Text>Change Username</Text><Button onPress={()=>{}} title='Submit'/>
-					<TextInput accessibilityLabel='Change Username' id='' style={{backgroundColor: '#DDDDDD', borderRadius: 5, width: 200, padding: 5}}/>
-				*/}
+	
 				<TouchableOpacity style={styles.button} onPress={this.handleLogout}><Text style={{ alignSelf: 'center' }}>Logout</Text></TouchableOpacity>
 				<View style={{ display: 'flex', flexDirection: 'row', alignSelf: 'center' }}>
 					{saved_workouts.length > 0 && <TouchableOpacity style={styles.loadWorkout} id='savedWorkoutsView' onPress={() => this.handleDropdown('savedWorkoutsView')}><Text>Saved Workouts v</Text></TouchableOpacity>}
@@ -102,6 +102,13 @@ export default class UserProfile extends React.Component {
 			</ScrollView >
 
 		);
+	}
+	unSaveWorkout = () => {
+		
+		const user = this.state.loggedInUser.user_name;
+		const workout =  this.state.tappedWorkout;
+		removeSavedWorkout(user, workout)
+		
 	}
 
 	handleDropdown = (id) => {
@@ -161,7 +168,7 @@ export default class UserProfile extends React.Component {
 	handleLogout = () => {
 		AsyncStorage.removeItem('userAccount')
 		AsyncStorage.removeItem('currentUser')
-		// AsyncStorage.clear()
+		AsyncStorage.removeItem('userToken')
 		this.props.navigation.navigate('SignIn')
 
 	}
@@ -169,6 +176,7 @@ export default class UserProfile extends React.Component {
 
 
 const styles = StyleSheet.create({
+
 	buttonActive: { width: 100, padding: 10, backgroundColor: 'white', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid', borderRadius: 10 },
 	buttonInactive: {
 		width: 100, padding: 10, backgroundColor: '#2C497F', borderColor: 'grey', borderWidth: 1, borderStyle: 'solid', borderRadius: 10

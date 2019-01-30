@@ -42,7 +42,6 @@ export default class HomeScreen extends React.Component {
 		if (prevState.workout !== this.state.workout) {
 		}
 		if (prevState.appUserAccount !== this.setState.appUserAccount) {
-			this.setUserAccount();
 		}
 	}
 	fetchWorkoutExercises = (workoutToLoad) => {
@@ -70,8 +69,8 @@ export default class HomeScreen extends React.Component {
 			});
 	};
 
-	setUserAccount = () => {
-		AsyncStorage.setItem('userAccount', JSON.stringify(this.state.appUserAccount));
+	setUserAccount = (data) => {
+		AsyncStorage.setItem('userAccount', JSON.stringify(data));
 	};
 	calculateMuscleVals = () => {
 		const { workout } = this.state;
@@ -101,11 +100,14 @@ export default class HomeScreen extends React.Component {
 	};
 	render() {
 		console.log(' from the state on homepage ====>', this.state.currentUser);
-		const { workout } = this.state;
+		const { workout, appUserAccount } = this.state;
+		if (Object.keys(appUserAccount).length > 0){
+			this.gender = appUserAccount.isFemale
+		}
 		return (
 			<View style={{ flex: 1 }}>
 				<View style={{ height: 350, marginTop: 10 }}>
-					<Model muscleVals={this.state.muscleVals} />
+					{this.gender !== undefined && appUserAccount && <Model muscleVals={this.state.muscleVals} gender={this.gender} />}
 				</View>
 				<View style={styles.container}>
 					<View style={styles.buttonContainer}>
@@ -176,7 +178,7 @@ export default class HomeScreen extends React.Component {
 			</View>
 		);
 	}
-	convertFBLogin = (allUsers) => {
+	convertFBLogin = async (allUsers) => {
 		const currentUser = allUsers.users.filter((user) => {
 			const fbUser = this.state.currentUser.slice(1, this.state.currentUser.length - 1);
 			return user.actual_name === fbUser;
@@ -184,7 +186,10 @@ export default class HomeScreen extends React.Component {
 		if (currentUser.length > 1) {
 			console.log('NON UNIQUE LOGIN CREDENTIALS');
 		} else {
-			this.setState({ appUserAccount: currentUser[0] });
+
+			await this.setUserAccount(currentUser[0]);
+			const storedUser = await AsyncStorage.getItem('userAccount');
+			this.setState({ appUserAccount: JSON.parse(storedUser) });
 		}
 	};
 
