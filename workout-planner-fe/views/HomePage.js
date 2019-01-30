@@ -145,7 +145,9 @@ export default class HomeScreen extends React.Component {
         <View style={styles.exerciseList}>
           <Content>
             {this.state.workout.length === 0 ? (
-              <Text style={{ textAlign: 'center' }}>Please add an exercise to your workout</Text>
+              <Text style={{ textAlign: 'center', marginTop: 20 }}>
+                Please add an exercise to your workout
+              </Text>
             ) : (
               this.state.workout.map((item, index) => {
                 return (
@@ -159,22 +161,21 @@ export default class HomeScreen extends React.Component {
             )}
           </Content>
         </View>
-        {workout.length > 0 && (
-          <View style={styles.previewWorkoutButtonContainer}>
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate('WorkoutPreview', {
-                  currentWorkout: this.state.workout,
-                  currentUser: this.state.currentUser,
-                  appUserAccount: this.state.appUserAccount,
-                })
-              }
-              style={styles.previewWorkoutButton}
-            >
-              <Text style={styles.linkText}>Workout Preview</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+
+        <View style={styles.previewWorkoutButtonContainer}>
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate('WorkoutPreview', {
+                currentWorkout: this.state.workout,
+                currentUser: this.state.currentUser,
+                appUserAccount: this.state.appUserAccount,
+              })
+            }
+            style={styles.previewWorkoutButton}
+          >
+            <Text style={styles.linkText}>Workout Preview</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
