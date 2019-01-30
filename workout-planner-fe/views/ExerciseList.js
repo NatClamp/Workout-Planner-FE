@@ -32,15 +32,17 @@ export default class ExerciseList extends Component {
 					{this.state.exercises.map((item, index) => {
 						return (
 							<Panel key={index} header={item.title}>
-								<Text style={styles.myDescription}>{item.content}</Text>
-								<Text>{`Major Muscle: ${item.major_muscle}`}</Text>
-								<Button
-									onPress={() => {
-										addExerciseToWorkout(item.title);
-									}}
-								>
-									<Text>Add to Workout</Text>
-								</Button>
+								<Fragment>
+									<Text style={styles.myDescription}>{item.content}</Text>
+									<Text>{`Major Muscle: ${item.major_muscle}`}</Text>
+									<Button
+										onPress={() => {
+											addExerciseToWorkout(item.title);
+										}}
+									>
+										<Text>Add to Workout</Text>
+									</Button>
+								</Fragment>
 							</Panel>
 						);
 					})}
@@ -80,7 +82,3 @@ const styles = StyleSheet.create({
 		height: 150
 	}
 });
-
-ExerciseList.propTypes = {
-	Panel: PropTypes.array
-};
