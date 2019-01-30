@@ -1,7 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import { StyleSheet, Text, View, FlatList, ScrollView } from 'react-native';
-import { Accordion, Container, Item, Icon, Input, Button, Content, Card, CardItem } from 'native-base';
+import { StyleSheet, Text, View, ScrollView, Button, Alert } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import Panel from 'react-native-panel';
 
@@ -33,15 +31,23 @@ export default class ExerciseList extends Component {
 						return (
 							<Panel key={index} header={item.title}>
 								<Fragment>
-									<Text style={styles.myDescription}>{item.content}</Text>
-									<Text>{`Major Muscle: ${item.major_muscle}`}</Text>
+									<Text style={styles.content}>{item.content}</Text>
+									<Text style={styles.major_muscle}>{`Major Muscle: ${item.major_muscle
+										.charAt(0)
+										.toUpperCase() + item.major_muscle.slice(1)}`}</Text>
 									<Button
+										title='Add to Workout'
 										onPress={() => {
 											addExerciseToWorkout(item.title);
+
+											Alert.alert(
+												'Added',
+												`You have added ${item.title} to your workout`,
+												[ { text: 'Ok' } ],
+												{ cancelable: false }
+											);
 										}}
-									>
-										<Text>Add to Workout</Text>
-									</Button>
+									/>
 								</Fragment>
 							</Panel>
 						);
@@ -76,9 +82,13 @@ export default class ExerciseList extends Component {
 }
 
 const styles = StyleSheet.create({
-	myDescription: {
+	content: {
 		padding: 10,
 		paddingTop: 0,
 		height: 150
+	},
+	major_muscle: {
+		padding: 10,
+		paddingTop: 0
 	}
 });
