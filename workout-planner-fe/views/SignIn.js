@@ -31,6 +31,7 @@ export default class SignIn extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <Image style={styles.logo} source={require('../assets/logo2.png')} />
         <Text style={styles.curlFriend}>curlFriend</Text>
         <View style={styles.innerContainer}>
           <TouchableOpacity onPress={this.FBSignIn} style={styles.innerContainer}>
@@ -57,11 +58,10 @@ const styles = StyleSheet.create({
   innerContainer: {
     flexDirection: 'column',
     alignItems: 'center',
-    margin: 20,
+    margin: 10,
   },
   curlFriend: {
-    fontSize: 50,
-    marginBottom: 20,
+    fontSize: 30,
     fontFamily: 'Krub-Bold',
     color: '#2C497F',
   },
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   register: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 40,
+    marginTop: 20,
   },
   registerText: {
     fontFamily: 'Roboto-Regular',
@@ -81,10 +81,14 @@ const styles = StyleSheet.create({
     color: 'rgba(44,73,127, 0.7)',
   },
   image: {
-    height: 80,
-    width: 80,
+    height: 60,
+    width: 60,
     padding: 10,
     margin: 10,
     justifyContent: 'center',
+  },
+  logo: {
+    height: 150,
+    width: 150,
   },
 });

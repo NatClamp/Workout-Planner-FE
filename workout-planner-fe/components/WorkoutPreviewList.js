@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import { StyleSheet, View, Button, Alert } from 'react-native';
+import { StyleSheet, View, Button, Alert, TouchableOpacity } from 'react-native';
 import { Container, Content, Card, CardItem, Text } from 'native-base';
 
-class WorkoutPreviewList extends Component {
+export default class WorkoutPreviewList extends Component {
   state = {
     currentWorkout: [],
     appUserAccount: {},
@@ -17,22 +17,24 @@ class WorkoutPreviewList extends Component {
                 return (
                   <Card key={index}>
                     <CardItem header>
-                      <Text>{item.title}</Text>
+                      <Text style={styles.generalText}>{item.title}</Text>
                     </CardItem>
                   </Card>
                 );
               })}
             </Content>
           </Container>
-          <Button
-            title="Share Workout"
+          <TouchableOpacity
+            style={styles.linkContainer}
             onPress={() =>
               this.props.navigation.navigate('postWorkout', {
                 currentWorkout: this.state.currentWorkout,
                 appUserAccount: this.state.appUserAccount,
               })
             }
-          />
+          >
+            <Text style={styles.linkText}>Share Workout</Text>
+          </TouchableOpacity>
         </View>
       </Fragment>
     );
@@ -45,4 +47,29 @@ class WorkoutPreviewList extends Component {
   }
 }
 
-export default WorkoutPreviewList;
+const styles = StyleSheet.create({
+  outerContainer: {
+    margin: 10,
+    flex: 1,
+  },
+  linkContainer: {
+    margin: 5,
+    padding: 10,
+    backgroundColor: 'rgba(44,73,127, 1)',
+
+    borderRadius: 4,
+    justifyContent: 'center',
+  },
+  linkText: {
+    fontSize: 16,
+    fontFamily: 'Roboto-Medium',
+    color: '#fff',
+    textAlign: 'center',
+  },
+  generalText: {
+    fontSize: 18,
+    fontFamily: 'Krub-Medium',
+    color: 'rgba(44,73,127, 1)',
+    textAlign: 'center',
+  },
+});
