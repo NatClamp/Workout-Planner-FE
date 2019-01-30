@@ -43,60 +43,6 @@ export default class HomeScreen extends React.Component {
 		if (prevState.appUserAccount !== this.setState.appUserAccount) {
 		}
 	}
-	fetchWorkoutExercises = (workoutToLoad) => {
-		const workoutExercises = [];
-		workoutToLoad.forEach((exerciseName) => {
-			workoutExercises.push(getExerciseDetails(exerciseName));
-		});
-		Promise.all(workoutExercises)
-			.then((data) => {
-				return Promise.all(
-					data.map((i) => {
-						return i.json();
-					})
-				);
-			})
-			.then((data) => {
-				this.setState({
-					workout: data.map((exercise) => {
-						return exercise.exercise;
-					})
-				});
-			})
-			.then(() => {
-				this.calculateMuscleVals();
-			});
-	};
-
-	setUserAccount = (data) => {
-		AsyncStorage.setItem('userAccount', JSON.stringify(data));
-	};
-	calculateMuscleVals = () => {
-		const { workout } = this.state;
-		const muscleVals = {
-			abdominals: 0,
-			biceps: 0,
-			calves: 0,
-			chest: 0,
-			forearms: 0,
-			glutes: 0,
-			hamstrings: 0,
-			lowerback: 0,
-			midback: 0,
-			quadriceps: 0,
-			shoulders: 0,
-			obliques: 0,
-			triceps: 0,
-			upperback: 0
-		};
-		workout.forEach((exercise) => {
-			muscleVals[exercise.major_muscle] += 3;
-			exercise.minor_muscles.forEach((muscle) => {
-				muscleVals[muscle] += 1;
-			});
-		});
-		this.setState({ muscleVals });
-	};
 	render() {
 		console.log(' from the state on homepage ====>', this.state.currentUser);
 		const { workout, appUserAccount } = this.state;
@@ -177,7 +123,63 @@ export default class HomeScreen extends React.Component {
 				</View>
 			</View>
 		);
-	}
+  }
+  
+	fetchWorkoutExercises = (workoutToLoad) => {
+		const workoutExercises = [];
+		workoutToLoad.forEach((exerciseName) => {
+			workoutExercises.push(getExerciseDetails(exerciseName));
+		});
+		Promise.all(workoutExercises)
+			.then((data) => {
+				return Promise.all(
+					data.map((i) => {
+						return i.json();
+					})
+				);
+			})
+			.then((data) => {
+				this.setState({
+					workout: data.map((exercise) => {
+						return exercise.exercise;
+					})
+				});
+			})
+			.then(() => {
+				this.calculateMuscleVals();
+			});
+	};
+
+	setUserAccount = (data) => {
+		AsyncStorage.setItem('userAccount', JSON.stringify(data));
+	};
+	calculateMuscleVals = () => {
+		const { workout } = this.state;
+		const muscleVals = {
+			abdominals: 0,
+			biceps: 0,
+			calves: 0,
+			chest: 0,
+			forearms: 0,
+			glutes: 0,
+			hamstrings: 0,
+			lowerback: 0,
+			midback: 0,
+			quadriceps: 0,
+			shoulders: 0,
+			obliques: 0,
+			triceps: 0,
+			upperback: 0
+		};
+		workout.forEach((exercise) => {
+			muscleVals[exercise.major_muscle] += 3;
+			exercise.minor_muscles.forEach((muscle) => {
+				muscleVals[muscle] += 1;
+			});
+		});
+		this.setState({ muscleVals });
+  };
+  
 	convertFBLogin = async (allUsers) => {
 		const currentUser = allUsers.users.filter((user) => {
 			const fbUser = this.state.currentUser.slice(1, this.state.currentUser.length - 1);
