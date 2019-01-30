@@ -75,8 +75,8 @@ export default class CompanionScreen extends React.Component {
 
 	render() {
 		return (
-			<View style={{ flex: 1 }}>
-				<View style={{ height: 350, marginTop: 10 }}>
+			<View style={styles.outerContainer}>
+				<View style={styles.model}>
 					<Model muscleVals={this.state.muscleVals} />
 				</View>
 				<Container>
@@ -99,20 +99,16 @@ export default class CompanionScreen extends React.Component {
 						</View>
 					</Content>
 				</Container>
-				<Button
-					title='Complete Workout'
-					onPress={() => {
-						this.completeWorkout();
-					}}
-				/>
+				<View style={styles.buttonContainer}>
+					<TouchableOpacity
+						style={styles.button}
+						onPress={() => this.props.navigation.navigate('CompletionModal')}
+					>
+						<Text style={styles.linkText}>Complete Workout</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		);
-	}
-
-	componentDidMount() {
-		const currentWorkout = this.props.navigation.state.params.currentWorkout;
-		const appUserAccount = this.props.navigation.state.params.appUserAccount;
-		this.setState({ exercises: currentWorkout, appUserAccount });
 	}
 
 	completeWorkout = () => {
@@ -158,10 +154,31 @@ export default class CompanionScreen extends React.Component {
 	};
 }
 const styles = StyleSheet.create({
-	completeWorkout: {
+	outerContainer: {
+		flex: 1
+	},
+	model: {
+		height: 350,
+		margin: 10
+	},
+	buttonContainer: {
+		marginVertical: 10,
+		flexDirection: 'row',
+		justifyContent: 'center'
+	},
+	button: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: 'center',
 		padding: 10,
-		margin: 10,
-		fontSize: 24,
-		backgroundColor: 'powderblue'
+		width: 250,
+		backgroundColor: 'rgba(44,73,127, 1)',
+		borderRadius: 4
+	},
+	linkText: {
+		fontFamily: 'Roboto-Light',
+		fontSize: 16,
+		color: '#fff',
+		textAlign: 'center'
 	}
 });

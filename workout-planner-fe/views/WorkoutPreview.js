@@ -18,8 +18,7 @@ export default class WorkoutPreview extends React.Component {
 				/>
 				<TouchableOpacity
 					style={styles.linkContainer}
-					onPress={() =>
-						this.props.navigation.navigate('CompanionScreen', { currentWorkout, appUserAccount })}
+					onPress={() => this.props.navigation.navigate('CompanionScreen', { currentWorkout })}
 				>
 					<Text style={styles.linkText}>Start Workout</Text>
 				</TouchableOpacity>
@@ -36,13 +35,12 @@ const styles = StyleSheet.create({
 	linkContainer: {
 		margin: 5,
 		padding: 10,
-		backgroundColor: 'rgba(44,73,127, 0.7)',
-		borderColor: 'rgba(44,73,127, 1)',
-		borderWidth: 2,
+		backgroundColor: 'rgba(44,73,127, 1)',
+
 		borderRadius: 4
 	},
 	linkText: {
-		fontSize: 20,
+		fontSize: 16,
 		fontFamily: 'Roboto-Medium',
 		color: '#fff',
 		textAlign: 'center'
