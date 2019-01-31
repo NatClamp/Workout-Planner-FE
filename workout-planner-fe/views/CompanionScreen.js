@@ -116,7 +116,7 @@ export default class CompanionScreen extends React.Component {
 	}
 
 	completeWorkout = () => {
-		this.getCompleted(this.state.appUserAccount.user_name).then((data)=>{return data.json()}).then((json)=>{return json.userCompleted.length+1}).then((noCompleted)=>{
+		this.getCompleted(this.state.appUserAccount.user_name).then((data)=>{return data.json()}).then((json)=>{if (json.msg){return 1} else return json.userCompleted.length+1}).then((noCompleted)=>{
 		const nameWorkout = `${this.state.appUserAccount.user_name}s_workout ${noCompleted}`;
 		this.postWorkout(nameWorkout).then(()=>{
 		const username = this.state.appUserAccount.user_name;
