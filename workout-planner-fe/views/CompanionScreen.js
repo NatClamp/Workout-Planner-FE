@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Button } from 'react-native';
 import Model from '../components/Model';
 import { Container, Content } from 'native-base';
 import { ListItem, CheckBox } from 'react-native-elements';
@@ -67,7 +67,7 @@ export default class CompanionScreen extends React.Component {
 		this.setState({ muscleVals });
 	};
 
-	componentDidUpdate(prevState) {
+	componentDidUpdate(prevProps, prevState) {
 		if (prevState.checked !== this.state.checked) {
 			this.calculateMuscleVals();
 		}
@@ -75,8 +75,8 @@ export default class CompanionScreen extends React.Component {
 
 	render() {
 		return (
-			<View style={styles.outerContainer}>
-				<View style={styles.model}>
+			<View style={{ flex: 1 }}>
+				<View style={{ height: 350, marginTop: 10 }}>
 					<Model muscleVals={this.state.muscleVals} />
 				</View>
 				<Container>
@@ -99,13 +99,20 @@ export default class CompanionScreen extends React.Component {
 						</View>
 					</Content>
 				</Container>
-				<View style={styles.buttonContainer}>
-					<TouchableOpacity style={styles.button} onPress={this.completeWorkout()}>
-						<Text style={styles.linkText}>Complete Workout</Text>
-					</TouchableOpacity>
-				</View>
+				<Button
+					title='Complete Workout'
+					onPress={() => {
+						this.completeWorkout();
+					}}
+				/>
 			</View>
 		);
+	}
+
+	componentDidMount() {
+		const currentWorkout = this.props.navigation.state.params.currentWorkout;
+		const appUserAccount = this.props.navigation.state.params.appUserAccount;
+		this.setState({ exercises: currentWorkout, appUserAccount });
 	}
 
 	completeWorkout = () => {
@@ -151,31 +158,10 @@ export default class CompanionScreen extends React.Component {
 	};
 }
 const styles = StyleSheet.create({
-	outerContainer: {
-		flex: 1
-	},
-	model: {
-		height: 350,
-		margin: 10
-	},
-	buttonContainer: {
-		marginVertical: 10,
-		flexDirection: 'row',
-		justifyContent: 'center'
-	},
-	button: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'center',
+	completeWorkout: {
 		padding: 10,
-		width: 250,
-		backgroundColor: 'rgba(44,73,127, 1)',
-		borderRadius: 4
-	},
-	linkText: {
-		fontFamily: 'Roboto-Light',
-		fontSize: 16,
-		color: '#fff',
-		textAlign: 'center'
+		margin: 10,
+		fontSize: 24,
+		backgroundColor: 'powderblue'
 	}
 });
