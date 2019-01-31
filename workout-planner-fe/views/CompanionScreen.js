@@ -100,7 +100,7 @@ export default class CompanionScreen extends React.Component {
 					</Content>
 				</Container>
 				<View style={styles.buttonContainer}>
-					<TouchableOpacity style={styles.button} onPress={this.completeWorkout()}>
+					<TouchableOpacity style={styles.button} onPress={this.completeWorkout}>
 						<Text style={styles.linkText}>Complete Workout</Text>
 					</TouchableOpacity>
 				</View>
