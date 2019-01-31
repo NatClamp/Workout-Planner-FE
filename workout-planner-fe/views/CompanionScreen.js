@@ -116,9 +116,10 @@ export default class CompanionScreen extends React.Component {
 	}
 
 	completeWorkout = () => {
-		this.saveWorkout();
+		this.getCompleted(this.state.appUserAccount.user_name).then((data)=>{return data.json()}).then((json)=>{return json.userCompleted.length}).then((noCompleted)=>{
+		const nameWorkout = `${this.state.appUserAccount.user_name}s_workout ${noCompleted}`;
+		this.postWorkout(nameWorkout).then(()=>{
 		const username = this.state.appUserAccount.user_name;
-		const nameWorkout = `${username}s_workout${this.state.appUserAccount._id}`;
 		axios
 			.post(`${URL}/workouts/${nameWorkout}`, {
 				completed_by: username
@@ -128,24 +129,17 @@ export default class CompanionScreen extends React.Component {
 			})
 			.catch((err) => {
 				console.log(err);
-			});
+			});})})
 	};
+	getCompleted = (user) =>{
+		return fetch(`${URL}/users/${user}/completed_workouts`)
+	}
 
-	saveWorkout = () => {
-		this.postWorkout();
-		const username = this.state.appUserAccount.user_name;
-		const nameWorkout = `${username}s_workout${this.state.appUserAccount._id}`;
-		axios.post(`${URL}/workouts/${nameWorkout}/save/${username}`).catch((err) => {
-			console.log(err);
-		});
-	};
-
-	postWorkout = () => {
-		const nameWorkout = `${this.state.appUserAccount.user_name}s_workout${this.state.appUserAccount._id}`;
+	postWorkout = (nameWorkout) => {
 		const id = this.state.appUserAccount._id;
 		const isPrivate = this.state.isPrivate;
 		const exercises = this.state.exercises.map((exercise) => exercise.title);
-		axios
+		return axios
 			.post(`${URL}/workouts`, {
 				name: nameWorkout,
 				exercises: exercises,
