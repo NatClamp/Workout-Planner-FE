@@ -134,7 +134,6 @@ export default class Model extends React.Component {
     this.renderer.render(this.scene, this.camera);
   };
   loadModel = (gender) => {
-    console.log('Loading model with gender as', gender, 'user:', this.state.loggedInUser)
     this.loadGlutes(gender)
     this.loadAbs(gender)
     this.loadBiceps(gender)

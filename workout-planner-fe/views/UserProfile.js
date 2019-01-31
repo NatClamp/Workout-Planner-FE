@@ -164,32 +164,30 @@ export default class UserProfile extends React.Component {
         </View>
         <Icon />
 
-        <View
-          style={{ display: 'flex', flexDirection: 'row', alignSelf: 'center', borderRadius: 10 }}
-        >
+        <View style={styles.workoutButtons}>
           {saved_workouts.length > 0 && (
             <TouchableOpacity
               style={styles.loadWorkout}
               id="savedWorkoutsView"
               onPress={() => this.handleDropdown('savedWorkoutsView')}
             >
-              <Text>Saved Workouts v</Text>
+              <Text style={styles.generalText}>Saved Workouts</Text>
             </TouchableOpacity>
           )}
           {tappedWorkout.length > 0 && (
             <>
               <TouchableOpacity style={styles.loadWorkout} onPress={this.unSaveWorkout}>
-                <Text>Remove Selected</Text>
+                <Text style={styles.generalText}>Remove Selected</Text>
               </TouchableOpacity>
               <TouchableOpacity style={styles.loadWorkout} onPress={this.loadWorkout}>
-                <Text>Load Selected</Text>
+                <Text style={styles.generalText}>Load Selected</Text>
               </TouchableOpacity>
             </>
           )}
         </View>
         {savedWorkoutsView && (
           <FlatList
-            style={{ minHeight: 200 }}
+            style={styles.workoutFlatList}
             data={saved_workouts.map((item, i) => {
               return { workout: item.workout, key: item.workout };
             })}
@@ -298,6 +296,11 @@ export default class UserProfile extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  workoutFlatList: {
+    margin: 10,
+    padding: 10,
+    borderRadius: 3,
+  },
   buttonActive: {
     width: 100,
     padding: 10,
@@ -322,36 +325,28 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   loadWorkout: {
-    width: 100,
-    marginLeft: 20,
+    margin: 5,
+    marginBottom: 10,
     padding: 10,
-    marginRight: 20,
-    marginTop: 20,
-    borderColor: 'black',
-    borderWidth: 1,
-    borderStyle: 'solid',
+    width: 250,
+    backgroundColor: 'rgba(44,73,127, 0.5)',
     borderRadius: 3,
+    textAlign: 'center',
   },
   selectedWorkout: {
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 0,
+    margin: 10,
     padding: 10,
-    borderColor: 'grey',
-    borderWidth: 1,
+    borderColor: 'rgba(44,73,127, 0.5)',
+    borderWidth: 2,
     borderStyle: 'solid',
-    backgroundColor: 'green',
     borderRadius: 3,
+    textAlign: 'center',
   },
   workoutItem: {
-    marginLeft: 20,
-    marginRight: 20,
-    marginTop: 0,
-    padding: 10,
-    borderColor: 'grey',
-    borderWidth: 1,
-    borderStyle: 'solid',
+    margin: 20,
     borderRadius: 3,
+    fontFamily: 'Roboto-Light',
+    fontSize: 14,
   },
   title: {
     fontSize: 16,
@@ -371,8 +366,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   button: {
-    paddingTop: 15,
-    paddingBottom: 15,
+    paddingVertical: 15,
     color: 'white',
     textAlign: 'center',
     backgroundColor: 'rgba(44,73,127, 0.5)',
@@ -403,5 +397,18 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
     alignSelf: 'center',
+  },
+  generalText: {
+    fontFamily: 'Krub-Regular',
+    fontSize: 16,
+    color: '#2C497F',
+    textAlign: 'center',
+  },
+  workoutButtons: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 4,
   },
 });

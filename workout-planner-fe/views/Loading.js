@@ -7,10 +7,8 @@ export default class Loading extends React.Component {
     try {
       const userToken = await AsyncStorage.getItem('userToken');
       const currentUser = await AsyncStorage.getItem('currentUser');
-      // console.log('getting name from storage--->', currentUser);
       if (userToken !== null) {
         AsyncStorage.removeItem('userToken');
-        // AsyncStorage.removeItem('currentUser');
         this.props.navigation.navigate('Home', { currentUser: currentUser });
       } else {
         this.props.navigation.navigate('SignIn');

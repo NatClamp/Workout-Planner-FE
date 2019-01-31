@@ -44,7 +44,6 @@ export default class HomeScreen extends React.Component {
 		}
 	}
 	render() {
-		console.log(' from the state on homepage ====>', this.state.currentUser);
 		const { workout, appUserAccount } = this.state;
 		if (Object.keys(appUserAccount).length > 0) {
 			this.gender = appUserAccount.isFemale;
